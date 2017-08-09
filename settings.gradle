@@ -1,0 +1,1 @@
+include ':app', ':recyclerview-swipe', ':takephoto_library', ':FlycoBanner_Lib'

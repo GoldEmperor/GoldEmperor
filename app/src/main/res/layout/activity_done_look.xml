@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:fadingEdge="vertical"
+    android:scrollbars="none">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        tools:context="com.goldemperor.StockCheck.com.goldemperor.Main.MainActivity">
+
+        <ImageView
+            android:id="@+id/image1"
+            android:layout_width="300dp"
+            android:layout_height="400dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/image1info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/image1"
+            android:layout_marginTop="10dp"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:text="照片A"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/image2"
+            android:layout_width="300dp"
+            android:layout_height="400dp"
+            android:layout_below="@+id/image1info"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/image2info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/image2"
+            android:layout_marginTop="10dp"
+            android:background="#FFFFFF"
+            android:gravity="center"
+            android:text="照片B"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/image2info"
+            android:layout_marginTop="30dp"
+            android:background="#FFFFFF"
+            android:text="稽查结果:等待稽查"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/auditor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/info"
+            android:layout_marginTop="30dp"
+            android:background="#FFFFFF"
+            android:text="稽查人员:等待稽查"
+            android:textSize="18sp"
+            android:layout_marginBottom="30dp"/>
+
+        <TextView
+            android:id="@+id/exceptional"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/auditor"
+            android:layout_marginTop="30dp"
+            android:background="#FFFFFF"
+            android:text="异常因素:无"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/caseclose"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/exceptional"
+            android:layout_marginTop="30dp"
+            android:background="#FFFFFF"
+            android:text="处理结果:等待处理"
+            android:textSize="18sp"
+            android:layout_marginBottom="30dp"/>
+    </RelativeLayout>
+</ScrollView>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.goldemperor">
+
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <!-- the following 2 com.xiaomi.mipushdemo should be changed to your package name -->
+    <permission
+        android:name="com.goldemperor.permission.MIPUSH_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.goldemperor.permission.MIPUSH_RECEIVE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+
+
+    <application
+        android:name="com.goldemperor.MainActivity.MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name="com.goldemperor.MainActivity.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.goldemperor.StockCheck.StockCheckActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+
+
+        </activity>
+        <activity android:name="com.goldemperor.MainActivity.PatternLockActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+
+
+        </activity>
+
+        <activity android:name="com.goldemperor.MainActivity.ContentActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+
+
+        </activity>
+
+        <activity android:name="com.goldemperor.SetActivity.SetActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+
+
+        </activity>
+
+        <activity android:name="com.goldemperor.LoginActivity.LoginActivity"
+            android:label="登录"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+
+
+        </activity>
+
+        <activity android:name="com.goldemperor.StockCheck.WaitView.UpdataActivity"
+            android:label="上传照片"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+
+
+        </activity>
+        <activity android:name="com.goldemperor.StockCheck.WaitView.LookActivity"
+            android:label="稽查"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+
+
+        </activity>
+
+        <activity android:name="com.goldemperor.StockCheck.DoneView.DoneLookActivity"
+            android:label="已签收"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+
+
+        </activity>
+
+        <activity android:name="com.goldemperor.StockCheck.ExceptionalView.ExceptionalLookActivity"
+            android:label="异常处理"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+
+
+        </activity>
+
+        <activity android:name="com.goldemperor.StockCheck.ExceptionalView.DisposeActivity"
+            android:label="异常处理"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+
+
+        </activity>
+        //注册广播BroadcastReceiver和Service
+        //都是静态注册，因为要长期处在后台运行
+        //注：共是3个广播接收器和4个服务，其中包括继承了PushMessageReceiver的DemoMessageReceiver
+
+        //4个后台服务
+        <service
+            android:enabled="true"
+            android:process=":pushservice"
+            android:name="com.xiaomi.push.service.XMPushService"/>
+
+        //此service必须在3.0.1版本以后（包括3.0.1版本）加入
+        <service
+            android:name="com.xiaomi.push.service.XMJobService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":pushservice" />
+
+        //此service必须在2.2.5版本以后（包括2.2.5版本）加入
+        <service
+            android:enabled="true"
+            android:exported="true"
+            android:name="com.xiaomi.mipush.sdk.PushMessageHandler" />
+
+        <service android:enabled="true"
+            android:name="com.xiaomi.mipush.sdk.MessageHandleService" />
+
+
+        //3个广播
+        <receiver
+            android:exported="true"
+            android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:exported="false"
+            android:process=":pushservice"
+            android:name="com.xiaomi.push.service.receivers.PingReceiver" >
+            <intent-filter>
+                <action android:name="com.xiaomi.push.PING_TIMER" />
+            </intent-filter>
+        </receiver>
+
+        //继承了PushMessageReceiver的DemoMessageReceiver的广播注册
+        <receiver
+            android:name="com.goldemperor.MiPush.MiPushMessageReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.ERROR" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>

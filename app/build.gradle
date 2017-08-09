@@ -1,0 +1,65 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "com.goldemperor"
+        minSdkVersion 18
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+repositories {
+    flatDir { dirs 'libs' }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile(name: 'bottom-bar-release', ext: 'aar')
+    compile(name: 'xutils-release', ext: 'aar')
+    compile(name: 'AndroidBootstrap-release', ext: 'aar')
+    compile(name: 'alerter-release', ext: 'aar')
+    compile(name: 'recyclerview-swipe-release', ext: 'aar')
+    compile(name: 'core-release', ext: 'aar')
+    compile(name: 'commons-release', ext: 'aar')
+    compile(name: 'superDialog-release', ext: 'aar')
+    compile(name: 'lemonhello-release', ext: 'aar')
+    compile 'com.mikepenz:iconics-core:2.8.2@aar'
+    compile 'com.mikepenz:material-design-iconic-typeface:2.2.0.2@aar'
+    compile('com.mikepenz:aboutlibraries:5.9.4@aar') { transitive = true }
+    compile 'com.android.support:support-v4:25.2.1'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.flyco.banner:FlycoBanner_Lib:2.0.2@aar'
+    compile(name: 'MaterialStyledDialogs-release', ext: 'aar')
+    compile(name: 'lovelyDialog-release', ext: 'aar')
+    compile(name: 'patternlockview-reactive-release', ext: 'aar')
+    compile(name: 'patternlockview-release', ext: 'aar')
+    compile(name: 'fancybuttons_library-release', ext: 'aar')
+    testCompile 'junit:junit:4.12'
+    compile project(':recyclerview-swipe')
+    compile files('libs/gson-2.8.1.jar')
+    compile project(':takephoto_library')
+    compile files('libs/aliyun-oss-sdk-android-2.3.0.jar')
+    compile files('libs/okhttp-3.4.1.jar')
+    compile files('libs/okio-1.10.0.jar')
+    compile files('libs/MiPush_SDK_Client_3_4_5.jar')
+}

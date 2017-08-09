@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:banner="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:fillViewport="true"
+    android:scrollbars="none">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.goldemperor.Banner.SimpleImageBanner
+            android:id="@+id/sib"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            banner:bb_barColor="#88000000"
+            banner:bb_delay="5"
+            banner:bb_indicatorGravity="RIGHT"
+            banner:bb_period="5"
+            banner:bb_scale="0.5625" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sib"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/btn_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    fancy:fb_borderColor="#FFFFFF"
+                    fancy:fb_borderWidth="2dp"
+                    fancy:fb_defaultColor="#40a75a"
+                    fancy:fb_focusColor="#8cc9f8"
+                    fancy:fb_fontIconSize="25sp"
+                    fancy:fb_iconPosition="top"
+                    fancy:fb_radius="10dp"
+                    fancy:fb_text="来料稽查"
+                    fancy:fb_textColor="#FFFFFF"></mehdi.sakout.fancybuttons.FancyButton>
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/btn_order"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    fancy:fb_borderColor="#FFFFFF"
+                    fancy:fb_borderWidth="2dp"
+                    fancy:fb_defaultColor="#ff5f69"
+                    fancy:fb_focusColor="#8cc9f8"
+                    fancy:fb_fontIconSize="25sp"
+                    fancy:fb_iconPosition="top"
+                    fancy:fb_radius="10dp"
+                    fancy:fb_text="生产派单"
+                    fancy:fb_textColor="#FFFFFF" />
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/btn_produce"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    fancy:fb_borderColor="#FFFFFF"
+                    fancy:fb_borderWidth="2dp"
+                    fancy:fb_defaultColor="#7ed862"
+                    fancy:fb_focusColor="#8cc9f8"
+                    fancy:fb_fontIconSize="25sp"
+                    fancy:fb_iconPosition="top"
+                    fancy:fb_radius="10dp"
+                    fancy:fb_text="工序任务"
+                    fancy:fb_textColor="#FFFFFF" />
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/btn_process"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    fancy:fb_borderColor="#FFFFFF"
+                    fancy:fb_borderWidth="2dp"
+                    fancy:fb_defaultColor="#3b414f"
+                    fancy:fb_focusColor="#8cc9f8"
+                    fancy:fb_fontIconSize="25sp"
+                    fancy:fb_iconPosition="top"
+                    fancy:fb_radius="10dp"
+                    fancy:fb_text="工序汇报"
+                    fancy:fb_textColor="#FFFFFF" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/btn_cxstockin"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    fancy:fb_borderColor="#FFFFFF"
+                    fancy:fb_borderWidth="2dp"
+                    fancy:fb_defaultColor="#3b5998"
+                    fancy:fb_focusColor="#8cc9f8"
+                    fancy:fb_fontIconSize="25sp"
+                    fancy:fb_iconPosition="top"
+                    fancy:fb_radius="10dp"
+                    fancy:fb_text="成型后段扫码入库"
+                    fancy:fb_textColor="#FFFFFF"
+                    fancy:fb_textSize="9dp">
+
+                </mehdi.sakout.fancybuttons.FancyButton>
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/btn_pgstockin"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    fancy:fb_borderColor="#FFFFFF"
+                    fancy:fb_borderWidth="2dp"
+                    fancy:fb_defaultColor="#ff8800"
+                    fancy:fb_focusColor="#8cc9f8"
+                    fancy:fb_fontIconSize="25sp"
+                    fancy:fb_iconPosition="top"
+                    fancy:fb_radius="10dp"
+                    fancy:fb_text="派工单扫码入库"
+                    fancy:fb_textColor="#FFFFFF"
+                    fancy:fb_textSize="9dp" />
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/btn_cgstockin"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    fancy:fb_borderColor="#FFFFFF"
+                    fancy:fb_borderWidth="2dp"
+                    fancy:fb_defaultColor="#3b5998"
+                    fancy:fb_focusColor="#8cc9f8"
+                    fancy:fb_fontIconSize="25sp"
+                    fancy:fb_iconPosition="top"
+                    fancy:fb_radius="10dp"
+                    fancy:fb_text="采购订单扫码入库"
+                    fancy:fb_textColor="#FFFFFF"
+                    fancy:fb_textSize="9dp" />
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/btn_cxscanbarcode"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    fancy:fb_borderColor="#FFFFFF"
+                    fancy:fb_borderWidth="2dp"
+                    fancy:fb_defaultColor="#3b5998"
+                    fancy:fb_focusColor="#8cc9f8"
+                    fancy:fb_fontIconSize="25sp"
+                    fancy:fb_iconPosition="top"
+                    fancy:fb_radius="10dp"
+                    fancy:fb_text="成型条码采集"
+                    fancy:fb_textColor="#FFFFFF"
+                    fancy:fb_textSize="11dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/btn_set"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    fancy:fb_borderColor="#FFFFFF"
+                    fancy:fb_borderWidth="2dp"
+                    fancy:fb_defaultColor="#ff8800"
+                    fancy:fb_focusColor="#8cc9f8"
+                    fancy:fb_fontIconSize="25sp"
+                    fancy:fb_iconPosition="top"
+                    fancy:fb_radius="10dp"
+                    fancy:fb_text="设置"
+                    fancy:fb_textColor="#FFFFFF">
+
+                </mehdi.sakout.fancybuttons.FancyButton>
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.goldemperor.Banner.SimpleTextBanner
+            android:id="@+id/stb"
+            android:layout_width="fill_parent"
+            android:layout_height="35dp"
+            android:layout_alignParentBottom="true"
+            banner:bb_isIndicatorShow="false" />
+    </RelativeLayout>
+</ScrollView>
