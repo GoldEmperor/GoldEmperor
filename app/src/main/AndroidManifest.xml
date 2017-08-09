@@ -9,6 +9,17 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+
+    <!-- android 获取 imei号码权限 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <!-- the following 2 com.xiaomi.mipushdemo should be changed to your package name -->
     <permission
         android:name="com.goldemperor.permission.MIPUSH_RECEIVE"
@@ -101,17 +112,26 @@
             android:label="异常处理"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize">
-
-
         </activity>
 
         <activity android:name="com.goldemperor.StockCheck.ExceptionalView.DisposeActivity"
             android:label="异常处理"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize">
-
-
         </activity>
+        <activity
+            android:name="com.goldemperor.CxStockIn.CxStockInActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/cxstockin_form_name"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="com.goldemperor.CxStockIn.CxLoginActivity"
+            android:configChanges="orientation"
+            android:label="@string/cxstockin_form_name"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden">
+        </activity>
+
         //注册广播BroadcastReceiver和Service
         //都是静态注册，因为要长期处在后台运行
         //注：共是3个广播接收器和4个服务，其中包括继承了PushMessageReceiver的DemoMessageReceiver

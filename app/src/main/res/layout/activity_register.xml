@@ -14,12 +14,12 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:hint="姓名"
-        android:layout_centerHorizontal="true"
         android:textColorHint="#03a9f4"
         android:textCursorDrawable="@drawable/text_cursor_cyan"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="99dp"
         android:textSize="20sp"
-        />
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/edit_password" />
 
     <EditText
         android:id="@+id/edit_password"

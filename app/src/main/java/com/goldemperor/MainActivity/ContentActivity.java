@@ -13,6 +13,7 @@ import com.goldemperor.Banner.DataProvider;
 import com.goldemperor.Banner.SimpleImageBanner;
 import com.goldemperor.Banner.SimpleTextBanner;
 import com.goldemperor.Banner.ViewFindUtils;
+import com.goldemperor.CxStockIn.CxStockInActivity;
 import com.goldemperor.LoginActivity.LoginActivity;
 import com.goldemperor.SetActivity.SetActivity;
 import com.goldemperor.R;
@@ -123,6 +124,15 @@ public class ContentActivity extends AppCompatActivity {
 
         setBtn = (FancyButton) findViewById(R.id.btn_set);
         setBtn.setIconResource(R.drawable.set);
+
+        btn_cxstockin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Intent i = new Intent(mContext, CxStockInActivity.class);
+                    mContext.startActivity(i);
+
+            }
+        });
 
         setBtn.setOnClickListener(new View.OnClickListener() {
             @Override
