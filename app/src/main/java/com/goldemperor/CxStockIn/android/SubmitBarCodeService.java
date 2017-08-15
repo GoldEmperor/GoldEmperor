@@ -54,7 +54,7 @@ public class SubmitBarCodeService extends Thread {
             myloginActivity_instance.userLoginInfo.userInfo.setDefaultStockID(DefaultStockID);
             params = GetBarCodeParams(myloginActivity_instance.userLoginInfo.userInfo);
             //设定账套下拉框 ,发送显示指令单命令 Looper.prepare();
-            String result = PublicService.GetWebServiceParamsComnon(myContext, StockBarCodeService.asmxURL, "SubmitBarCode2CollectBill", params);
+            String result = PublicService.GetWebServiceParamsComnon(myContext, StockBarCodeService.asmxURL, "SubmitCxBarCode2CollectBill", params);
 
 
          //  String result="{'Result':'success','StockBillNO':''}";
