@@ -66,6 +66,7 @@ import java.util.TimerTask;
 
 
 public class CxStockInActivity extends FragmentActivity implements OnDeleteListioner, ListViewonSingleTapUpListenner,ActionSheet.OnActionSheetSelected, OnCancelListener{
+
     public static final String TAG = "CxStockInActivity";
     //滑动删除变量
     public static String DeviceIMEI;//移动设备IMEI码
