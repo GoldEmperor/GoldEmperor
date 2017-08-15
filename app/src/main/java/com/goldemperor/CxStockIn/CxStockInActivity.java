@@ -66,6 +66,7 @@ import java.util.TimerTask;
 
 
 public class CxStockInActivity extends FragmentActivity implements OnDeleteListioner, ListViewonSingleTapUpListenner,ActionSheet.OnActionSheetSelected, OnCancelListener{
+
     //滑动删除变量
     LinkedList<String[]> mlist = new LinkedList<String[]>();
     Map<String, String> mBarcodeMap = new HashMap<String, String>();//获得条形码集合 包换ID,条码内容
@@ -85,6 +86,7 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
     public TextView txtcount;
     public SQLiteDatabase db;
     public String TABLE_NAME = "t_BarCode";
+
     private CommDB comDBHelper;
     public CxStockBarCodeDB CxStockBarCodeDBHelper;
     private RadioButton stockin, stockout, stocktemp;
@@ -190,11 +192,18 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
     public void onSingleTapUp() {
 
     }
+    /*连续单击两次back键退出系统*/
+    private long exitTime;
     @Override
     public void onBackPressed() {
-
-        return;//禁止使用返回键
+        if((System.currentTimeMillis()-exitTime) > 500){
+            Toast.makeText(getApplicationContext(), "连续按两次退出程序", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        }else{
+            super.onBackPressed();
+        }
     }
+
 
     @Override
     public boolean isCandelete(int position) {
