@@ -240,6 +240,7 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
         }
     }
 
+
     @Override
     public boolean isCandelete(int position) {
         return true;
