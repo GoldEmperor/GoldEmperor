@@ -66,40 +66,79 @@ import java.util.TimerTask;
 
 
 public class CxStockInActivity extends FragmentActivity implements OnDeleteListioner, ListViewonSingleTapUpListenner,ActionSheet.OnActionSheetSelected, OnCancelListener{
-    //滑动删除变量
-    LinkedList<String[]> mlist = new LinkedList<String[]>();
-    Map<String, String> mBarcodeMap = new HashMap<String, String>();//获得条形码集合 包换ID,条码内容
-    MyAdapter mMyAdapter;
-    DelSlideListView mDelSlideListView;
-    int delID = 0;
+    public static final String TAG = "CxStockInActivity";
     //滑动删除变量
     public static String DeviceIMEI;//移动设备IMEI码
     public static Map<String, DeviceInfoMap> deviceInfoMap;//移动设备管理信息哈希表
-    public static final String TAG = "CxStockInActivity";
-    private IntentFilter mFilter;
-    private Button btnadd, btndelete, btnclear, btnsubmit;
-    private EditText et_scanresult;
+    public static boolean IsNeedCheckVersion = true;//是否检查自动更新
+    public static CxStockInActivity mainActivity_instance = null;//声明的变量
+    public static CxLoginActivity loginActivity_instance = null;//声明的变量
     public CheckBox checkBoxRed;//是否红冲
     public BarCodeHandler barCodeHandler;
     public TableLayout et_scan_table;
     public TextView txtcount;
     public SQLiteDatabase db;
     public String TABLE_NAME = "t_BarCode";
-    private CommDB comDBHelper;
     public CxStockBarCodeDB CxStockBarCodeDBHelper;
-    private RadioButton stockin, stockout, stocktemp;
     public Config myConfig;//=new Config();
-    public static boolean IsNeedCheckVersion = true;//是否检查自动更新
-    public static CxStockInActivity mainActivity_instance = null;//声明的变量
-    public static CxLoginActivity loginActivity_instance = null;//声明的变量
+    public UpdataInfo info;
+    //滑动删除变量
+    LinkedList<String[]> mlist = new LinkedList<String[]>();
+    Map<String, String> mBarcodeMap = new HashMap<String, String>();//获得条形码集合 包换ID,条码内容
+    MyAdapter mMyAdapter;
+    DelSlideListView mDelSlideListView;
+    int delID = 0;
+    private IntentFilter mFilter;
+    private Button btnadd, btndelete, btnclear, btnsubmit;
+    private EditText et_scanresult;
+    private CommDB comDBHelper;
+    private RadioButton stockin, stockout, stocktemp;
     private SimpleCursorAdapter adapter;
     private ScanManager mScanMgr;
-    public UpdataInfo info;
 //    //条形码列表的适配器
 //    private ContactsCursorAdapter m_contactsAdapter;
 //
 //    //加载器监听器
 //    private ContactsLoaderListener m_loaderCallback = new ContactsLoaderListener();
+    private long exitTime;
+    //滑动删除
+    /**
+     * 监听扫码数据的广播，当设置广播输出时作用该方法获取扫码数据
+     */
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (ScanManager.ACTION_SEND_SCAN_RESULT.equals(action)) {
+                byte[] bvalue1 = intent.getByteArrayExtra(ScanManager.EXTRA_SCAN_RESULT_ONE_BYTES);
+                byte[] bvalue2 = intent.getByteArrayExtra(ScanManager.EXTRA_SCAN_RESULT_TWO_BYTES);
+                String svalue1 = null;
+                String svalue2 = null;
+                try {
+                    if (bvalue1 != null)
+                        svalue1 = new String(bvalue1, "GBK");
+                    if (bvalue2 != null)
+                        svalue2 = new String(bvalue1, "GBK");
+                    svalue1 = svalue1 == null ? "" : svalue1;
+                    svalue2 = svalue2 == null ? "" : svalue2;
+//                    tv_broadcast_result.setText(svalue1+"\n"+svalue2);
+                    final String scanResult = svalue1.replaceAll("(\r\n|\r|\n|\n\r)", "");//svalue1+"\n"+svalue2//替换回车
+                    String Mono = "";
+                    et_scanresult.setText(scanResult);
+                    et_scanresult.invalidate();
+                    InsertBarCode(scanResult);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    et_scanresult.setText("data encode failed.");
+                }
+
+//                Random random = new Random();
+//                tv_broadcast_result.setTextColor(Color.argb(255, random.nextInt(256),
+//                        random.nextInt(256), random.nextInt(256)));
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,23 +223,27 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
 //        setRiverListViewAdapter();
 
     }
-    //滑动删除
 
     @Override
     public void onSingleTapUp() {
 
     }
+
     @Override
     public void onBackPressed() {
 
-        return;//禁止使用返回键
+        if((System.currentTimeMillis()-exitTime) > 500){
+            Toast.makeText(getApplicationContext(), "连续按两次返回", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        }else{
+            super.onBackPressed();
+        }
     }
 
     @Override
     public boolean isCandelete(int position) {
         return true;
     }
-
 
     @Override
     public void onDelete(int ID) {
@@ -210,7 +253,6 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
         //弹出删除确认窗体
         ActionSheet.showSheet(this, this, this,SelDelbarcode);
     }
-
 
     @Override
     public void onBack() {
@@ -240,6 +282,7 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
                 break;
         }
     }
+
     //滑动删除
     private void registerReceiver() {
         IntentFilter intFilter = new IntentFilter(ScanManager.ACTION_SEND_SCAN_RESULT);
@@ -254,44 +297,6 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
     }
 
     /**
-     * 监听扫码数据的广播，当设置广播输出时作用该方法获取扫码数据
-     */
-    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (ScanManager.ACTION_SEND_SCAN_RESULT.equals(action)) {
-                byte[] bvalue1 = intent.getByteArrayExtra(ScanManager.EXTRA_SCAN_RESULT_ONE_BYTES);
-                byte[] bvalue2 = intent.getByteArrayExtra(ScanManager.EXTRA_SCAN_RESULT_TWO_BYTES);
-                String svalue1 = null;
-                String svalue2 = null;
-                try {
-                    if (bvalue1 != null)
-                        svalue1 = new String(bvalue1, "GBK");
-                    if (bvalue2 != null)
-                        svalue2 = new String(bvalue1, "GBK");
-                    svalue1 = svalue1 == null ? "" : svalue1;
-                    svalue2 = svalue2 == null ? "" : svalue2;
-//                    tv_broadcast_result.setText(svalue1+"\n"+svalue2);
-                    final String scanResult = svalue1.replaceAll("(\r\n|\r|\n|\n\r)", "");//svalue1+"\n"+svalue2//替换回车
-                    String Mono = "";
-                    et_scanresult.setText(scanResult);
-                    et_scanresult.invalidate();
-                    InsertBarCode(scanResult);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    et_scanresult.setText("data encode failed.");
-                }
-
-//                Random random = new Random();
-//                tv_broadcast_result.setTextColor(Color.argb(255, random.nextInt(256),
-//                        random.nextInt(256), random.nextInt(256)));
-            }
-        }
-    };
-
-    /**
      * 在内存创建数据库和数据表
      */
     void IniDataBase() {
@@ -304,55 +309,6 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
             CxStockBarCodeDBHelper.RefreshTable();
 
         } catch (SQLException e) {
-        }
-    }
-
-    public class ClickEvent implements View.OnClickListener {
-        public Context myContext;
-
-        public ClickEvent(Context context) {
-            super();
-            myContext = context;
-        }
-
-        @Override
-        public void onClick(View v) {
-            try {
-                v.setEnabled(false);
-                switch (v.getId()) {
-                    case R.id.btnadd:
-                        InsertBarCode();
-                        break;
-                    case R.id.btndelete:
-                        DeleteBarCode();
-                        break;
-                    case R.id.btnclear:
-                        ArrayList<BarCode> lists = CxStockBarCodeDBHelper.GetAllData();
-                        if (lists.size() == 0)
-                            return;
-                        ClearBarCode();
-                        break;
-                    case R.id.btnsubmit:
-                        ArrayList<BarCode> lists2 = CxStockBarCodeDBHelper.GetAllData();
-                        if (lists2.size() == 0) {
-                            Toast.makeText(getApplicationContext(), "没有数据,无须提交", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        SubmitBarCode();
-                        break;
-                    default:
-                        break;
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-            finally {
-                v.setEnabled(true);
-            }
-            //Toast.makeText(myContext, "点击提交按钮", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -449,6 +405,7 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
         else
             checkBoxRed.setChecked(false);
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -464,6 +421,7 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
 //        }
         mMyAdapter.notifyDataSetChanged();
     }
+
     @Override
     protected void onDestroy() {
         mReceiver = null;
@@ -567,6 +525,55 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
         this.finish();
     }
 
+    public class ClickEvent implements View.OnClickListener {
+        public Context myContext;
+
+        public ClickEvent(Context context) {
+            super();
+            myContext = context;
+        }
+
+        @Override
+        public void onClick(View v) {
+            try {
+                v.setEnabled(false);
+                switch (v.getId()) {
+                    case R.id.btnadd:
+                        InsertBarCode();
+                        break;
+                    case R.id.btndelete:
+                        DeleteBarCode();
+                        break;
+                    case R.id.btnclear:
+                        ArrayList<BarCode> lists = CxStockBarCodeDBHelper.GetAllData();
+                        if (lists.size() == 0)
+                            return;
+                        ClearBarCode();
+                        break;
+                    case R.id.btnsubmit:
+                        ArrayList<BarCode> lists2 = CxStockBarCodeDBHelper.GetAllData();
+                        if (lists2.size() == 0) {
+                            Toast.makeText(getApplicationContext(), "没有数据,无须提交", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        SubmitBarCode();
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally {
+                v.setEnabled(true);
+            }
+            //Toast.makeText(myContext, "点击提交按钮", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public class MONOTimerTask extends TimerTask {
         public Handler myHandler;
         public Context myContext;
@@ -583,6 +590,7 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
 
     public class BarCodeHandler extends Handler {
         public Context myContext;
+        android.app.Dialog dd;
 
         private BarCodeHandler(Context context, Looper looper) {
             super(looper);
@@ -594,7 +602,6 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
             et_scan_table.refreshDrawableState();
         }
 
-        android.app.Dialog dd;
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
