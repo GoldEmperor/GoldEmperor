@@ -14,6 +14,7 @@ import com.goldemperor.Banner.SimpleImageBanner;
 import com.goldemperor.Banner.SimpleTextBanner;
 import com.goldemperor.Banner.ViewFindUtils;
 import com.goldemperor.CxStockIn.CxStockInActivity;
+import com.goldemperor.GxReport.GxReport;
 import com.goldemperor.LoginActivity.LoginActivity;
 import com.goldemperor.SetActivity.SetActivity;
 import com.goldemperor.R;
@@ -123,7 +124,16 @@ public class ContentActivity extends AppCompatActivity {
         btn_cgstockin.setIconResource(R.drawable.set);
 
         setBtn = (FancyButton) findViewById(R.id.btn_set);
+
         setBtn.setIconResource(R.drawable.set);
+        processBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mContext, GxReport.class);
+                mContext.startActivity(i);
+
+            }
+        });
 
         btn_cxstockin.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -11,19 +11,19 @@
         android:id="@+id/jindiLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="180dp"
+        android:src="@drawable/jindilogo"
         />
 
     <TextView
-        android:layout_below="@+id/jindiLogo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="#FFFFFF"
+        android:layout_below="@+id/jindiLogo"
         android:ellipsize="end"
+        android:gravity="center"
         android:maxLines="1"
-        android:textSize="25dp"
-        android:text="金帝之家" />
+        android:text="金帝之家"
+        android:textColor="#FFFFFF"
+        android:textSize="25dp" />
 </RelativeLayout>

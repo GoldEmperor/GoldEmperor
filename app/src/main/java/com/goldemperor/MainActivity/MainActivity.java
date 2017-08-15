@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(mContext, PatternLockActivity.class);
+                Intent i = new Intent(mContext, ContentActivity.class);
                 mContext.startActivity(i);
                 finish();
             }

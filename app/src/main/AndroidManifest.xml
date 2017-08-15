@@ -20,6 +20,10 @@
     <!-- android 获取 imei号码权限 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+
     <!-- the following 2 com.xiaomi.mipushdemo should be changed to your package name -->
     <permission
         android:name="com.goldemperor.permission.MIPUSH_RECEIVE"
@@ -47,77 +51,77 @@
         </activity>
 
         <activity android:name="com.goldemperor.StockCheck.StockCheckActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label=""
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:screenOrientation="portrait">
 
 
         </activity>
         <activity android:name="com.goldemperor.MainActivity.PatternLockActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label=""
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:screenOrientation="portrait">
 
 
         </activity>
 
         <activity android:name="com.goldemperor.MainActivity.ContentActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label=""
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:screenOrientation="portrait">
 
 
         </activity>
 
         <activity android:name="com.goldemperor.SetActivity.SetActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label=""
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:screenOrientation="portrait">
 
 
         </activity>
 
         <activity android:name="com.goldemperor.LoginActivity.LoginActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="登录"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:screenOrientation="portrait">
 
 
         </activity>
 
         <activity android:name="com.goldemperor.StockCheck.WaitView.UpdataActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="上传照片"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:screenOrientation="portrait">
 
 
         </activity>
         <activity android:name="com.goldemperor.StockCheck.WaitView.LookActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="稽查"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:screenOrientation="portrait">
 
 
         </activity>
 
         <activity android:name="com.goldemperor.StockCheck.DoneView.DoneLookActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="已签收"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:screenOrientation="portrait">
 
 
         </activity>
 
         <activity android:name="com.goldemperor.StockCheck.ExceptionalView.ExceptionalLookActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="异常处理"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:screenOrientation="portrait">
         </activity>
 
         <activity android:name="com.goldemperor.StockCheck.ExceptionalView.DisposeActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="异常处理"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.goldemperor.CxStockIn.CxStockInActivity"
@@ -125,6 +129,19 @@
             android:label="@string/cxstockin_form_name"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity
+            android:name="com.goldemperor.GxReport.GxReport"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name="com.goldemperor.GxReport.GxReportScan"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait">
+        </activity>
+
         <activity
             android:name="com.goldemperor.CxStockIn.CxLoginActivity"
             android:configChanges="orientation"
@@ -138,9 +155,9 @@
 
         //4个后台服务
         <service
+            android:name="com.xiaomi.push.service.XMPushService"
             android:enabled="true"
-            android:process=":pushservice"
-            android:name="com.xiaomi.push.service.XMPushService"/>
+            android:process=":pushservice"/>
 
         //此service必须在3.0.1版本以后（包括3.0.1版本）加入
         <service
@@ -152,18 +169,18 @@
 
         //此service必须在2.2.5版本以后（包括2.2.5版本）加入
         <service
+            android:name="com.xiaomi.mipush.sdk.PushMessageHandler"
             android:enabled="true"
-            android:exported="true"
-            android:name="com.xiaomi.mipush.sdk.PushMessageHandler" />
+            android:exported="true" />
 
-        <service android:enabled="true"
-            android:name="com.xiaomi.mipush.sdk.MessageHandleService" />
+        <service android:name="com.xiaomi.mipush.sdk.MessageHandleService"
+            android:enabled="true" />
 
 
         //3个广播
         <receiver
-            android:exported="true"
-            android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver" >
+            android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -171,9 +188,9 @@
         </receiver>
 
         <receiver
+            android:name="com.xiaomi.push.service.receivers.PingReceiver"
             android:exported="false"
-            android:process=":pushservice"
-            android:name="com.xiaomi.push.service.receivers.PingReceiver" >
+            android:process=":pushservice" >
             <intent-filter>
                 <action android:name="com.xiaomi.push.PING_TIMER" />
             </intent-filter>
