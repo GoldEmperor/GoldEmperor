@@ -33,6 +33,8 @@ public class define {
 
     public static final String GetCode = "http://59.56.103.32:8030/api/MessagePost/GetCode";
 
+    public static final String GetScProcessWorkCardInfo = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/GetScProcessWorkCardInfo";
+
     public static final String SharedName = "data";
 
     public static final String SharedPhone = "phone";

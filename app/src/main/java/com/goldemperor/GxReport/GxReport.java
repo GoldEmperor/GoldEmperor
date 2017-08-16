@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.goldemperor.MainActivity.ListViewDecoration;
@@ -40,10 +41,11 @@ public class GxReport extends AppCompatActivity {
 
     private Context mContext;
     private Activity activity;
-    private ArrayList<String> QRCodeList;
+    private ArrayList<Order> QRCodeList;
 
     private MenuAdapter mMenuAdapter;
 
+    private TextView count;
     private SwipeMenuRecyclerView mMenuRecyclerView;
     /**
      * Item点击监听。
@@ -120,13 +122,13 @@ public class GxReport extends AppCompatActivity {
         getSupportActionBar().hide();
         mContext = this;
         activity=this;
-        QRCodeList=new ArrayList<String>();
+        QRCodeList=new ArrayList<Order>();
         scan = (BootstrapButton) findViewById(R.id.scan);
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(mContext, GxReportScan.class);
-                i.putStringArrayListExtra("QRCodeList",QRCodeList);
+                i.putParcelableArrayListExtra("QRCodeList",QRCodeList);
                 activity.startActivityForResult(i,1);
             }
         });
@@ -145,14 +147,17 @@ public class GxReport extends AppCompatActivity {
 
         mMenuAdapter.setOnItemClickListener(onItemClickListener);
         mMenuRecyclerView.setAdapter(mMenuAdapter);
+        count=(TextView)findViewById(R.id.tv_count);
+        count.setText("条码数量:"+QRCodeList.size());
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        ArrayList<String> QRCodeListTemp = data.getStringArrayListExtra("QRCodeList");
+        ArrayList<Order> QRCodeListTemp = data.getParcelableArrayListExtra("QRCodeList");
         QRCodeList.clear();
         QRCodeList.addAll(QRCodeListTemp);
         mMenuAdapter.notifyDataSetChanged();
+        count.setText("条码数量:"+QRCodeList.size());
     }
 
 }

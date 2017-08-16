@@ -6,11 +6,23 @@
     android:layout_height="match_parent"
     android:background="#e8eaea"
     >
+    <TextView
+        android:id="@+id/tv_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="条码数量:"
+        android:gravity="center_horizontal"
+        android:textSize="20dp"
+        android:background="#00ffff"
+        />
+
     <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
         android:id="@+id/recycler_view"
+        android:layout_below="@+id/tv_count"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="80dp"
         android:background="#ffffff" />
 
     <LinearLayout
@@ -18,7 +30,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="20dp"
         >
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/scan"

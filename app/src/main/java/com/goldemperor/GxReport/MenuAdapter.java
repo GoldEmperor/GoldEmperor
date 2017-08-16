@@ -39,11 +39,11 @@ import java.util.List;
  */
 public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder> {
 
-    private ArrayList<String> ls;
+    private ArrayList<Order> ls;
 
     private OnItemClickListener mOnItemClickListener;
 
-    public MenuAdapter(ArrayList<String> ls) {
+    public MenuAdapter(ArrayList<Order> ls) {
         this.ls = ls;
     }
 
@@ -76,14 +76,21 @@ public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder>
     static class DefaultViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         OnItemClickListener mOnItemClickListener;
         TextView tv_number;
+        TextView tv_id;
+        TextView tv_qua;
+
         public DefaultViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             tv_number = (TextView) itemView.findViewById(R.id.tv_number);
+            tv_id = (TextView) itemView.findViewById(R.id.tv_id);
+            tv_qua= (TextView) itemView.findViewById(R.id.tv_qua);
         }
 
-        public void setData(String s) {
-            tv_number.setText("单号:"+s);
+        public void setData(Order o) {
+            tv_number.setText("单号:"+o.getFCardNo());
+            tv_id.setText("ID:"+o.getFEmpID());
+            tv_qua.setText("数量:"+o.getFQty());
         }
 
         @Override
