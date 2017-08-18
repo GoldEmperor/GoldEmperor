@@ -47,6 +47,8 @@ public class define {
 
     public static final String SharedCheckNumber = "CheckNumber";
 
+    public static final String SharedEmpId = "EmpId";
+
     public static final String SharedSex= "sex";
 
     public static final String SharedPosition= "position";

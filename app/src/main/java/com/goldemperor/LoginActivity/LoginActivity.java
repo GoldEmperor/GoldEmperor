@@ -245,7 +245,6 @@ public class LoginActivity extends AppCompatActivity {
                                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                                             @Override
                                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-
                                                 String name=resultTemp.substring(resultTemp.indexOf("name"),resultTemp.indexOf(",",resultTemp.indexOf("name")));
                                                 name=name.replaceAll("\"","").replaceAll("name","").replaceAll(":","");
                                                 dataEditor.putString(define.SharedUser, name);
@@ -253,6 +252,10 @@ public class LoginActivity extends AppCompatActivity {
                                                 String FNumber=resultTemp.substring(resultTemp.indexOf("FNumber"),resultTemp.indexOf(",",resultTemp.indexOf("FNumber")));
                                                 FNumber=FNumber.replaceAll("\"","").replaceAll("FNumber","").replaceAll(":","");
                                                 dataEditor.putString(define.SharedJobNumber, FNumber);
+
+                                                String FEmpid=resultTemp.substring(resultTemp.indexOf("FEmpid"),resultTemp.indexOf(",",resultTemp.indexOf("FEmpid")));
+                                                FEmpid=FEmpid.replaceAll("\"","").replaceAll("FEmpid","").replaceAll(":","");
+                                                dataEditor.putString(define.SharedEmpId, FEmpid);
 
                                                 String sex=resultTemp.substring(resultTemp.indexOf("sex"),resultTemp.indexOf(",",resultTemp.indexOf("sex")));
                                                 sex=sex.replaceAll("\"","").replaceAll("sex","").replaceAll(":","");

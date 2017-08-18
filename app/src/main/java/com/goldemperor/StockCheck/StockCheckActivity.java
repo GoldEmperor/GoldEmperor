@@ -23,7 +23,7 @@ import com.goldemperor.MainActivity.define;
 import com.goldemperor.StockCheck.DoneView.DoneView;
 import com.goldemperor.StockCheck.ExceptionalView.ExceptionalView;
 import com.goldemperor.LoginActivity.LoginActivity;
-import com.goldemperor.RequestView.RequestView;
+import com.goldemperor.StockCheck.RequestView.RequestView;
 import com.goldemperor.StockCheck.WaitView.WaitView;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;

@@ -173,4 +173,5 @@
     <color name="dip_grey">#ff313131</color>
     <color name="transparent">#00000000</color>
 
+    <color name="colorAlert">#F99143</color>
 </resources>

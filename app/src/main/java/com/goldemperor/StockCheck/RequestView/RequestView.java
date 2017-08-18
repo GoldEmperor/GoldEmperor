@@ -1,4 +1,4 @@
-package com.goldemperor.RequestView;
+package com.goldemperor.StockCheck.RequestView;
 
 import android.content.SharedPreferences;
 import android.view.View;

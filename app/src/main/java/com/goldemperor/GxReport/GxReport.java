@@ -3,8 +3,10 @@ package com.goldemperor.GxReport;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
@@ -21,6 +23,7 @@ import com.goldemperor.R;
 
 import com.goldemperor.StockCheck.ExceptionalView.DisposeActivity;
 import com.goldemperor.StockCheck.ExceptionalView.ExceptionalLookActivity;
+import com.tapadoo.alerter.Alerter;
 import com.yanzhenjie.recyclerview.swipe.Closeable;
 import com.yanzhenjie.recyclerview.swipe.OnSwipeMenuItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenu;
@@ -39,14 +42,19 @@ public class GxReport extends AppCompatActivity {
 
     private BootstrapButton scan;
 
+    private BootstrapButton submit;
+
     private Context mContext;
     private Activity activity;
     private ArrayList<Order> QRCodeList;
 
     private MenuAdapter mMenuAdapter;
 
-    private TextView count;
+    private TextView scanCount;
+    private TextView productCount;
     private SwipeMenuRecyclerView mMenuRecyclerView;
+
+    private SharedPreferences dataPref;
     /**
      * Item点击监听。
      */
@@ -105,7 +113,8 @@ public class GxReport extends AppCompatActivity {
             // TODO 如果是删除：推荐调用Adapter.notifyItemRemoved(position)，不推荐Adapter.notifyDataSetChanged();
             if (menuPosition == 0) {// 处理按钮被点击。
 
-
+                QRCodeList.remove(adapterPosition);
+                mMenuAdapter.notifyItemRemoved(adapterPosition);
                 //Toast.makeText(mContext,String.valueOf(mDataList.get(adapterPosition).getId()),Toast.LENGTH_LONG).show();
             }
         }
@@ -120,6 +129,7 @@ public class GxReport extends AppCompatActivity {
         setContentView(R.layout.activity_gxreport);
         //隐藏标题栏
         getSupportActionBar().hide();
+        dataPref = this.getSharedPreferences(define.SharedName, 0);
         mContext = this;
         activity=this;
         QRCodeList=new ArrayList<Order>();
@@ -133,6 +143,19 @@ public class GxReport extends AppCompatActivity {
             }
         });
 
+        submit=(BootstrapButton) findViewById(R.id.submit);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("jindi",dataPref.getString(define.SharedEmpId,"none"));
+                Alerter.create(activity)
+                        .setTitle("提示")
+                        .setText("提交成功")
+                        .setBackgroundColorRes(R.color.colorAlert)
+                        .show();
+            }
+        });
+
         mMenuRecyclerView = (SwipeMenuRecyclerView)findViewById(R.id.recycler_view);
         mMenuRecyclerView.setLayoutManager(new LinearLayoutManager(activity));// 布局管理器。
         mMenuRecyclerView.addItemDecoration(new ListViewDecoration(activity));// 添加分割线。
@@ -143,12 +166,18 @@ public class GxReport extends AppCompatActivity {
         // 设置菜单Item点击监听。
         mMenuRecyclerView.setSwipeMenuItemClickListener(menuItemClickListener);
 
-        mMenuAdapter = new MenuAdapter(QRCodeList);
+        mMenuAdapter = new MenuAdapter(QRCodeList,this);
 
         mMenuAdapter.setOnItemClickListener(onItemClickListener);
         mMenuRecyclerView.setAdapter(mMenuAdapter);
-        count=(TextView)findViewById(R.id.tv_count);
-        count.setText("条码数量:"+QRCodeList.size());
+        scanCount=(TextView)findViewById(R.id.tv_scanCount);
+        scanCount.setText("条码数量:"+QRCodeList.size());
+        productCount=(TextView)findViewById(R.id.tv_productCount);
+        float productCountTemp=0;
+        for(int i=0;i<QRCodeList.size();i++){
+            productCountTemp+= Float.valueOf(QRCodeList.get(i).getFQty());
+        }
+        productCount.setText("产品总数:"+productCountTemp+"件");
     }
 
     @Override
@@ -157,7 +186,12 @@ public class GxReport extends AppCompatActivity {
         QRCodeList.clear();
         QRCodeList.addAll(QRCodeListTemp);
         mMenuAdapter.notifyDataSetChanged();
-        count.setText("条码数量:"+QRCodeList.size());
+        scanCount.setText("条码数量:"+QRCodeList.size());
+        float productCountTemp=0;
+        for(int i=0;i<QRCodeList.size();i++){
+            productCountTemp+= Float.valueOf(QRCodeList.get(i).getFQty());
+        }
+        productCount.setText("产品总数:"+productCountTemp+"件");
     }
 
 }

@@ -1,5 +1,6 @@
 package com.goldemperor.GxReport;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.goldemperor.MainActivity.define;
 import com.goldemperor.R;
+import com.tapadoo.alerter.Alerter;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -43,6 +45,7 @@ public class GxReportScan extends AppCompatActivity implements QRCodeView.Delega
     private QRCodeView mQRCodeView;
     private ArrayList<Order> QRCodeList;
     private Context mContext;
+    private Activity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,7 @@ public class GxReportScan extends AppCompatActivity implements QRCodeView.Delega
         Bundle bundle = this.getIntent().getExtras();
         QRCodeList = bundle.getParcelableArrayList("QRCodeList");
         mContext = this;
+        mActivity=this;
     }
 
     @Override
@@ -176,7 +180,11 @@ public class GxReportScan extends AppCompatActivity implements QRCodeView.Delega
                 //请求异常后的回调方法
                 @Override
                 public void onError(Throwable ex, boolean isOnCallback) {
-
+                    Alerter.create(mActivity)
+                            .setTitle("提示")
+                            .setText("网络错误")
+                            .setBackgroundColorRes(R.color.colorAlert)
+                            .show();
                 }
 
                 //主动调用取消请求的回调方法

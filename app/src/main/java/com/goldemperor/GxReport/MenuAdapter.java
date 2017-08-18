@@ -15,6 +15,8 @@
  */
 package com.goldemperor.GxReport;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -43,8 +45,11 @@ public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder>
 
     private OnItemClickListener mOnItemClickListener;
 
-    public MenuAdapter(ArrayList<Order> ls) {
+    private SharedPreferences dataPref;
+
+    public MenuAdapter(ArrayList<Order> ls,Context con) {
         this.ls = ls;
+        dataPref = con.getSharedPreferences(define.SharedName, 0);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -70,13 +75,14 @@ public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder>
 
     @Override
     public void onBindViewHolder(MenuAdapter.DefaultViewHolder holder, int position) {
-        holder.setData(ls.get(position));
+        holder.setData(ls.get(position),dataPref);
     }
 
     static class DefaultViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         OnItemClickListener mOnItemClickListener;
         TextView tv_number;
         TextView tv_id;
+        TextView tv_name;
         TextView tv_qua;
 
         public DefaultViewHolder(View itemView) {
@@ -84,12 +90,14 @@ public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder>
             itemView.setOnClickListener(this);
             tv_number = (TextView) itemView.findViewById(R.id.tv_number);
             tv_id = (TextView) itemView.findViewById(R.id.tv_id);
+            tv_name = (TextView) itemView.findViewById(R.id.tv_name);
             tv_qua= (TextView) itemView.findViewById(R.id.tv_qua);
         }
 
-        public void setData(Order o) {
+        public void setData(Order o,SharedPreferences dataPref) {
             tv_number.setText("单号:"+o.getFCardNo());
-            tv_id.setText("ID:"+o.getFEmpID());
+            tv_id.setText("工号:"+dataPref.getString(define.SharedJobNumber,"无"));
+            tv_name.setText("姓名:"+dataPref.getString(define.SharedUser,"无"));
             tv_qua.setText("数量:"+o.getFQty());
         }
 
