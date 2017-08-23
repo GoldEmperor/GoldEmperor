@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -17,6 +19,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
+import com.goldemperor.MainActivity.GsonFactory;
 import com.google.gson.Gson;
 import com.goldemperor.sql.stock_check;
 import com.goldemperor.R;
@@ -30,6 +33,9 @@ import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Nova on 2017/7/19.
  */
@@ -37,8 +43,6 @@ import org.xutils.x;
 public class LookActivity extends AppCompatActivity {
 
 
-    private ImageView image1;
-    private ImageView image2;
 
     private TextView info;
     private TextView auditor;
@@ -51,7 +55,9 @@ public class LookActivity extends AppCompatActivity {
 
     private Context mContext;
     private Activity act;
-
+    private Bundle bundle;
+    private List<String> mUpdataImageList;//图片
+    private LookImageAdapter lookImageAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,13 +71,12 @@ public class LookActivity extends AppCompatActivity {
                 .setUseMemCache(true)
                 .build();
 
-        image1 = (ImageView) findViewById(R.id.image1);
-        image2 = (ImageView) findViewById(R.id.image2);
+
         info = (TextView) findViewById(R.id.info);
         auditor = (TextView) findViewById(R.id.auditor);
 
         RequestParams params = new RequestParams(define.GetDataById);
-        final Bundle bundle = getIntent().getExtras();
+        bundle = getIntent().getExtras();
         if (bundle != null) {
             if (bundle.getString("id") != null) {
                 params.addQueryStringParameter("id", bundle.getString("id"));
@@ -84,12 +89,6 @@ public class LookActivity extends AppCompatActivity {
                 if (result != null) {
                     Gson gson = new Gson();
                     stock_check sc = gson.fromJson(result, stock_check.class);
-                    x.image().bind(image1,
-                            define.endpoint + "/" + sc.getImage1(),
-                            imageOptions);
-                    x.image().bind(image2,
-                            define.endpoint + "/" + sc.getImage2(),
-                            imageOptions);
                     if (sc.getInfo() != null) {
                         info.setText("稽查结果:" + sc.getInfo());
                         SpannableStringBuilder builder = new SpannableStringBuilder(info.getText().toString());
@@ -120,6 +119,18 @@ public class LookActivity extends AppCompatActivity {
             public void onFinished() {
             }
         });
+
+        //设置图片Grid
+        mUpdataImageList = new ArrayList<>();
+        RecyclerView imageRecyclerView = (RecyclerView)findViewById(R.id.recycler_view);
+
+        imageRecyclerView.setLayoutManager(new LinearLayoutManager(act));// 布局管理器。
+        imageRecyclerView.addItemDecoration(new ListViewDecoration(act));// 添加分割线。
+
+        lookImageAdapter = new LookImageAdapter(mUpdataImageList);
+        lookImageAdapter.setOnItemClickListener(null);
+        imageRecyclerView.setAdapter(lookImageAdapter);
+        getImage();
 
         sign = (BootstrapButton) findViewById(R.id.sign);
 
@@ -265,5 +276,45 @@ public class LookActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private  void getImage(){
+        RequestParams params = new RequestParams(define.GetImage);
+        if (bundle != null) {
+            if (bundle.getString("id") != null) {
+                params.addQueryStringParameter("checkId", bundle.getString("id"));
+            }
+        }
+        x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(final String result) {
+                //解析result
+                //重新设置数据
+                ArrayList<stock_check_image> arraytemp = GsonFactory.jsonToArrayList(result, stock_check_image.class);
+                for(int i=0;i<arraytemp.size();i++){
+                    mUpdataImageList.add(arraytemp.get(i).getImage());
+                }
+                act.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        lookImageAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+            //请求异常后的回调方法
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            //主动调用取消请求的回调方法
+            @Override
+            public void onCancelled(CancelledException cex) {
+            }
+
+            @Override
+            public void onFinished() {
+            }
+        });
     }
 }

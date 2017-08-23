@@ -175,6 +175,21 @@
                 android:layout_marginTop="10dp">
 
                 <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/btn_process_query"
+                    android:layout_width="80dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_height="wrap_content"
+                    fancy:fb_borderColor="#FFFFFF"
+                    fancy:fb_borderWidth="2dp"
+                    fancy:fb_defaultColor="#008800"
+                    fancy:fb_focusColor="#8cc9f8"
+                    fancy:fb_fontIconSize="25sp"
+                    fancy:fb_iconPosition="top"
+                    fancy:fb_radius="10dp"
+                    fancy:fb_text="汇报查询"
+                    fancy:fb_textColor="#FFFFFF"/>
+
+                <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/btn_set"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"

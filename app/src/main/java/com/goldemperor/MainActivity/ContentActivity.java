@@ -36,6 +36,8 @@ public class ContentActivity extends AppCompatActivity {
     private FancyButton orderBtn;
     private FancyButton processBtn;
     private FancyButton produceBtn;
+    private FancyButton processQueryBtn;
+
 
     private FancyButton btn_cxstockin;
     private FancyButton btn_pgstockin;
@@ -111,8 +113,11 @@ public class ContentActivity extends AppCompatActivity {
         orderBtn = (FancyButton) findViewById(R.id.btn_order);
         orderBtn.setIconResource(R.drawable.order);
 
+        processQueryBtn = (FancyButton) findViewById(R.id.btn_process_query);
+        processQueryBtn.setIconResource(R.drawable.query);
+
         btn_cxstockin = (FancyButton) findViewById(R.id.btn_cxstockin);
-        btn_cxstockin.setIconResource(R.drawable.query);
+        btn_cxstockin.setIconResource(R.drawable.saoyisao);
 
         btn_pgstockin = (FancyButton) findViewById(R.id.btn_pgstockin);
         btn_pgstockin.setIconResource(R.drawable.set);

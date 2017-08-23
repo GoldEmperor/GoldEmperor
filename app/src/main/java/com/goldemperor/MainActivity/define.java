@@ -2,7 +2,7 @@ package com.goldemperor.MainActivity;
 
 public class define {
 
-    public static final String endpoint = "http://jindi.zealji.com";
+    public static final String endpoint = "http://jindi.zealji.com/";
 
     public static final String bucket = "glodemperor";
 
@@ -34,6 +34,10 @@ public class define {
     public static final String GetCode = "http://59.56.103.32:8030/api/MessagePost/GetCode";
 
     public static final String GetScProcessWorkCardInfo = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/GetScProcessWorkCardInfo";
+
+    public static final String UpdataImage = "http://220.189.245.171:8881/UpdataImage";
+
+    public static final String GetImage = "http://220.189.245.171:8881/GetImage";
 
     public static final String SharedName = "data";
 
