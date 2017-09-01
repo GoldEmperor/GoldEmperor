@@ -495,75 +495,7 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
         super.onStop();
     }
 
-    /*
-          *
-          * 弹出对话框通知用户更新程序
-          *
-          * 弹出对话框的步骤：
-          * 	1.创建alertDialog的builder.
-          *	2.要给builder设置属性, 对话框的内容,样式,按钮
-          *	3.通过builder 创建一个对话框
-          *	4.对话框show()出来
-          */
-    protected void showUpdataDialog(final UpdataInfo myinfo) {
-        AlertDialog.Builder builer = new AlertDialog.Builder(this);
-        builer.setTitle("版本升级");
-        builer.setMessage(myinfo.getDescription());
-        //当点确定按钮时从服务器上下载 新的apk 然后安装
-        builer.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                Log.i(TAG, "下载apk,更新");
-                downLoadApk(myinfo);
-            }
-        });
-        //当点取消按钮时进行登录
-        builer.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                LoginMain();
-            }
-        });
-        AlertDialog dialog = builer.create();
-        dialog.show();
-    }
 
-    /*
-     * 从服务器中下载APK
-     */
-    protected void downLoadApk(final UpdataInfo myinfo) {
-        final ProgressDialog pd;    //进度条对话框
-        pd = new ProgressDialog(this);
-        pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        pd.setMessage("正在下载更新");
-        pd.show();
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    String path = myinfo.getUrl();//getResources().getString(R.string.updateapkurl);
-                    File file = DownLoadManager.getFileFromServer(path, pd);
-                    sleep(3000);
-                    installApk(file);
-                    pd.dismiss(); //结束掉进度条对话框
-                } catch (Exception e) {
-                    Message msg = new Message();
-                    msg.what = MessageEnum.DOWN_ERROR;
-                    barCodeHandler.sendMessage(msg);
-                    e.printStackTrace();
-                }
-            }
-        }.start();
-    }
-
-    //安装apk
-    protected void installApk(File file) {
-        Intent intent = new Intent();
-        //执行动作
-        intent.setAction(Intent.ACTION_VIEW);
-        //执行的数据类型
-        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-        startActivity(intent);
-    }
 
     /*
      * 进入程序的主界面
@@ -662,21 +594,6 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
                     Athread.start();
                     //CxStockBarCodeDBHelper.ClearBarcodes();
 
-                    break;
-                case MessageEnum.UPDATA_CLIENT:
-                    //对话框通知用户升级程序
-                    UpdataInfo myinfo= (UpdataInfo) msg.obj;
-                    showUpdataDialog(myinfo);
-                    break;
-                case  MessageEnum.GET_UNDATAINFO_ERROR:
-                    //服务器超时
-                    Toast.makeText(getApplicationContext(), "获取服务器更新信息失败",  Toast.LENGTH_LONG).show();
-                    LoginMain();
-                    break;
-                case  MessageEnum.DOWN_ERROR:
-                    //下载apk失败
-                    Toast.makeText(getApplicationContext(), "下载新版本失败",  Toast.LENGTH_LONG).show();
-                    LoginMain();
                     break;
                 case  MessageEnum.LoginMain:
                     LoginMain();

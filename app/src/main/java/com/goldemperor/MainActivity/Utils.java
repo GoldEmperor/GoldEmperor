@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,6 +46,33 @@ public final class Utils {
         Date d1 = new Date(time);
         String mouth = format.format(d1);
         return Integer.parseInt(mouth);
+    }
+
+    //获取本周的开始时间
+    public static String getBeginDayOfWeek() {
+        Date date = new Date();
+        if (date == null) {
+            return null;
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
+        if (dayofweek == 1) {
+            dayofweek += 7;
+        }
+        cal.add(Calendar.DATE, 2 - dayofweek);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String t = format.format(getDayStartTime(cal.getTime()));
+        return t;
+    }
+
+    //获取某个日期的开始时间
+    public static Timestamp getDayStartTime(Date d) {
+        Calendar calendar = Calendar.getInstance();
+        if (null != d) calendar.setTime(d);
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return new Timestamp(calendar.getTimeInMillis());
     }
 
     public static int getCurrentDay() {

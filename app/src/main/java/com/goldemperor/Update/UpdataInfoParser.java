@@ -25,7 +25,7 @@ public class UpdataInfoParser {
                 case XmlPullParser.START_TAG:
                     if("version".equals(parser.getName())){
                         info.setVersion(parser.nextText());	//获取版本号
-                    }else if ("url".equals(parser.getName())){
+                    }else if ("outurl".equals(parser.getName())){
                         info.setUrl(parser.nextText());	//获取要升级的APK文件
                     }else if ("description".equals(parser.getName())){
                         info.setDescription(parser.nextText());	//获取该文件的信息

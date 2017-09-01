@@ -33,11 +33,21 @@ public class define {
 
     public static final String GetCode = "http://59.56.103.32:8030/api/MessagePost/GetCode";
 
-    public static final String GetScProcessWorkCardInfo = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/GetScProcessWorkCardInfo";
+    public static final String GetScProcessWorkCardInfo = "http://192.168.99.79:8012/ErpForAndroidStockServer.asmx/GetScProcessWorkCardInfo";
 
     public static final String UpdataImage = "http://220.189.245.171:8881/UpdataImage";
 
     public static final String GetImage = "http://220.189.245.171:8881/GetImage";
+
+    public static final String SubmitProcessBarCode2CollectBill = "http://192.168.99.79:8012/ErpForAndroidStockServer.asmx/SubmitProcessBarCode2CollectBill";
+
+    public static final String GetPlanbyTime = "http://220.189.245.171:8080/wechatMvn/android/getPlanbyTime.do";
+
+    public static final String UpdateXML = "http://220.189.245.171:8020/AndroidUpdate/GoldEmperor/update.xml";
+
+    public static final String IsHaveControl = "http://192.168.99.79:8012/ERPPublicServer.asmx/IsHaveControl";
+
+    public static final String GetPlanEntry = "http://220.189.245.171:8080/wechatMvn/android/getPlanEntry.do";
 
     public static final String SharedName = "data";
 
@@ -82,5 +92,8 @@ public class define {
 
     public static int UPDATA = 1;
     public static String CREATE_CODE_SUCCESS = "0";
+
+    public static int SELECT_PHOTO = 1;
+    public static int TAKE_PHOTO = 2;
 
 }

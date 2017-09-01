@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.goldemperor.R;
 import com.google.gson.Gson;
 import com.goldemperor.LoginActivity.Request;
@@ -29,6 +28,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
+import com.tapadoo.alerter.Alerter;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -107,15 +107,11 @@ public class StockCheckActivity extends AppCompatActivity implements ViewPager.O
                     if (result.contains("成功")) {
 
                     } else {
-                        final MaterialStyledDialog.Builder dialog = new MaterialStyledDialog.Builder(con)
-                                .setHeaderDrawable(R.drawable.header)
-                                .setIcon(new IconicsDrawable(con).icon(MaterialDesignIconic.Icon.gmi_comment_alt).color(Color.WHITE))
-                                .withDialogAnimation(true)
-                                .setTitle("请先登录")
-                                .setDescription("  ")
-                                .setHeaderColor(R.color.dialog)
-                                .setPositiveText("确定");
-                        dialog.show();
+                        Alerter.create(act)
+                                .setTitle("提示")
+                                .setText("请先登录")
+                                .setBackgroundColorRes(R.color.colorAlert)
+                                .show();
                     }
                 }
 

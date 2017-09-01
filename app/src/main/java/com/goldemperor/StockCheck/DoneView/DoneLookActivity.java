@@ -74,13 +74,7 @@ public class DoneLookActivity extends AppCompatActivity {
         exceptional = (TextView) findViewById(R.id.exceptional);
         caseclose = (TextView) findViewById(R.id.caseclose);
 
-        RequestParams params = new RequestParams(define.GetDataById);
         bundle = getIntent().getExtras();
-        if (bundle != null) {
-            if (bundle.getString("id") != null) {
-                params.addQueryStringParameter("id", bundle.getString("id"));
-            }
-        }
         //设置图片Grid
         mUpdataImageList = new ArrayList<>();
         RecyclerView imageRecyclerView = (RecyclerView)findViewById(R.id.recycler_view);
@@ -93,6 +87,13 @@ public class DoneLookActivity extends AppCompatActivity {
         imageRecyclerView.setAdapter(lookImageAdapter);
         getImage();
 
+        RequestParams params = new RequestParams(define.GetDataById);
+
+        if (bundle != null) {
+            if (bundle.getString("id") != null) {
+                params.addQueryStringParameter("id", bundle.getString("id"));
+            }
+        }
 
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override

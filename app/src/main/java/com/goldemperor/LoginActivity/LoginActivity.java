@@ -3,12 +3,14 @@ package com.goldemperor.LoginActivity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -19,13 +21,13 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.beardedhen.androidbootstrap.BootstrapButton;
-import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.google.gson.Gson;
 import com.goldemperor.MainActivity.Utils;
 import com.goldemperor.R;
 import com.goldemperor.MainActivity.define;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
+import com.tapadoo.alerter.Alerter;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -175,35 +177,24 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (edit_phone.getText().toString().trim().isEmpty()) {
-                    final MaterialStyledDialog.Builder dialog = new MaterialStyledDialog.Builder(con)
-                            .setHeaderDrawable(R.drawable.header)
-                            .setIcon(new IconicsDrawable(con).icon(MaterialDesignIconic.Icon.gmi_comment_alt).color(Color.WHITE))
-                            .withDialogAnimation(true)
-                            .setTitle("请输入手机号!")
-                            .setDescription("  ")
-                            .setHeaderColor(R.color.dialog)
-                            .setPositiveText("确定");
-                    dialog.show();
+                    Alerter.create(act)
+                            .setTitle("提示")
+                            .setText("请输入手机号!")
+                            .setBackgroundColorRes(R.color.colorAlert)
+                            .show();
+
                 } else if (edit_password.getText().toString().isEmpty()) {
-                    final MaterialStyledDialog.Builder dialog = new MaterialStyledDialog.Builder(con)
-                            .setHeaderDrawable(R.drawable.header)
-                            .setIcon(new IconicsDrawable(con).icon(MaterialDesignIconic.Icon.gmi_comment_alt).color(Color.WHITE))
-                            .withDialogAnimation(true)
-                            .setTitle("请输入密码!")
-                            .setDescription("  ")
-                            .setHeaderColor(R.color.dialog)
-                            .setPositiveText("确定");
-                    dialog.show();
+                    Alerter.create(act)
+                            .setTitle("提示")
+                            .setText("请输入密码!")
+                            .setBackgroundColorRes(R.color.colorAlert)
+                            .show();
                 }else if(!VerNum.equals(VerificationEdit.getText().toString().trim())){
-                    final MaterialStyledDialog.Builder dialog = new MaterialStyledDialog.Builder(con)
-                            .setHeaderDrawable(R.drawable.header)
-                            .setIcon(new IconicsDrawable(con).icon(MaterialDesignIconic.Icon.gmi_comment_alt).color(Color.WHITE))
-                            .withDialogAnimation(true)
-                            .setTitle("验证码不正确!")
-                            .setDescription("  ")
-                            .setHeaderColor(R.color.dialog)
-                            .setPositiveText("确定");
-                    dialog.show();
+                    Alerter.create(act)
+                            .setTitle("提示")
+                            .setText("验证码错误!")
+                            .setBackgroundColorRes(R.color.colorAlert)
+                            .show();
                 } else {
                     login.setText("登陆中...");
                     Gson g = new Gson();
@@ -234,17 +225,16 @@ public class LoginActivity extends AppCompatActivity {
                             final String resultTemp=result;
                             if (result.contains("成功")) {
                                 login.setText("登录成功");
-                                final MaterialStyledDialog.Builder dialog = new MaterialStyledDialog.Builder(con)
-                                        .setHeaderDrawable(R.drawable.header)
-                                        .setIcon(new IconicsDrawable(con).icon(MaterialDesignIconic.Icon.gmi_comment_alt).color(Color.WHITE))
-                                        .withDialogAnimation(true)
-                                        .setTitle("登陆成功")
-                                        .setDescription("  ")
-                                        .setHeaderColor(R.color.dialog)
-                                        .setPositiveText("确定")
-                                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+
+                                final AlertDialog.Builder normalDialog =
+                                        new AlertDialog.Builder(act);
+                                normalDialog.setTitle("提示");
+                                normalDialog.setMessage("登录成功");
+                                normalDialog.setPositiveButton("确定",
+                                        new DialogInterface.OnClickListener() {
                                             @Override
-                                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                //...To-do
                                                 String name=resultTemp.substring(resultTemp.indexOf("name"),resultTemp.indexOf(",",resultTemp.indexOf("name")));
                                                 name=name.replaceAll("\"","").replaceAll("name","").replaceAll(":","");
                                                 dataEditor.putString(define.SharedUser, name);
@@ -279,17 +269,14 @@ public class LoginActivity extends AppCompatActivity {
                                                 act.finish();
                                             }
                                         });
-                                dialog.show();
+                                // 显示
+                                normalDialog.show();
                             }else{
-                                final MaterialStyledDialog.Builder dialog = new MaterialStyledDialog.Builder(con)
-                                        .setHeaderDrawable(R.drawable.header)
-                                        .setIcon(new IconicsDrawable(con).icon(MaterialDesignIconic.Icon.gmi_comment_alt).color(Color.WHITE))
-                                        .withDialogAnimation(true)
-                                        .setTitle("密码错误,请重新登录!")
-                                        .setDescription("  ")
-                                        .setHeaderColor(R.color.dialog)
-                                        .setPositiveText("确定");
-                                dialog.show();
+                                Alerter.create(act)
+                                        .setTitle("提示")
+                                        .setText("密码错误")
+                                        .setBackgroundColorRes(R.color.colorAlert)
+                                        .show();
                                 login.setText("登录");
                             }
                         }

@@ -1,5 +1,6 @@
 package com.goldemperor.GxReport;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import com.goldemperor.R;
 
 import com.goldemperor.StockCheck.ExceptionalView.DisposeActivity;
 import com.goldemperor.StockCheck.ExceptionalView.ExceptionalLookActivity;
+import com.google.gson.Gson;
 import com.tapadoo.alerter.Alerter;
 import com.yanzhenjie.recyclerview.swipe.Closeable;
 import com.yanzhenjie.recyclerview.swipe.OnSwipeMenuItemClickListener;
@@ -31,14 +33,24 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenuCreator;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * Created by Nova on 2017/8/15.
  */
 
-public class GxReport extends AppCompatActivity {
+public class GxReport extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
     private BootstrapButton scan;
 
@@ -115,6 +127,7 @@ public class GxReport extends AppCompatActivity {
 
                 QRCodeList.remove(adapterPosition);
                 mMenuAdapter.notifyItemRemoved(adapterPosition);
+                setData();
                 //Toast.makeText(mContext,String.valueOf(mDataList.get(adapterPosition).getId()),Toast.LENGTH_LONG).show();
             }
         }
@@ -131,32 +144,35 @@ public class GxReport extends AppCompatActivity {
         getSupportActionBar().hide();
         dataPref = this.getSharedPreferences(define.SharedName, 0);
         mContext = this;
-        activity=this;
-        QRCodeList=new ArrayList<Order>();
+        activity = this;
+        QRCodeList = new ArrayList<Order>();
         scan = (BootstrapButton) findViewById(R.id.scan);
         scan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(mContext, GxReportScan.class);
-                i.putParcelableArrayListExtra("QRCodeList",QRCodeList);
-                activity.startActivityForResult(i,1);
+                i.putParcelableArrayListExtra("QRCodeList", QRCodeList);
+                activity.startActivityForResult(i, 1);
             }
         });
 
-        submit=(BootstrapButton) findViewById(R.id.submit);
+        submit = (BootstrapButton) findViewById(R.id.submit);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("jindi",dataPref.getString(define.SharedEmpId,"none"));
-                Alerter.create(activity)
-                        .setTitle("提示")
-                        .setText("提交成功")
-                        .setBackgroundColorRes(R.color.colorAlert)
-                        .show();
+                if(QRCodeList.size()!=0) {
+                    submitData();
+                }else{
+                    Alerter.create(activity)
+                            .setTitle("提示")
+                            .setText("请扫入条码")
+                            .setBackgroundColorRes(R.color.colorAlert)
+                            .show();
+                }
             }
         });
 
-        mMenuRecyclerView = (SwipeMenuRecyclerView)findViewById(R.id.recycler_view);
+        mMenuRecyclerView = (SwipeMenuRecyclerView) findViewById(R.id.recycler_view);
         mMenuRecyclerView.setLayoutManager(new LinearLayoutManager(activity));// 布局管理器。
         mMenuRecyclerView.addItemDecoration(new ListViewDecoration(activity));// 添加分割线。
 
@@ -166,18 +182,18 @@ public class GxReport extends AppCompatActivity {
         // 设置菜单Item点击监听。
         mMenuRecyclerView.setSwipeMenuItemClickListener(menuItemClickListener);
 
-        mMenuAdapter = new MenuAdapter(QRCodeList,this);
+        mMenuAdapter = new MenuAdapter(QRCodeList, this);
 
         mMenuAdapter.setOnItemClickListener(onItemClickListener);
         mMenuRecyclerView.setAdapter(mMenuAdapter);
-        scanCount=(TextView)findViewById(R.id.tv_scanCount);
-        scanCount.setText("条码数量:"+QRCodeList.size());
-        productCount=(TextView)findViewById(R.id.tv_productCount);
-        float productCountTemp=0;
-        for(int i=0;i<QRCodeList.size();i++){
-            productCountTemp+= Float.valueOf(QRCodeList.get(i).getFQty());
+        scanCount = (TextView) findViewById(R.id.tv_scanCount);
+        scanCount.setText("条码数量:" + QRCodeList.size());
+        productCount = (TextView) findViewById(R.id.tv_productCount);
+        float productCountTemp = 0;
+        for (int i = 0; i < QRCodeList.size(); i++) {
+            productCountTemp += Float.valueOf(QRCodeList.get(i).getFQty());
         }
-        productCount.setText("产品总数:"+productCountTemp+"件");
+        productCount.setText("产品总数:" + productCountTemp + "件");
     }
 
     @Override
@@ -186,12 +202,127 @@ public class GxReport extends AppCompatActivity {
         QRCodeList.clear();
         QRCodeList.addAll(QRCodeListTemp);
         mMenuAdapter.notifyDataSetChanged();
-        scanCount.setText("条码数量:"+QRCodeList.size());
-        float productCountTemp=0;
-        for(int i=0;i<QRCodeList.size();i++){
-            productCountTemp+= Float.valueOf(QRCodeList.get(i).getFQty());
-        }
-        productCount.setText("产品总数:"+productCountTemp+"件");
+        setData();
     }
 
+    public void submitData() {
+        submit.setEnabled(false);
+        List<SubmitJson> sjl = new ArrayList<SubmitJson>();
+        for (int i = 0; i < QRCodeList.size(); i++) {
+            SubmitJson sj = new SubmitJson();
+            sj.setD_BarCode(QRCodeList.get(i).getFCardNo());
+            sj.setD_EmpID(dataPref.getString(define.SharedEmpId, "none"));
+            sj.setD_Qty(QRCodeList.get(i).getFQty());
+            sjl.add(sj);
+        }
+        Gson g = new Gson();
+        String sjlJson = g.toJson(sjl);
+        RequestParams params = new RequestParams(define.SubmitProcessBarCode2CollectBill);
+        String sjlJsonEncode = "";
+        try {
+            sjlJsonEncode = URLEncoder.encode(sjlJson, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            Log.e("jindi", "encodeError");
+        }
+        params.addBodyParameter("barcodeJson", sjlJsonEncode);
+        params.addBodyParameter("OrganizeID", "1");
+        params.addBodyParameter("BillTypeID", "1");
+        params.addBodyParameter("EmpID", dataPref.getString(define.SharedEmpId, "none"));
+        params.addBodyParameter("UserID", "1");
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                //解析result
+
+                try {
+                    result = URLDecoder.decode(result, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
+                Log.e("jindi", result);
+
+                String StockBillNO = result.substring(result.lastIndexOf("StockBillNO"), result.lastIndexOf("\"}")).replace("StockBillNO\":\"", "");
+                submit.setEnabled(true);
+                if (result.contains("success")) {
+                    Alerter.create(activity)
+                            .setTitle("提示")
+                            .setText("提交成功,工序汇报单号:" + StockBillNO)
+                            .setBackgroundColorRes(R.color.colorAlert)
+                            .show();
+                    QRCodeList.clear();
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mMenuAdapter.notifyDataSetChanged();
+                        }
+                    });
+                    setData();
+                } else {
+                    Alerter.create(activity)
+                            .setTitle("提示")
+                            .setText("提交失败:" + StockBillNO)
+                            .setBackgroundColorRes(R.color.colorAlert)
+                            .show();
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                submit.setEnabled(true);
+                Alerter.create(activity)
+                        .setTitle("提示")
+                        .setText("提交失败,网络错误:" + ex.toString())
+                        .setBackgroundColorRes(R.color.colorAlert)
+                        .show();
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+            }
+
+            @Override
+            public void onFinished() {
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        requestCodeQRCodePermissions();
+    }
+
+    public void setData(){
+        scanCount.setText("条码数量:" + QRCodeList.size());
+        float productCountTemp = 0;
+        for (int i = 0; i < QRCodeList.size(); i++) {
+            productCountTemp += Float.valueOf(QRCodeList.get(i).getFQty());
+        }
+        productCount.setText("产品总数:" + productCountTemp + "件");
+    }
+    private static final int REQUEST_CODE_QRCODE_PERMISSIONS = 1;
+    @AfterPermissionGranted(REQUEST_CODE_QRCODE_PERMISSIONS)
+    private void requestCodeQRCodePermissions() {
+        String[] perms = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (!EasyPermissions.hasPermissions(this, perms)) {
+            EasyPermissions.requestPermissions(this, "扫描二维码需要打开相机和散光灯的权限", REQUEST_CODE_QRCODE_PERMISSIONS, perms);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+
+    }
 }

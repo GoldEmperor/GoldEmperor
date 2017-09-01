@@ -6,8 +6,6 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.util.Log;
 
-import com.goldemperor.R;
-
 /**
  * Created by xufanglou on 2016-08-27.
  */
@@ -54,7 +52,7 @@ public class VersionService {
     }
 
     public static String getAppName(Context context) {
-        String appName = context.getResources().getText(R.string.app_name).toString();
+        String appName = "金帝之家";
         return appName;
     }
 }

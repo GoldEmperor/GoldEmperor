@@ -2,9 +2,11 @@ package com.goldemperor.StockCheck.WaitView;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +20,6 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.beardedhen.androidbootstrap.BootstrapButton;
-import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.goldemperor.MainActivity.GsonFactory;
 import com.google.gson.Gson;
 import com.goldemperor.sql.stock_check;
@@ -26,6 +27,7 @@ import com.goldemperor.R;
 import com.goldemperor.MainActivity.define;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
+import com.tapadoo.alerter.Alerter;
 import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 
 import org.xutils.common.Callback;
@@ -43,7 +45,6 @@ import java.util.List;
 public class LookActivity extends AppCompatActivity {
 
 
-
     private TextView info;
     private TextView auditor;
 
@@ -58,6 +59,7 @@ public class LookActivity extends AppCompatActivity {
     private Bundle bundle;
     private List<String> mUpdataImageList;//图片
     private LookImageAdapter lookImageAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,7 +124,7 @@ public class LookActivity extends AppCompatActivity {
 
         //设置图片Grid
         mUpdataImageList = new ArrayList<>();
-        RecyclerView imageRecyclerView = (RecyclerView)findViewById(R.id.recycler_view);
+        RecyclerView imageRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         imageRecyclerView.setLayoutManager(new LinearLayoutManager(act));// 布局管理器。
         imageRecyclerView.addItemDecoration(new ListViewDecoration(act));// 添加分割线。
@@ -138,21 +140,11 @@ public class LookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (info.getText().toString().contains("等待稽查")) {
-                    final MaterialStyledDialog.Builder dialog = new MaterialStyledDialog.Builder(act)
-                            .setHeaderDrawable(R.drawable.header)
-                            .withIconAnimation(false)
-                            .setIcon(new IconicsDrawable(act).icon(MaterialDesignIconic.Icon.gmi_comment_alt).color(Color.WHITE))
-                            .setTitle("无法签收")
-                            .setDescription("本单号尚未上传稽查照片")
-                            .setHeaderColor(R.color.dialog)
-                            .setPositiveText("确定")
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    finish();
-                                }
-                            });
-                    dialog.show();
+                    Alerter.create(act)
+                            .setTitle("提示")
+                            .setText("无法签收,本单号尚未上传稽查照片")
+                            .setBackgroundColorRes(R.color.colorAlert)
+                            .show();
                 } else {
                     RequestParams params = new RequestParams(define.Done);
                     params.addQueryStringParameter("id", bundle.getString("id"));
@@ -161,21 +153,18 @@ public class LookActivity extends AppCompatActivity {
                         public void onSuccess(final String result) {
                             //解析result
                             //重新设置数据
-                            final MaterialStyledDialog.Builder dialog = new MaterialStyledDialog.Builder(act)
-                                    .setHeaderDrawable(R.drawable.header)
-                                    .withIconAnimation(false)
-                                    .setIcon(new IconicsDrawable(act).icon(MaterialDesignIconic.Icon.gmi_comment_alt).color(Color.WHITE))
-                                    .setTitle(result)
-                                    .setDescription("  ")
-                                    .setHeaderColor(R.color.dialog)
-                                    .setPositiveText("确定")
-                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            final AlertDialog.Builder normalDialog =
+                                    new AlertDialog.Builder(act);
+                            normalDialog.setTitle("提示");
+                            normalDialog.setMessage(result);
+                            normalDialog.setPositiveButton("确定",
+                                    new DialogInterface.OnClickListener() {
                                         @Override
-                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                            finish();
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            act.finish();
                                         }
                                     });
-                            dialog.show();
+                            normalDialog.show();
                         }
 
                         //请求异常后的回调方法
@@ -204,22 +193,14 @@ public class LookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (info.getText().toString().contains("等待稽查")) {
-                    final MaterialStyledDialog.Builder dialog = new MaterialStyledDialog.Builder(act)
-                            .setHeaderDrawable(R.drawable.header)
-                            .withIconAnimation(false)
-                            .setIcon(new IconicsDrawable(act).icon(MaterialDesignIconic.Icon.gmi_comment_alt).color(Color.WHITE))
-                            .setTitle("无法报告异常")
-                            .setDescription("本单号尚未上传稽查照片")
-                            .setHeaderColor(R.color.dialog)
-                            .setPositiveText("确定")
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    finish();
-                                }
-                            });
-                    dialog.show();
+
+                    Alerter.create(act)
+                            .setTitle("提示")
+                            .setText("无法报告异常,本单号尚未上传稽查照片")
+                            .setBackgroundColorRes(R.color.colorAlert)
+                            .show();
                 } else {
+
                     new LovelyTextInputDialog(mContext, R.style.EditTextTintTheme)
                             .setTopColorRes(R.color.darkDeepOrange)
                             .setTitle("请输入需要处理的异常因素")
@@ -236,21 +217,18 @@ public class LookActivity extends AppCompatActivity {
                                         public void onSuccess(final String result) {
                                             //解析result
                                             //重新设置数据
-                                            final MaterialStyledDialog.Builder dialog = new MaterialStyledDialog.Builder(act)
-                                                    .setHeaderDrawable(R.drawable.header)
-                                                    .withIconAnimation(false)
-                                                    .setIcon(new IconicsDrawable(act).icon(MaterialDesignIconic.Icon.gmi_comment_alt).color(Color.WHITE))
-                                                    .setTitle(result)
-                                                    .setDescription("  ")
-                                                    .setHeaderColor(R.color.dialog)
-                                                    .setPositiveText("确定")
-                                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                            final AlertDialog.Builder normalDialog =
+                                                    new AlertDialog.Builder(act);
+                                            normalDialog.setTitle("提示");
+                                            normalDialog.setMessage(result);
+                                            normalDialog.setPositiveButton("确定",
+                                                    new DialogInterface.OnClickListener() {
                                                         @Override
-                                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                        public void onClick(DialogInterface dialog, int which) {
                                                             finish();
                                                         }
                                                     });
-                                            dialog.show();
+                                            normalDialog.show();
                                         }
 
                                         //请求异常后的回调方法
@@ -272,13 +250,14 @@ public class LookActivity extends AppCompatActivity {
                             })
                             .setNegativeButton(android.R.string.no, null)
                             .show();
+
                 }
             }
         });
 
     }
 
-    private  void getImage(){
+    private void getImage() {
         RequestParams params = new RequestParams(define.GetImage);
         if (bundle != null) {
             if (bundle.getString("id") != null) {
@@ -291,7 +270,7 @@ public class LookActivity extends AppCompatActivity {
                 //解析result
                 //重新设置数据
                 ArrayList<stock_check_image> arraytemp = GsonFactory.jsonToArrayList(result, stock_check_image.class);
-                for(int i=0;i<arraytemp.size();i++){
+                for (int i = 0; i < arraytemp.size(); i++) {
                     mUpdataImageList.add(arraytemp.get(i).getImage());
                 }
                 act.runOnUiThread(new Runnable() {
@@ -301,6 +280,7 @@ public class LookActivity extends AppCompatActivity {
                     }
                 });
             }
+
             //请求异常后的回调方法
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {

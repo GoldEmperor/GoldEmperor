@@ -2,9 +2,11 @@ package com.goldemperor.StockCheck.ExceptionalView;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +20,6 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.beardedhen.androidbootstrap.BootstrapButton;
-import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.goldemperor.MainActivity.GsonFactory;
 import com.goldemperor.StockCheck.WaitView.ListViewDecoration;
 import com.goldemperor.StockCheck.WaitView.LookImageAdapter;
@@ -164,21 +165,18 @@ public class ExceptionalLookActivity extends AppCompatActivity {
                     public void onSuccess(final String result) {
                         //解析result
                         //重新设置数据
-                        final MaterialStyledDialog.Builder dialog = new MaterialStyledDialog.Builder(mContext)
-                                .setHeaderDrawable(R.drawable.header)
-                                .withIconAnimation(false)
-                                .setIcon(new IconicsDrawable(mContext).icon(MaterialDesignIconic.Icon.gmi_comment_alt).color(Color.WHITE))
-                                .setTitle(result)
-                                .setDescription("  ")
-                                .setHeaderColor(R.color.dialog)
-                                .setPositiveText("确定")
-                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        final AlertDialog.Builder normalDialog =
+                                new AlertDialog.Builder(act);
+                        normalDialog.setTitle("提示");
+                        normalDialog.setMessage(result);
+                        normalDialog.setPositiveButton("确定",
+                                new DialogInterface.OnClickListener() {
                                     @Override
-                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                        finish();
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        act.finish();
                                     }
                                 });
-                        dialog.show();
+                        normalDialog.show();
                     }
 
                     //请求异常后的回调方法

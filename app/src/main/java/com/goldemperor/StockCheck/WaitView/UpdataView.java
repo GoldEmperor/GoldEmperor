@@ -1,5 +1,6 @@
 package com.goldemperor.StockCheck.WaitView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,7 +33,6 @@ import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.beardedhen.androidbootstrap.BootstrapButton;
-import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.goldemperor.MainActivity.GsonFactory;
 import com.goldemperor.MainActivity.OSSHelper;
 import com.goldemperor.MainActivity.People;
@@ -46,6 +47,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
 import com.mylhyl.superdialog.SuperDialog;
 import com.mylhyl.superdialog.res.values.ColorRes;
+import com.tapadoo.alerter.Alerter;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -118,7 +120,8 @@ public class UpdataView extends TakePhotoFragment {
             @Override
             public void onClick(View v) {
                 List<People> list = new ArrayList<>();
-                list.add(new People(2, "拍照"));
+                list.add(new People(define.TAKE_PHOTO, "拍照"));
+                list.add(new People(define.SELECT_PHOTO, "从相册选择"));
                 new SuperDialog.Builder(act)
                         //.setAlpha(0.5f)
                         //.setGravity(Gravity.CENTER)
@@ -127,7 +130,11 @@ public class UpdataView extends TakePhotoFragment {
                         .setItems(list, new SuperDialog.OnItemClickListener() {
                             @Override
                             public void onItemClick(int position) {
-                                PhotoHelper.init(getTakePhoto(), 2, false, 1, 0, 0);
+                                if (position == 1) {
+                                    PhotoHelper.init(getTakePhoto(), define.SELECT_PHOTO, false, 10, 0, 0);
+                                } else if (position == 0) {
+                                    PhotoHelper.init(getTakePhoto(), define.TAKE_PHOTO, false, 1, 0, 0);
+                                }
 
                             }
                         })
@@ -162,26 +169,19 @@ public class UpdataView extends TakePhotoFragment {
 
                 dataEditor.commit();
                 if (mUpdataImageList.size()==0) {
-                    final MaterialStyledDialog.Builder dialog = new MaterialStyledDialog.Builder(act)
-                            .setHeaderDrawable(R.drawable.header)
-                            .withIconAnimation(false)
-                            .setIcon(new IconicsDrawable(act).icon(MaterialDesignIconic.Icon.gmi_comment_alt).color(Color.WHITE))
-                            .setTitle("请至少上传一张图片")
-                            .setDescription("  ")
-                            .setHeaderColor(R.color.dialog)
-                            .setPositiveText("确定");
-                    dialog.show();
+                    Alerter.create(act)
+                            .setTitle("提示")
+                            .setText("请至少上传一张图片")
+                            .setBackgroundColorRes(R.color.colorAlert)
+                            .show();
                 }
                 else if (edit_info.getText().toString().isEmpty()) {
-                    final MaterialStyledDialog.Builder dialog = new MaterialStyledDialog.Builder(act)
-                            .setHeaderDrawable(R.drawable.header)
-                            .withIconAnimation(false)
-                            .setIcon(new IconicsDrawable(act).icon(MaterialDesignIconic.Icon.gmi_comment_alt).color(Color.WHITE))
-                            .setTitle("请输入情况说明")
-                            .setDescription("  ")
-                            .setHeaderColor(R.color.dialog)
-                            .setPositiveText("确定");
-                    dialog.show();
+
+                    Alerter.create(act)
+                            .setTitle("提示")
+                            .setText("请输入情况说明")
+                            .setBackgroundColorRes(R.color.colorAlert)
+                            .show();
                 } else {
                     String checkId="0";
                     RequestParams params = new RequestParams(define.SubmitCheck);
@@ -204,21 +204,18 @@ public class UpdataView extends TakePhotoFragment {
                             act.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    final MaterialStyledDialog.Builder dialog = new MaterialStyledDialog.Builder(act)
-                                            .setHeaderDrawable(R.drawable.header)
-                                            .withIconAnimation(false)
-                                            .setIcon(new IconicsDrawable(act).icon(MaterialDesignIconic.Icon.gmi_comment_alt).color(Color.WHITE))
-                                            .setTitle(result)
-                                            .setDescription("  ")
-                                            .setHeaderColor(R.color.dialog)
-                                            .setPositiveText("确定")
-                                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    final AlertDialog.Builder normalDialog =
+                                            new AlertDialog.Builder(act);
+                                    normalDialog.setTitle("提示");
+                                    normalDialog.setMessage(result);
+                                    normalDialog.setPositiveButton("确定",
+                                            new DialogInterface.OnClickListener() {
                                                 @Override
-                                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                public void onClick(DialogInterface dialog, int which) {
                                                     act.finish();
                                                 }
                                             });
-                                    dialog.show();
+                                    normalDialog.show();
 
 
                                 }
@@ -228,15 +225,11 @@ public class UpdataView extends TakePhotoFragment {
                         //请求异常后的回调方法
                         @Override
                         public void onError(Throwable ex, boolean isOnCallback) {
-                            final MaterialStyledDialog.Builder dialog = new MaterialStyledDialog.Builder(act)
-                                    .setHeaderDrawable(R.drawable.header)
-                                    .withIconAnimation(false)
-                                    .setIcon(new IconicsDrawable(act).icon(MaterialDesignIconic.Icon.gmi_comment_alt).color(Color.WHITE))
-                                    .setTitle("网络错误，单号提交失败")
-                                    .setDescription("  ")
-                                    .setHeaderColor(R.color.dialog)
-                                    .setPositiveText("确定");
-                            dialog.show();
+                            Alerter.create(act)
+                                    .setTitle("提示")
+                                    .setText("网络错误，单号提交失败")
+                                    .setBackgroundColorRes(R.color.colorAlert)
+                                    .show();
                         }
 
                         //主动调用取消请求的回调方法
@@ -314,15 +307,11 @@ public class UpdataView extends TakePhotoFragment {
             //请求异常后的回调方法
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                final MaterialStyledDialog.Builder dialog = new MaterialStyledDialog.Builder(act)
-                        .setHeaderDrawable(R.drawable.header)
-                        .withIconAnimation(false)
-                        .setIcon(new IconicsDrawable(act).icon(MaterialDesignIconic.Icon.gmi_comment_alt).color(Color.WHITE))
-                        .setTitle("网络错误，单号提交失败")
-                        .setDescription("  ")
-                        .setHeaderColor(R.color.dialog)
-                        .setPositiveText("确定");
-                dialog.show();
+                Alerter.create(act)
+                        .setTitle("提示")
+                        .setText("网络错误，单号提交失败")
+                        .setBackgroundColorRes(R.color.colorAlert)
+                        .show();
             }
 
             //主动调用取消请求的回调方法
