@@ -22,7 +22,9 @@ public class CheckVersionTask implements Runnable {
     public Handler myHandler;
     public Context myContext;
     public UpdataInfo myinfo;
-
+    public CheckVersionTask(Context context) {
+        myContext = context;
+    }
     public CheckVersionTask(Handler handler, Context context) {
         myHandler = handler;
         myContext = context;

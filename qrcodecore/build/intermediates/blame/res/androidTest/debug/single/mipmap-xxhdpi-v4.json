@@ -1,10 +1,10 @@
 [
     {
-        "merged": "C:\\Users\\Nova\\Downloads\\GoldEmperor\\qrcodecore\\build\\intermediates\\res\\merged\\androidTest\\debug\\mipmap-xxhdpi-v4\\qrcode_default_grid_scan_line.png",
-        "source": "C:\\Users\\Nova\\Downloads\\GoldEmperor\\qrcodecore\\build\\intermediates\\bundles\\debug\\res\\mipmap-xxhdpi-v4\\qrcode_default_grid_scan_line.png"
+        "merged": "C:\\AndroidStudioProjects\\GoldEmperor\\qrcodecore\\build\\intermediates\\res\\merged\\androidTest\\debug\\mipmap-xxhdpi-v4\\qrcode_default_grid_scan_line.png",
+        "source": "C:\\AndroidStudioProjects\\GoldEmperor\\qrcodecore\\build\\intermediates\\bundles\\debug\\res\\mipmap-xxhdpi-v4\\qrcode_default_grid_scan_line.png"
     },
     {
-        "merged": "C:\\Users\\Nova\\Downloads\\GoldEmperor\\qrcodecore\\build\\intermediates\\res\\merged\\androidTest\\debug\\mipmap-xxhdpi-v4\\qrcode_default_scan_line.png",
-        "source": "C:\\Users\\Nova\\Downloads\\GoldEmperor\\qrcodecore\\build\\intermediates\\bundles\\debug\\res\\mipmap-xxhdpi-v4\\qrcode_default_scan_line.png"
+        "merged": "C:\\AndroidStudioProjects\\GoldEmperor\\qrcodecore\\build\\intermediates\\res\\merged\\androidTest\\debug\\mipmap-xxhdpi-v4\\qrcode_default_scan_line.png",
+        "source": "C:\\AndroidStudioProjects\\GoldEmperor\\qrcodecore\\build\\intermediates\\bundles\\debug\\res\\mipmap-xxhdpi-v4\\qrcode_default_scan_line.png"
     }
 ]

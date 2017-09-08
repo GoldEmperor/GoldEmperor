@@ -162,12 +162,6 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
         //先创建barCodeHandler 再创建数据库
         barCodeHandler = new BarCodeHandler(this, getMainLooper());
 
-//        //如果有网络的情况下，apk更新
-//        if(IsNeedCheckVersion&& NetworkHelper.isNetworkAvailable(this)) {
-//            CheckVersionTask myTask = new CheckVersionTask(barCodeHandler, this);
-//            myTask.run();
-//        }
-
         //创建SQLLite 数据库
         IniDataBase();
         mFilter = new IntentFilter("ACTION_BAR_SCAN");

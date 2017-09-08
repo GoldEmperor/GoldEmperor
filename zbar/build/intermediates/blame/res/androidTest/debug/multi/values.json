@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "C:\\Users\\Nova\\Downloads\\GoldEmperor\\zbar\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values\\values.xml",
+        "outputFile": "C:\\AndroidStudioProjects\\GoldEmperor\\zbar\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values\\values.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,7 @@
                     "endOffset": 1991
                 },
                 "from": {
-                    "file": "C:\\Users\\Nova\\Downloads\\GoldEmperor\\qrcodecore\\build\\intermediates\\bundles\\default\\res\\values\\values.xml",
+                    "file": "C:\\AndroidStudioProjects\\GoldEmperor\\qrcodecore\\build\\intermediates\\bundles\\default\\res\\values\\values.xml",
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,

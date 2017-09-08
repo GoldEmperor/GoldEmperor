@@ -169,7 +169,7 @@ public class CxLoginActivity extends Activity {
     public String GetBillTypeID(String BillTypeName) {
         String BillTypeID = "";
         if (BillTypeName == "入库单")
-            BillTypeID = "1";
+            BillTypeID = "2";//后段成品入库单
         else if (BillTypeName == "领料单")
             BillTypeID = "24";
         else if (BillTypeName == "暂收单")
