@@ -1,5 +1,8 @@
 package com.goldemperor.StockCheck.ExceptionalView;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -8,6 +11,9 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -20,8 +26,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.OSS;
 import com.alibaba.sdk.android.oss.ServiceException;
@@ -31,7 +35,10 @@ import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.beardedhen.androidbootstrap.BootstrapButton;
-import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
+import com.goldemperor.MainActivity.GsonFactory;
+import com.goldemperor.StockCheck.WaitView.ListViewDecoration;
+import com.goldemperor.StockCheck.WaitView.LookImageAdapter;
+import com.goldemperor.StockCheck.WaitView.stock_check_image;
 import com.google.gson.Gson;
 import com.goldemperor.sql.stock_check;
 import com.goldemperor.MainActivity.OSSHelper;
@@ -60,11 +67,8 @@ import java.util.List;
  * Created by Nova on 2017/7/22.
  */
 
-public class DisposeView extends TakePhotoFragment  {
+public class DisposeView extends TakePhotoFragment {
 
-
-    private ImageView image1;
-    private ImageView image2;
 
     private TextView info;
     private TextView auditor;
@@ -80,19 +84,15 @@ public class DisposeView extends TakePhotoFragment  {
 
     private TakePhotoHelper PhotoHelper;
 
-    private ImageView image1Btn;
 
-    private ImageView image2Btn;
-
-
-    private String image1Url = null;
-    private String image2Url = null;
-
-
-    private int imageIndex;
+    private Context mContext;
+    private Bundle bundle;
+    private List<String> mUpdataImageList;//图片
+    private LookImageAdapter lookImageAdapter;
 
     private EditText edit_result;
     private BootstrapButton submitResult;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_dispose, null);
@@ -106,19 +106,29 @@ public class DisposeView extends TakePhotoFragment  {
                 .setUseMemCache(true)
                 .build();
 
-        image1 = (ImageView) view.findViewById(R.id.image1);
-        image2 = (ImageView) view.findViewById(R.id.image2);
+
         info = (TextView) view.findViewById(R.id.info);
         auditor = (TextView) view.findViewById(R.id.auditor);
 
 
-
         exceptional = (TextView) view.findViewById(R.id.exceptional);
 
+        bundle = act.getIntent().getExtras();
+        //设置图片Grid
+        mUpdataImageList = new ArrayList<>();
+        RecyclerView imageRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+
+        imageRecyclerView.setLayoutManager(new LinearLayoutManager(act));// 布局管理器。
+        imageRecyclerView.addItemDecoration(new ListViewDecoration(act));// 添加分割线。
+
+        lookImageAdapter = new LookImageAdapter(mUpdataImageList);
+        lookImageAdapter.setOnItemClickListener(null);
+        imageRecyclerView.setAdapter(lookImageAdapter);
+        getImage();
 
 
         RequestParams params = new RequestParams(define.GetDataById);
-        final Bundle bundle = act.getIntent().getExtras();
+
         if (bundle != null) {
             if (bundle.getString("id") != null) {
                 params.addQueryStringParameter("id", bundle.getString("id"));
@@ -132,14 +142,7 @@ public class DisposeView extends TakePhotoFragment  {
                 if (result != null) {
                     Gson gson = new Gson();
                     stock_check sc = gson.fromJson(result, stock_check.class);
-                    image1Url=sc.getImage1();
-                    image2Url=sc.getImage2();
-                    x.image().bind(image1,
-                            define.endpoint + "/" + sc.getImage1(),
-                            imageOptions);
-                    x.image().bind(image2,
-                            define.endpoint + "/" + sc.getImage2(),
-                            imageOptions);
+
                     if (sc.getInfo() != null) {
 
                         info.setText("核查结果:" + sc.getInfo());
@@ -181,58 +184,6 @@ public class DisposeView extends TakePhotoFragment  {
         //设置照片选择
         PhotoHelper = new TakePhotoHelper();
 
-        image1Btn = (ImageView) view.findViewById(R.id.image1Btn);
-
-        image1Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageIndex = 1;
-                List<People> list = new ArrayList<>();
-                list.add(new People(2, "拍照"));
-                new SuperDialog.Builder(act)
-                        //.setAlpha(0.5f)
-                        //.setGravity(Gravity.CENTER)
-                        .setTitle("上传照片", ColorRes.negativeButton)
-                        .setCanceledOnTouchOutside(false)
-                        .setItems(list, new SuperDialog.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(int position) {
-                                PhotoHelper.init(getTakePhoto(), 2, false, 1, 0, 0);
-
-                            }
-                        })
-                        .setNegativeButton("取消", null)
-                        .setWindowAnimations(R.style.dialogWindowAnim)
-                        .build();
-            }
-        });
-
-        image2Btn = (ImageView) view.findViewById(R.id.image2Btn);
-
-        image2Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageIndex = 2;
-                List<People> list = new ArrayList<>();
-                list.add(new People(2, "拍照"));
-                new SuperDialog.Builder(act)
-                        //.setAlpha(0.5f)
-                        //.setGravity(Gravity.CENTER)
-                        .setTitle("上传照片", ColorRes.negativeButton)
-                        .setCanceledOnTouchOutside(false)
-                        .setItems(list, new SuperDialog.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(int position) {
-                                PhotoHelper.init(getTakePhoto(), 2, false, 1, 1000, 1000);
-
-                            }
-                        })
-                        .setNegativeButton("取消", null)
-                        .setWindowAnimations(R.style.dialogWindowAnim)
-                        .build();
-            }
-        });
-
         edit_result = (EditText) view.findViewById(R.id.edit_result);
         submitResult = (BootstrapButton) view.findViewById(R.id.submitResult);
         submitResult.setOnClickListener(new View.OnClickListener() {
@@ -240,29 +191,25 @@ public class DisposeView extends TakePhotoFragment  {
             public void onClick(View v) {
                 RequestParams params = new RequestParams(define.SubmitResult);
                 params.addQueryStringParameter("id", bundle.getString("id"));
-                params.addQueryStringParameter("image1", image1Url);
-                params.addQueryStringParameter("image2", image2Url);
                 params.addQueryStringParameter("caseclose", edit_result.getText().toString());
                 x.http().get(params, new Callback.CommonCallback<String>() {
                     @Override
                     public void onSuccess(final String result) {
                         //解析result
                         //重新设置数据
-                        final MaterialStyledDialog.Builder dialog = new MaterialStyledDialog.Builder(act)
-                                .setHeaderDrawable(R.drawable.header)
-                                .withIconAnimation(false)
-                                .setIcon(new IconicsDrawable(act).icon(MaterialDesignIconic.Icon.gmi_comment_alt).color(Color.WHITE))
-                                .setTitle(result)
-                                .setDescription("  ")
-                                .setHeaderColor(R.color.dialog)
-                                .setPositiveText("确定")
-                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+
+                        final AlertDialog.Builder normalDialog =
+                                new AlertDialog.Builder(act);
+                        normalDialog.setTitle("提示");
+                        normalDialog.setMessage(result);
+                        normalDialog.setPositiveButton("确定",
+                                new DialogInterface.OnClickListener() {
                                     @Override
-                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    public void onClick(DialogInterface dialog, int which) {
                                         act.finish();
                                     }
                                 });
-                        dialog.show();
+                        normalDialog.show();
                     }
 
                     //请求异常后的回调方法
@@ -285,28 +232,51 @@ public class DisposeView extends TakePhotoFragment  {
         return view;
     }
 
+    private void getImage() {
+        RequestParams params = new RequestParams(define.GetImage);
+        if (bundle != null) {
+            if (bundle.getString("id") != null) {
+                params.addQueryStringParameter("checkId", bundle.getString("id"));
+            }
+        }
+        x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(final String result) {
+                //解析result
+                //重新设置数据
+                ArrayList<stock_check_image> arraytemp = GsonFactory.jsonToArrayList(result, stock_check_image.class);
+                for (int i = 0; i < arraytemp.size(); i++) {
+                    mUpdataImageList.add(arraytemp.get(i).getImage());
+                }
+                act.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        lookImageAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+
+            //请求异常后的回调方法
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            //主动调用取消请求的回调方法
+            @Override
+            public void onCancelled(CancelledException cex) {
+            }
+
+            @Override
+            public void onFinished() {
+            }
+        });
+    }
+
     @Override
     public void takeSuccess(TResult tResult) {
         super.takeSuccess(tResult);
 
-        // 拷贝图片,最后通知图库更新
-        //复制文件到huayifu目录
-        final String fileName = System.currentTimeMillis() + ".jpg";
-        final File file = new File(Environment.getExternalStorageDirectory(), "/jindi/" + fileName);
-
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
-        }
-
-        Utils.copyfile(new File(tResult.getImages().get(0).getCompressPath()), file, true);
-        act.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + file)));
-
-        OSS oss = OSSHelper.getOSSClient(act, define.OSS_KEY, define.OSS_SECRET);
-        if (imageIndex == 1) {
-            putImage(oss, fileName, file.toString(), image1);
-        } else {
-            putImage(oss, fileName, file.toString(), image2);
-        }
 
     }
 
@@ -325,17 +295,8 @@ public class DisposeView extends TakePhotoFragment  {
             @Override
             public void onSuccess(PutObjectRequest request, PutObjectResult result) {
                 Log.d("PutObject", "UploadSuccess");
-
                 Log.d("ETag", result.getETag());
                 Log.d("RequestId", result.getRequestId());
-                x.image().bind(im,
-                        define.endpoint + "/" + fileName,
-                        imageOptions);
-                if (imageIndex == 1) {
-                    image1Url = fileName;
-                } else {
-                    image2Url = fileName;
-                }
             }
 
             @Override

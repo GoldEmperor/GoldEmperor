@@ -14,48 +14,17 @@
         android:background="#ffffff"
         tools:context="com.goldemperor.StockCheck.com.goldemperor.Main.MainActivity">
 
-        <ImageView
-            android:id="@+id/image1"
-            android:layout_width="300dp"
-            android:layout_height="400dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp" />
-
-        <TextView
-            android:id="@+id/image1info"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/image1"
-            android:layout_marginTop="10dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:text="照片A"
-            android:textSize="15sp" />
-
-        <ImageView
-            android:id="@+id/image2"
-            android:layout_width="300dp"
-            android:layout_height="400dp"
-            android:layout_below="@+id/image1info"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp" />
-
-        <TextView
-            android:id="@+id/image2info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/image2"
-            android:layout_marginTop="10dp"
-            android:background="#FFFFFF"
-            android:gravity="center"
-            android:text="照片B"
-            android:textSize="15sp" />
-
+            android:layout_marginBottom="10dp"
+            />
         <TextView
             android:id="@+id/info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/image2info"
+            android:layout_below="@+id/recycler_view"
             android:layout_marginTop="30dp"
             android:background="#FFFFFF"
             android:text="稽查结果:等待稽查"

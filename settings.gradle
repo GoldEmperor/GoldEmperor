@@ -1,1 +1,1 @@
-include ':app', ':recyclerview-swipe', ':takephoto_library', ':FlycoBanner_Lib', ':qrcodecore', ':zbar'
+include ':app', ':takephoto_library', ':FlycoBanner_Lib', ':qrcodecore', ':zbar', ':sublimepickerlibrary'

@@ -1,10 +1,13 @@
 package com.goldemperor.MainActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -14,15 +17,32 @@ import com.goldemperor.Banner.SimpleImageBanner;
 import com.goldemperor.Banner.SimpleTextBanner;
 import com.goldemperor.Banner.ViewFindUtils;
 import com.goldemperor.CxStockIn.CxStockInActivity;
+import com.goldemperor.CxStockIn.android.NetworkHelper;
 import com.goldemperor.GxReport.GxReport;
 import com.goldemperor.LoginActivity.LoginActivity;
+import com.goldemperor.PgdActivity.PgdActivity;
+import com.goldemperor.PgdActivity.PgdResult;
 import com.goldemperor.SetActivity.SetActivity;
 import com.goldemperor.R;
 import com.goldemperor.StockCheck.StockCheckActivity;
+import com.goldemperor.Update.CheckVersionTask;
+import com.google.gson.Gson;
+import com.tapadoo.alerter.Alerter;
 
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 import mehdi.sakout.fancybuttons.FancyButton;
+
+import static com.goldemperor.CxStockIn.CxStockInActivity.IsNeedCheckVersion;
 
 
 /**
@@ -36,6 +56,8 @@ public class ContentActivity extends AppCompatActivity {
     private FancyButton orderBtn;
     private FancyButton processBtn;
     private FancyButton produceBtn;
+    private FancyButton processQueryBtn;
+
 
     private FancyButton btn_cxstockin;
     private FancyButton btn_pgstockin;
@@ -46,7 +68,7 @@ public class ContentActivity extends AppCompatActivity {
     private FancyButton setBtn;
 
     private Context mContext;
-
+    private Activity act;
     private SharedPreferences dataPref;
     private SharedPreferences.Editor dataEditor;
 
@@ -60,6 +82,7 @@ public class ContentActivity extends AppCompatActivity {
         //隐藏标题栏
         getSupportActionBar().hide();
         mContext = this;
+        act = this;
         dataPref = this.getSharedPreferences(define.SharedName, 0);
         dataEditor = dataPref.edit();
 
@@ -93,7 +116,7 @@ public class ContentActivity extends AppCompatActivity {
         });
 
         chenckBtn = (FancyButton) findViewById(R.id.btn_check);
-        chenckBtn.setIconResource(R.drawable.material);
+        chenckBtn.setIconResource(R.drawable.btn_material);
         chenckBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,44 +126,62 @@ public class ContentActivity extends AppCompatActivity {
         });
 
         processBtn = (FancyButton) findViewById(R.id.btn_process);
-        processBtn.setIconResource(R.drawable.process);
+        processBtn.setIconResource(R.drawable.btn_process);
 
         produceBtn = (FancyButton) findViewById(R.id.btn_produce);
-        produceBtn.setIconResource(R.drawable.produce);
+        produceBtn.setIconResource(R.drawable.btn_produce);
 
         orderBtn = (FancyButton) findViewById(R.id.btn_order);
-        orderBtn.setIconResource(R.drawable.order);
+        orderBtn.setIconResource(R.drawable.btn_order);
+
+        processQueryBtn = (FancyButton) findViewById(R.id.btn_process_query);
+        processQueryBtn.setIconResource(R.drawable.btn_query);
 
         btn_cxstockin = (FancyButton) findViewById(R.id.btn_cxstockin);
-        btn_cxstockin.setIconResource(R.drawable.query);
+        btn_cxstockin.setIconResource(R.drawable.btn_saoyisao);
 
         btn_pgstockin = (FancyButton) findViewById(R.id.btn_pgstockin);
-        btn_pgstockin.setIconResource(R.drawable.set);
+        btn_pgstockin.setIconResource(R.drawable.btn_set);
 
         btn_cgstockin = (FancyButton) findViewById(R.id.btn_cgstockin);
-        btn_cgstockin.setIconResource(R.drawable.set);
+        btn_cgstockin.setIconResource(R.drawable.btn_set);
 
-        btn_cgstockin =(FancyButton) findViewById(R.id.btn_cxscanbarcode);
-        btn_cgstockin.setIconResource(R.drawable.set);
+        btn_cgstockin = (FancyButton) findViewById(R.id.btn_cxscanbarcode);
+        btn_cgstockin.setIconResource(R.drawable.btn_set);
 
         setBtn = (FancyButton) findViewById(R.id.btn_set);
 
-        setBtn.setIconResource(R.drawable.set);
+        setBtn.setIconResource(R.drawable.btn_set);
         processBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(mContext, GxReport.class);
-                mContext.startActivity(i);
+                if (dataPref.getString(define.SharedPassword, define.NONE).equals(define.NONE)) {
+                    Intent i = new Intent(mContext, LoginActivity.class);
+                    mContext.startActivity(i);
+                } else {
+                    Intent i = new Intent(mContext, GxReport.class);
+                    mContext.startActivity(i);
+                }
+            }
+        });
 
+        orderBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dataPref.getString(define.SharedPassword, define.NONE).equals(define.NONE)) {
+                    Intent i = new Intent(mContext, LoginActivity.class);
+                    mContext.startActivity(i);
+                } else {
+                    Intent i = new Intent(mContext, PgdActivity.class);
+                    mContext.startActivity(i);
+                }
             }
         });
 
         btn_cxstockin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Intent i = new Intent(mContext, CxStockInActivity.class);
-                    mContext.startActivity(i);
-
+                getControl("1050101");
             }
         });
 
@@ -157,7 +198,72 @@ public class ContentActivity extends AppCompatActivity {
 
             }
         });
+        //如果有网络的情况下，apk更新
+        if (IsNeedCheckVersion && NetworkHelper.isNetworkAvailable(this)) {
 
+            new Thread() {
+                @Override
+                public void run() {
+                    define.isWaiNet = !Utils.ping("192.168.99.79");
+                    Log.e("jindi", "isWaiNet:" + define.isWaiNet);
+                    CheckVersionTask myTask = new CheckVersionTask(act);
+                    myTask.run();
+                }
+            }.start();
+        }
     }
 
+    private void getControl(final String controlID) {
+        RequestParams params = new RequestParams(define.IsHaveControl);
+        params.addQueryStringParameter("OrganizeID", "1");
+        params.addQueryStringParameter("empID", dataPref.getString(define.SharedEmpId, define.NONE));
+        params.addQueryStringParameter("controlID", controlID);
+        x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(final String result) {
+                if (result.contains("false")) {
+                    Alerter.create(act)
+                            .setTitle("提示")
+                            .setText("你没有权限,请联系管理员开通权限")
+                            .setBackgroundColorRes(R.color.colorAlert)
+                            .show();
+                } else if (result.contains("true")) {
+                    if (controlID.equals("1050101")) {
+                        Intent i = new Intent(mContext, CxStockInActivity.class);
+                        mContext.startActivity(i);
+                    }
+                } else {
+                    Alerter.create(act)
+                            .setTitle("提示")
+                            .setText("服务器返回失败")
+                            .setBackgroundColorRes(R.color.colorAlert)
+                            .show();
+
+                }
+            }
+
+            //请求异常后的回调方法
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Log.e("jindi", ex.toString());
+                Alerter.create(act)
+                        .setTitle("提示")
+                        .setText("网络错误")
+                        .setBackgroundColorRes(R.color.colorAlert)
+                        .show();
+
+            }
+
+            //主动调用取消请求的回调方法
+            @Override
+            public void onCancelled(CancelledException cex) {
+            }
+
+            @Override
+            public void onFinished() {
+            }
+        });
+    }
 }
+
+

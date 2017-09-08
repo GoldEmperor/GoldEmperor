@@ -17,16 +17,54 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="wrap_content"
     android:background="@drawable/select_white">
 
     <TextView
         android:id="@+id/tv_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="@dimen/item_margin"
         android:text="单号"
         android:textSize="20dp"
         />
+
+    <TextView
+        android:id="@+id/tv_id"
+        android:layout_below="@+id/tv_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/item_margin"
+        android:layout_marginTop="10dp"
+        android:text="工号"
+        android:textSize="20dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_below="@+id/tv_number"
+        android:layout_toRightOf="@+id/tv_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/item_margin"
+        android:layout_marginTop="10dp"
+        android:text="姓名"
+        android:textSize="20dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_qua"
+        android:layout_below="@+id/tv_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/item_margin"
+        android:layout_marginTop="10dp"
+        android:text="数量"
+        android:textSize="20dp"
+        />
+
 </RelativeLayout>

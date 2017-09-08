@@ -3,7 +3,7 @@
     package="cn.bingoogolapple.qrcode.core.test" >
 
     <uses-sdk
-        android:minSdkVersion="18"
+        android:minSdkVersion="14"
         android:targetSdkVersion="25" />
 
     <instrumentation

@@ -2,14 +2,19 @@ package com.goldemperor.MainActivity;
 
 
 import android.text.TextUtils;
+import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,6 +50,33 @@ public final class Utils {
         Date d1 = new Date(time);
         String mouth = format.format(d1);
         return Integer.parseInt(mouth);
+    }
+
+    //获取本周的开始时间
+    public static String getBeginDayOfWeek() {
+        Date date = new Date();
+        if (date == null) {
+            return null;
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
+        if (dayofweek == 1) {
+            dayofweek += 7;
+        }
+        cal.add(Calendar.DATE, 2 - dayofweek);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String t = format.format(getDayStartTime(cal.getTime()));
+        return t;
+    }
+
+    //获取某个日期的开始时间
+    public static Timestamp getDayStartTime(Date d) {
+        Calendar calendar = Calendar.getInstance();
+        if (null != d) calendar.setTime(d);
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return new Timestamp(calendar.getTimeInMillis());
     }
 
     public static int getCurrentDay() {
@@ -238,5 +270,43 @@ public final class Utils {
         return retStr;
     }
 
+    public static final boolean ping(String url) {
+
+        String result = null;
+        try {
+            String ip = url;// ping 的地址，可以换成任何一种可靠的外网
+            Process p = null;// ping网址3次
+            try {
+                p = Runtime.getRuntime().exec("ping -c 1 -w 10 " + ip);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // 读取ping的内容，可以不加
+            InputStream input = p.getInputStream();
+            BufferedReader in = new BufferedReader(new InputStreamReader(input));
+            StringBuffer stringBuffer = new StringBuffer();
+            String content = "";
+            while ((content = in.readLine()) != null) {
+                stringBuffer.append(content);
+            }
+            Log.d("------ping-----", "result content : " + stringBuffer.toString());
+            // ping的状态
+            int status = p.waitFor();
+            if (status == 0) {
+                result = "success";
+                return true;
+            } else {
+                result = "failed";
+            }
+        } catch (IOException e) {
+            result = "IOException";
+        } catch (InterruptedException e) {
+            result = "InterruptedException";
+        } finally {
+            Log.d("----result---", "result = " + result);
+        }
+        return false;
+
+    }
 }
 

@@ -23,7 +23,7 @@
             banner:bb_scale="0.5625" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/sib"
             android:layout_centerHorizontal="true"
@@ -31,14 +31,17 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="4">
 
                 <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/btn_check"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
+                    android:layout_weight="1"
                     fancy:fb_borderColor="#FFFFFF"
                     fancy:fb_borderWidth="2dp"
                     fancy:fb_defaultColor="#40a75a"
@@ -47,12 +50,15 @@
                     fancy:fb_iconPosition="top"
                     fancy:fb_radius="10dp"
                     fancy:fb_text="来料稽查"
-                    fancy:fb_textColor="#FFFFFF"></mehdi.sakout.fancybuttons.FancyButton>
+                    fancy:fb_textColor="#FFFFFF">
+
+                </mehdi.sakout.fancybuttons.FancyButton>
 
                 <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/btn_order"
-                    android:layout_width="80dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_marginRight="5dp"
                     fancy:fb_borderColor="#FFFFFF"
                     fancy:fb_borderWidth="2dp"
@@ -66,8 +72,9 @@
 
                 <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/btn_produce"
-                    android:layout_width="80dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_marginRight="5dp"
                     fancy:fb_borderColor="#FFFFFF"
                     fancy:fb_borderWidth="2dp"
@@ -81,8 +88,10 @@
 
                 <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/btn_process"
-                    android:layout_width="80dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
                     fancy:fb_borderColor="#FFFFFF"
                     fancy:fb_borderWidth="2dp"
                     fancy:fb_defaultColor="#3b414f"
@@ -97,14 +106,17 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:weightSum="4"
                 android:layout_marginTop="10dp">
 
                 <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/btn_cxstockin"
-                    android:layout_width="80dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     fancy:fb_borderColor="#FFFFFF"
                     fancy:fb_borderWidth="2dp"
@@ -121,8 +133,9 @@
 
                 <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/btn_pgstockin"
-                    android:layout_width="80dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_marginRight="5dp"
                     fancy:fb_borderColor="#FFFFFF"
                     fancy:fb_borderWidth="2dp"
@@ -133,12 +146,13 @@
                     fancy:fb_radius="10dp"
                     fancy:fb_text="派工单扫码入库"
                     fancy:fb_textColor="#FFFFFF"
-                    fancy:fb_textSize="9dp" />
+                    fancy:fb_textSize="10dp" />
 
                 <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/btn_cgstockin"
-                    android:layout_width="80dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_marginRight="5dp"
                     fancy:fb_borderColor="#FFFFFF"
                     fancy:fb_borderWidth="2dp"
@@ -153,8 +167,9 @@
 
                 <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/btn_cxscanbarcode"
-                    android:layout_width="80dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_marginRight="5dp"
                     fancy:fb_borderColor="#FFFFFF"
                     fancy:fb_borderWidth="2dp"
@@ -172,12 +187,31 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:weightSum="4"
                 android:layout_marginTop="10dp">
 
                 <mehdi.sakout.fancybuttons.FancyButton
-                    android:id="@+id/btn_set"
-                    android:layout_width="80dp"
+                    android:id="@+id/btn_process_query"
+                    android:layout_width="85dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    fancy:fb_borderColor="#FFFFFF"
+                    fancy:fb_borderWidth="2dp"
+                    fancy:fb_defaultColor="#008800"
+                    fancy:fb_focusColor="#8cc9f8"
+                    fancy:fb_fontIconSize="25sp"
+                    fancy:fb_iconPosition="top"
+                    fancy:fb_radius="10dp"
+                    fancy:fb_text="汇报查询"
+                    fancy:fb_textColor="#FFFFFF"/>
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/btn_set"
+                    android:layout_width="85dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     fancy:fb_borderColor="#FFFFFF"
                     fancy:fb_borderWidth="2dp"
                     fancy:fb_defaultColor="#ff8800"
@@ -187,6 +221,7 @@
                     fancy:fb_radius="10dp"
                     fancy:fb_text="设置"
                     fancy:fb_textColor="#FFFFFF">
+
 
                 </mehdi.sakout.fancybuttons.FancyButton>
             </LinearLayout>

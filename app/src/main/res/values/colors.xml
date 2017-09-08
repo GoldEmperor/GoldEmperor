@@ -7,6 +7,11 @@
 
     <color name="material_light_blue">#03a9f4</color>
 
+    <color name="c_accent">#325C80</color>
+
+    <color name="c_primary">#2B4F6F</color>
+
+    <color name="c_primary_dark">#24435D</color>
 
     <color name="red_normal">#FF0000</color>
     <color name="red_pressed">#FF6666</color>
@@ -173,4 +178,5 @@
     <color name="dip_grey">#ff313131</color>
     <color name="transparent">#00000000</color>
 
+    <color name="colorAlert">#F99143</color>
 </resources>

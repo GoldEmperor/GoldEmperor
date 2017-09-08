@@ -6,6 +6,15 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="sublimePickerStyle">@style/SPDefaultImpl</item>
+    </style>
+    <style name="SPDefaultImpl" parent="SublimePickerStyleLight">
+        <item name="colorAccent">@color/c_accent</item>
+        <item name="colorPrimaryDark">@color/c_primary_dark</item>
+        <item name="colorPrimary">@color/c_primary</item>
+        <item name="android:textColorPrimary">#212121</item>
+        <item name="android:textColorSecondary">#727272</item>
+        <item name="android:textColorPrimaryInverse">#FFFFFF</item>
     </style>
 
     <style name="CustomTitleTextAppearance">
@@ -21,7 +30,6 @@
     <style name="EditTextTintTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/primaryText</item>
     </style>
-
 
     <!--成型扫码入库-->
     <style name="textview_allgrade_content">
