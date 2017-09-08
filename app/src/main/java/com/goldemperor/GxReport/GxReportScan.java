@@ -103,7 +103,14 @@ public class GxReportScan extends AppCompatActivity implements QRCodeView.Delega
             }
         }
         if (flag && result.length() > 10) {
-            RequestParams params = new RequestParams(define.GetScProcessWorkCardInfo);
+
+            String path = define.GetScProcessWorkCardInfo;
+            if (define.isWaiNet) {
+                path = define.WaiGetScProcessWorkCardInfo;
+            }
+            RequestParams params = new RequestParams(path);
+            params.setConnectTimeout(60000);
+            params.setReadTimeout(60000);
             params.addQueryStringParameter("BarCodeNumber", result);
             x.http().get(params, new Callback.CommonCallback<String>() {
                 @Override

@@ -1,7 +1,9 @@
 package com.goldemperor.PgdActivity;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class WorkCardPlan {
     private Long finterid;
@@ -106,69 +108,25 @@ public class WorkCardPlan {
 
     private String fsize;
 
-    private String fsize35;
 
-    private String fsize36;
 
-    private String fsize37;
+    private List<String[][]> sizeList;
 
-    private String fsize38;
-
-    private String fsize39;
-
-    private String fsize40;
-
-    public String getFsize35() {
-        return fsize35;
+    public List<String[][]> getSizeList() {
+        return sizeList;
     }
 
-    public void setFsize35(String fsize35) {
-        this.fsize35 = fsize35;
+    public WorkCardPlan(){
+        sizeList=new ArrayList<String[][]>();
     }
-
-    public String getFsize36() {
-        return fsize36;
-    }
-
-    public void setFsize36(String fsize36) {
-        this.fsize36 = fsize36;
-    }
-
-    public String getFsize37() {
-        return fsize37;
-    }
-
-    public void setFsize37(String fsize37) {
-        this.fsize37 = fsize37;
-    }
-
-    public String getFsize38() {
-        return fsize38;
-    }
-
-    public void setFsize38(String fsize38) {
-        this.fsize38 = fsize38;
-    }
-
-    public String getFsize39() {
-        return fsize39;
-    }
-
-    public void setFsize39(String fsize39) {
-        this.fsize39 = fsize39;
-    }
-
-    public String getFsize40() {
-        return fsize40;
-    }
-
-    public void setFsize40(String fsize40) {
-        this.fsize40 = fsize40;
+    public void addSize(String[][] s) {
+        this.sizeList.add(s);
     }
 
     public Long getFinterid() {
         return finterid;
     }
+
 
     public void setFinterid(Long finterid) {
         this.finterid = finterid;
@@ -572,11 +530,5 @@ public class WorkCardPlan {
 
     public void setFsize(String fsize) {
         this.fsize = fsize == null ? null : fsize.trim();
-        fsize35="0";
-        fsize36="0";
-        fsize37="0";
-        fsize38="0";
-        fsize39="0";
-        fsize40="0";
     }
 }

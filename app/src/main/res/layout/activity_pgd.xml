@@ -135,10 +135,9 @@
         <LinearLayout
             android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="20dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:weightSum="5">
 
@@ -189,51 +188,17 @@
 
             <TextView
                 android:id="@+id/tv_unit"
-                android:layout_width="150dp"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:text="单位"
                 android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/tv_size35"
-                android:layout_width="70dp"
+                android:layout_width="500dp"
                 android:layout_height="wrap_content"
-                android:text="35"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/tv_size36"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:text="36"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/tv_size37"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:text="37"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/tv_size38"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:text="38"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/tv_size39"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:text="39"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/tv_size40"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:text="40"
+                android:text="尺码"
+                android:gravity="center_horizontal"
                 android:textSize="20dp" />
 
             <TextView

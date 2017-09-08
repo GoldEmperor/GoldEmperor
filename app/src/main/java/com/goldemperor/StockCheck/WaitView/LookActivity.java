@@ -17,8 +17,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.goldemperor.MainActivity.GsonFactory;
 import com.google.gson.Gson;

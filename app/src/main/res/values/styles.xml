@@ -31,7 +31,6 @@
         <item name="colorAccent">@color/primaryText</item>
     </style>
 
-
     <!--成型扫码入库-->
     <style name="textview_allgrade_content">
         <item name="android:layout_height">30dp</item>

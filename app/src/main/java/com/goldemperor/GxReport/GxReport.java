@@ -160,9 +160,9 @@ public class GxReport extends AppCompatActivity implements EasyPermissions.Permi
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(QRCodeList.size()!=0) {
+                if (QRCodeList.size() != 0) {
                     submitData();
-                }else{
+                } else {
                     Alerter.create(activity)
                             .setTitle("提示")
                             .setText("请扫入条码")
@@ -217,7 +217,13 @@ public class GxReport extends AppCompatActivity implements EasyPermissions.Permi
         }
         Gson g = new Gson();
         String sjlJson = g.toJson(sjl);
-        RequestParams params = new RequestParams(define.SubmitProcessBarCode2CollectBill);
+        String path = define.SubmitProcessBarCode2CollectBill;
+        if (define.isWaiNet) {
+            path = define.WaiSubmitProcessBarCode2CollectBill;
+        }
+        RequestParams params = new RequestParams(path);
+        params.setConnectTimeout(60000);
+        params.setReadTimeout(60000);
         String sjlJsonEncode = "";
         try {
             sjlJsonEncode = URLEncoder.encode(sjlJson, "UTF-8");
@@ -294,7 +300,7 @@ public class GxReport extends AppCompatActivity implements EasyPermissions.Permi
         requestCodeQRCodePermissions();
     }
 
-    public void setData(){
+    public void setData() {
         scanCount.setText("条码数量:" + QRCodeList.size());
         float productCountTemp = 0;
         for (int i = 0; i < QRCodeList.size(); i++) {
@@ -302,7 +308,9 @@ public class GxReport extends AppCompatActivity implements EasyPermissions.Permi
         }
         productCount.setText("产品总数:" + productCountTemp + "件");
     }
+
     private static final int REQUEST_CODE_QRCODE_PERMISSIONS = 1;
+
     @AfterPermissionGranted(REQUEST_CODE_QRCODE_PERMISSIONS)
     private void requestCodeQRCodePermissions() {
         String[] perms = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};

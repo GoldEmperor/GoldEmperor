@@ -35,19 +35,37 @@ public class define {
 
     public static final String GetScProcessWorkCardInfo = "http://192.168.99.79:8012/ErpForAndroidStockServer.asmx/GetScProcessWorkCardInfo";
 
+    public static final String WaiGetScProcessWorkCardInfo = "http://220.189.245.171:8012/ErpForAndroidStockServer.asmx/GetScProcessWorkCardInfo";
+
     public static final String UpdataImage = "http://220.189.245.171:8881/UpdataImage";
 
     public static final String GetImage = "http://220.189.245.171:8881/GetImage";
 
     public static final String SubmitProcessBarCode2CollectBill = "http://192.168.99.79:8012/ErpForAndroidStockServer.asmx/SubmitProcessBarCode2CollectBill";
 
+    public static final String WaiSubmitProcessBarCode2CollectBill = "http://220.189.245.171:8012/ErpForAndroidStockServer.asmx/SubmitProcessBarCode2CollectBill";
+
     public static final String GetPlanbyTime = "http://220.189.245.171:8080/wechatMvn/android/getPlanbyTime.do";
 
     public static final String UpdateXML = "http://220.189.245.171:8020/AndroidUpdate/GoldEmperor/update.xml";
 
+    public static final String NeiUpdateXML = "http://192.168.99.79:8020/AndroidUpdate/GoldEmperor/update.xml";
+
     public static final String IsHaveControl = "http://192.168.99.79:8012/ERPPublicServer.asmx/IsHaveControl";
 
     public static final String GetPlanEntry = "http://220.189.245.171:8080/wechatMvn/android/getPlanEntry.do";
+
+    public static final String GetEmpByDeptID = "http://220.189.245.171:8080/wechatMvn/mes/GetEmpByDeptID.do";
+
+    public static final String SCWorkCard2SCProcessWorkCard = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/SCWorkCard2SCProcessWorkCard";
+
+    public static final String GetProcessPlanEntry = "http://220.189.245.171:8080/wechatMvn/android/getProcessPlanEntry.do";
+
+    public static final String GetEmpByFNumber = "http://220.189.245.171:8080/wechatMvn/mes/GetEmpByFNumber.do";
+
+    public static final String GetUserID = "http://192.168.99.79:8056/ERPForWeixinServer.ASMX/GetUserID";
+
+    public static final String InsertProcessPlanEntry = "http://220.189.245.171:8080/wechatMvn/android/insertProcessPlanEntry.do";
 
     public static final String SharedName = "data";
 
@@ -62,6 +80,8 @@ public class define {
     public static final String SharedCheckNumber = "CheckNumber";
 
     public static final String SharedEmpId = "EmpId";
+
+    public static final String SharedUserId = "UserId";
 
     public static final String SharedSex= "sex";
 
@@ -80,6 +100,9 @@ public class define {
 
     public static final String SharedWXPic= "WXPic";
 
+    public static final String SharedFDeptmentid= "FDeptmentid";
+
+    public static final String SharedFOrganizeid= "FOrganizeid";
 
     public static final String NONE = "-1";
 
@@ -95,5 +118,7 @@ public class define {
 
     public static int SELECT_PHOTO = 1;
     public static int TAKE_PHOTO = 2;
+
+    public static boolean isWaiNet=true;
 
 }

@@ -15,8 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+
 import com.goldemperor.MainActivity.define;
 import com.goldemperor.model.MessageEnum;
 import com.goldemperor.model.UpdataInfo;
@@ -45,11 +44,16 @@ public class CheckVersionTask implements Runnable {
 
     public void run() {
         try {
-            //从资源文件获取服务器update.xml地址
-            final String path = define.UpdateXML;
             new Thread() {
                 @Override
                 public void run() {
+                    //从资源文件获取服务器update.xml地址
+                    String path = "";
+                    if (define.isWaiNet) {
+                        path = define.UpdateXML;
+                    } else {
+                        path = define.NeiUpdateXML;
+                    }
                     //包装成url的对象
                     InputStream stream = HttpUtilHelper.GetInputStreamFromURL(path);
 //            StringBuilder sb= new StringBuilder("");
@@ -77,7 +81,7 @@ public class CheckVersionTask implements Runnable {
                         Log.i(TAG, "服务器版本号大于本地版本号 ,提示用户升级 ");
                         showUpdataDialog(myinfo);
 
-                    }else{
+                    } else {
                         Log.i(TAG, "已经是最新版");
                     }
                 }

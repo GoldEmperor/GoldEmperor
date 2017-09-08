@@ -33,6 +33,10 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +82,7 @@ public class ContentActivity extends AppCompatActivity {
         //隐藏标题栏
         getSupportActionBar().hide();
         mContext = this;
-        act=this;
+        act = this;
         dataPref = this.getSharedPreferences(define.SharedName, 0);
         dataEditor = dataPref.edit();
 
@@ -197,13 +201,19 @@ public class ContentActivity extends AppCompatActivity {
         //如果有网络的情况下，apk更新
         if (IsNeedCheckVersion && NetworkHelper.isNetworkAvailable(this)) {
 
-            CheckVersionTask myTask = new CheckVersionTask(this);
-            myTask.run();
-
+            new Thread() {
+                @Override
+                public void run() {
+                    define.isWaiNet = !Utils.ping("192.168.99.79");
+                    Log.e("jindi", "isWaiNet:" + define.isWaiNet);
+                    CheckVersionTask myTask = new CheckVersionTask(act);
+                    myTask.run();
+                }
+            }.start();
         }
     }
 
-    private void getControl(final String controlID){
+    private void getControl(final String controlID) {
         RequestParams params = new RequestParams(define.IsHaveControl);
         params.addQueryStringParameter("OrganizeID", "1");
         params.addQueryStringParameter("empID", dataPref.getString(define.SharedEmpId, define.NONE));
@@ -211,18 +221,18 @@ public class ContentActivity extends AppCompatActivity {
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(final String result) {
-                if(result.contains("false")){
+                if (result.contains("false")) {
                     Alerter.create(act)
                             .setTitle("提示")
                             .setText("你没有权限,请联系管理员开通权限")
                             .setBackgroundColorRes(R.color.colorAlert)
                             .show();
-                }else if(result.contains("true")){
-                    if (controlID.equals("1050101")){
+                } else if (result.contains("true")) {
+                    if (controlID.equals("1050101")) {
                         Intent i = new Intent(mContext, CxStockInActivity.class);
                         mContext.startActivity(i);
                     }
-                }else{
+                } else {
                     Alerter.create(act)
                             .setTitle("提示")
                             .setText("服务器返回失败")
@@ -254,5 +264,6 @@ public class ContentActivity extends AppCompatActivity {
             }
         });
     }
-
 }
+
+

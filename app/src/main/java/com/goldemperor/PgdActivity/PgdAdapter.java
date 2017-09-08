@@ -15,21 +15,15 @@
  */
 package com.goldemperor.PgdActivity;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.goldemperor.GxReport.Order;
 import com.goldemperor.MainActivity.OnItemClickListener;
 import com.goldemperor.MainActivity.Utils;
-import com.goldemperor.MainActivity.define;
 import com.goldemperor.R;
 import com.goldemperor.Widget.ScrollListenerHorizontalScrollView;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuAdapter;
@@ -43,15 +37,18 @@ import java.util.List;
  */
 public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
 
-    private List<WorkCardPlan > ls;
+    private List<WorkCardPlan> ls;
 
     private OnItemClickListener mOnItemClickListener;
 
     public static PgdActivity pgdActivity;
-    public static List<ScrollListenerHorizontalScrollView> ScrollViewList=new ArrayList<ScrollListenerHorizontalScrollView>();
-    public PgdAdapter(List<WorkCardPlan> ls,PgdActivity pgdActivity) {
+
+    public static List<ScrollListenerHorizontalScrollView> ScrollViewList = new ArrayList<ScrollListenerHorizontalScrollView>();
+
+    public PgdAdapter(List<WorkCardPlan> ls, PgdActivity pgdActivity) {
         this.ls = ls;
-        this.pgdActivity=pgdActivity;
+        this.pgdActivity = pgdActivity;
+
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -74,7 +71,6 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
         DefaultViewHolder viewHolder = new DefaultViewHolder(realContentView);
         viewHolder.mOnItemClickListener = mOnItemClickListener;
         ScrollViewList.add(viewHolder.ScrollView);
-        Log.e("jindi","ScrollViewList"+ScrollViewList.size());
         return viewHolder;
     }
 
@@ -83,10 +79,14 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
         holder.setData(ls.get(position));
     }
 
-    static class DefaultViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,ScrollListenerHorizontalScrollView.OnScrollListener{
+
+    static class DefaultViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ScrollListenerHorizontalScrollView.OnScrollListener {
 
         OnItemClickListener mOnItemClickListener;
         LinearLayout linearLayout;
+
+        LinearLayout sizeItemLinearLayout;
+        LinearLayout sizeNumItemLinearLayout;
         public ScrollListenerHorizontalScrollView ScrollView;
         TextView tv_followNumber;
         TextView tv_number;
@@ -100,20 +100,21 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
         TextView tv_unit;
         TextView tv_batch;
         TextView tv_planstarttime;
+        TextView tv_count;
+
         TextView tv_planendtime;
 
-        TextView tv_size35;
-        TextView tv_size36;
-        TextView tv_size37;
-        TextView tv_size38;
-        TextView tv_size39;
-        TextView tv_size40;
 
         public DefaultViewHolder(View itemView) {
             super(itemView);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.item);
+
+            sizeItemLinearLayout = (LinearLayout) itemView.findViewById(R.id.sizeItem);
+
+            sizeNumItemLinearLayout = (LinearLayout) itemView.findViewById(R.id.sizeNumItem);
+
             linearLayout.setOnClickListener(this);
-            ScrollView= (ScrollListenerHorizontalScrollView) itemView.findViewById(R.id.ScrollView);
+            ScrollView = (ScrollListenerHorizontalScrollView) itemView.findViewById(R.id.ScrollView);
             ScrollView.setOnScrollListener(this);
 
             //ScrollView.setOnScrollStateChangedListener(this);
@@ -122,22 +123,17 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
             tv_number = (TextView) itemView.findViewById(R.id.tv_number);
             tv_date = (TextView) itemView.findViewById(R.id.tv_date);
             tv_group = (TextView) itemView.findViewById(R.id.tv_group);
-            tv_style= (TextView) itemView.findViewById(R.id.tv_style);
+            tv_style = (TextView) itemView.findViewById(R.id.tv_style);
 
 
             tv_materialcode = (TextView) itemView.findViewById(R.id.tv_materialcode);
             tv_materialname = (TextView) itemView.findViewById(R.id.tv_materialname);
             tv_unit = (TextView) itemView.findViewById(R.id.tv_unit);
             tv_batch = (TextView) itemView.findViewById(R.id.tv_batch);
-            tv_planstarttime= (TextView) itemView.findViewById(R.id.tv_planstarttime);
-            tv_planendtime= (TextView) itemView.findViewById(R.id.tv_planendtime);
+            tv_planstarttime = (TextView) itemView.findViewById(R.id.tv_planstarttime);
+            tv_planendtime = (TextView) itemView.findViewById(R.id.tv_planendtime);
 
-            tv_size35 = (TextView) itemView.findViewById(R.id.tv_size35);
-            tv_size36 = (TextView) itemView.findViewById(R.id.tv_size36);
-            tv_size37 = (TextView) itemView.findViewById(R.id.tv_size37);
-            tv_size38= (TextView) itemView.findViewById(R.id.tv_size38);
-            tv_size39= (TextView) itemView.findViewById(R.id.tv_size39);
-            tv_size40= (TextView) itemView.findViewById(R.id.tv_size40);
+            tv_count = (TextView) itemView.findViewById(R.id.tv_count);
         }
 
         public void setData(WorkCardPlan o) {
@@ -158,12 +154,16 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
             tv_unit.setText(o.getUnit());
             tv_batch.setText(o.getBatch());
 
-            tv_size35.setText(o.getFsize35());
-            tv_size36.setText(o.getFsize36());
-            tv_size37.setText(o.getFsize37());
-            tv_size38.setText(o.getFsize38());
-            tv_size39.setText(o.getFsize39());
-            tv_size40.setText(o.getFsize40());
+            int count = 0;
+            sizeItemLinearLayout.removeAllViews();
+            sizeNumItemLinearLayout.removeAllViews();
+            for (int i = 0; i < o.getSizeList().size(); i++) {
+                sizeItemLinearLayout.addView(addSizeView(o.getSizeList().get(i)[0][0]));
+                sizeNumItemLinearLayout.addView(addSizeView(o.getSizeList().get(i)[0][1]));
+                count += Integer.valueOf(o.getSizeList().get(i)[0][1]);
+            }
+            tv_count.setText(String.valueOf(count));
+
 
         }
 
@@ -177,12 +177,26 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
 
         @Override
         public void onScroll(int scrollX) {
-            for(int i=0;i<ScrollViewList.size();i++){
-                ScrollViewList.get(i).scrollTo(scrollX,ScrollView.getScrollY());
+            for (int i = 0; i < ScrollViewList.size(); i++) {
+                ScrollViewList.get(i).scrollTo(scrollX, ScrollView.getScrollY());
             }
-            pgdActivity.ScrollView.scrollTo(scrollX,ScrollView.getScrollY());
+            pgdActivity.ScrollView.scrollTo(scrollX, ScrollView.getScrollY());
+
+        }
+
+        private View addSizeView(String text) {
+            // TODO 动态添加布局(xml方式)
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    70, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LayoutInflater inflater3 = LayoutInflater.from(pgdActivity);
+            View view = inflater3.inflate(R.layout.activity_gxpg_size_view, null);
+            view.setLayoutParams(lp);
+            TextView textView = (TextView) view.findViewById(R.id.text);
+            textView.setText(text);
+            return view;
 
         }
     }
+
 
 }

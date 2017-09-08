@@ -98,6 +98,23 @@
 
         </activity>
 
+        <activity android:name="com.goldemperor.PgdActivity.GxpgActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="工序派工"
+            android:screenOrientation="landscape">
+
+
+        </activity>
+
+
+        <activity android:name="com.goldemperor.PgdActivity.NameListActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="人员名单"
+            android:screenOrientation="landscape">
+
+
+        </activity>
+
         <activity android:name="com.goldemperor.StockCheck.WaitView.UpdataActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="上传照片"
@@ -148,7 +165,7 @@
         <activity
             android:name="com.goldemperor.GxReport.GxReportScan"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="landscape">
+            android:screenOrientation="portrait">
         </activity>
 
         <activity
