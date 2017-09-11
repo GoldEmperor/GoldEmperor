@@ -331,7 +331,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
             public void onError(Throwable ex, boolean isOnCallback) {
                 Log.e("jindi", ex.toString());
                 tv_tip.setVisibility(View.VISIBLE);
-                tv_tip.setText("数据载入失败:" + ex.toString());
+                tv_tip.setText("数据载入失败,请检查网络:" + ex.toString());
             }
 
             //主动调用取消请求的回调方法
@@ -388,7 +388,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
             public void onError(Throwable ex, boolean isOnCallback) {
                 Log.e("jindi", ex.toString());
                 tv_tip.setVisibility(View.VISIBLE);
-                tv_tip.setText("数据载入失败:" + ex.toString());
+                tv_tip.setText("数据载入失败,请检查网络:" + ex.toString());
             }
 
             //主动调用取消请求的回调方法

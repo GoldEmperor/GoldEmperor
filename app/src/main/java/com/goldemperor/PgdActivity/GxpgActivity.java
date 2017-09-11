@@ -1,6 +1,7 @@
 package com.goldemperor.PgdActivity;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.goldemperor.MainActivity.ListViewDecoration;
 import com.goldemperor.MainActivity.OnItemClickListener;
@@ -24,15 +26,23 @@ import com.goldemperor.R;
 import com.goldemperor.Widget.ScrollListenerHorizontalScrollView;
 import com.google.gson.Gson;
 import com.tapadoo.alerter.Alerter;
+import com.yanzhenjie.recyclerview.swipe.Closeable;
+import com.yanzhenjie.recyclerview.swipe.OnSwipeMenuItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenu;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuCreator;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuItem;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
+import org.xutils.DbManager;
 import org.xutils.common.Callback;
+import org.xutils.common.util.LogUtil;
+import org.xutils.db.sqlite.WhereBuilder;
+import org.xutils.db.table.TableEntity;
+import org.xutils.ex.DbException;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +74,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
 
     private FancyButton btn_list;
 
+    private FancyButton btn_usePlan;
     //存储获取过来的工序
     List<ProcessWorkCardPlanEntry> processWorkCardPlanEntryList;
 
@@ -75,6 +86,9 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
     public ScrollListenerHorizontalScrollView ScrollView;
 
     private int finterid;
+
+    private DbManager dbManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,25 +137,47 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         Log.e("finterid", "finterid:" + finterid);
 
 
-
-
         mMenuRecyclerView = (SwipeMenuRecyclerView) findViewById(R.id.recycler_view);
         mMenuRecyclerView.setLayoutManager(new LinearLayoutManager(this));// 布局管理器。
         mMenuRecyclerView.addItemDecoration(new ListViewDecoration(this));// 添加分割线。
 
         // 设置菜单创建器。
         mMenuRecyclerView.setSwipeMenuCreator(swipeMenuCreator);
+        // 设置菜单Item点击监听。
+        mMenuRecyclerView.setSwipeMenuItemClickListener(menuItemClickListener);
 
         mMenuAdapter = new GxpgAdapter(processWorkCardPlanEntryList, nameList, this);
 
         mMenuAdapter.setOnItemClickListener(onItemClickListener);
         mMenuRecyclerView.setAdapter(mMenuAdapter);
 
+        //初始化数据库
+        dbManager = initDb();
+
         btn_submit = (FancyButton) findViewById(R.id.btn_submit);
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submitData();
+                final AlertDialog.Builder normalDialog =
+                        new AlertDialog.Builder(act);
+                normalDialog.setTitle("提示");
+                normalDialog.setMessage("你确定要提交?");
+                normalDialog.setPositiveButton("确定",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                submitData();
+                            }
+                        });
+                normalDialog.setNegativeButton("取消",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                normalDialog.show();
             }
         });
 
@@ -149,12 +185,19 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         btn_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(mContext, NameListActivity.class);
-                mContext.startActivity(i);
+                Intent intent = new Intent(mContext, NameListActivity.class);
+                mContext.startActivity(intent);
             }
         });
-
-
+        btn_usePlan = (FancyButton) findViewById(R.id.btn_usePlan);
+        btn_usePlan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                useGxpgPlan();
+                //计划只可应用一次
+                btn_usePlan.setEnabled(false);
+            }
+        });
     }
 
     public void getData(int finterid) {
@@ -225,8 +268,8 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         }
     }
 
-    public void addSc_ProcessWorkCardEntry(ProcessWorkCardPlanEntry processWorkCardPlanEntry){
-        Sc_ProcessWorkCardEntry sc_processWorkCardEntry=new Sc_ProcessWorkCardEntry();
+    public void addSc_ProcessWorkCardEntry(ProcessWorkCardPlanEntry processWorkCardPlanEntry) {
+        Sc_ProcessWorkCardEntry sc_processWorkCardEntry = new Sc_ProcessWorkCardEntry();
         sc_processWorkCardEntry.setFinterid(processWorkCardPlanEntry.getFinterid());
         sc_processWorkCardEntry.setFentryid(processWorkCardPlanEntry.getFentryid());
         sc_processWorkCardEntry.setFmtono(processWorkCardPlanEntry.getFmtono());
@@ -263,29 +306,63 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         sc_processWorkCardEntry.setFgroupprintno(null);
         sc_processWorkCardEntry.setFmodelid(processWorkCardPlanEntry.getFmodelid());
         sc_processWorkCardEntry.setFroutingid(processWorkCardPlanEntry.getFroutingid());
-        if(processWorkCardPlanEntry.getUndispatchingnumber().intValue()==0){
+        if (processWorkCardPlanEntry.getUndispatchingnumber().intValue() == 0) {
             sc_processWorkCardEntry.setFqty(processWorkCardPlanEntry.getDispatchingnumber());
-        }else {
+        } else {
             sc_processWorkCardEntry.setFqty(processWorkCardPlanEntry.getUndispatchingnumber());
         }
-        if(processWorkCardPlanEntry.getFempid()==0) {
+        if (processWorkCardPlanEntry.getFempid() == 0) {
             sc_processWorkCardEntry.setName(nameList[0][0]);
             sc_processWorkCardEntry.setJobNumber(nameList[0][1]);
             sc_processWorkCardEntry.setFempid(Integer.valueOf(nameList[0][2]));
-        }
-        else{
+        } else {
             sc_processWorkCardEntry.setFempid(processWorkCardPlanEntry.getFempid());
-            String emp=processWorkCardPlanEntry.getFemp();
-            String name=emp.substring(emp.indexOf("(")+1,emp.length()-1);
+            String emp = processWorkCardPlanEntry.getFemp();
+            String name = emp.substring(emp.indexOf("(") + 1, emp.length() - 1);
             sc_processWorkCardEntry.setName(name);
-            String jobNumber=emp.substring(0,emp.indexOf("("));
+            String jobNumber = emp.substring(0, emp.indexOf("("));
             sc_processWorkCardEntry.setJobNumber(jobNumber);
         }
         sc_ProcessWorkCardEntryList.add(sc_processWorkCardEntry);
     }
 
-    public void submitData(){
-        Gson g=new Gson();
+    public void useGxpgPlan() {
+        try {
+            for (int i = 0; i < sc_ProcessWorkCardEntryList.size(); i++) {
+                List<GxpgPlan> gxpgPlanList = dbManager.selector(GxpgPlan.class).where("processname", " = ", sc_ProcessWorkCardEntryList.get(i).getFprocessname()).findAll();
+                for (int j = 0; j < gxpgPlanList.size(); j++) {
+                    //如果一道工序多个派工则添加数据
+                    if (j > 0) {
+                        ProcessWorkCardPlanEntry processWorkCardPlanEntry = (ProcessWorkCardPlanEntry) processWorkCardPlanEntryList.get(i).clone();
+                        processWorkCardPlanEntryList.add(i + j, processWorkCardPlanEntry);
+
+                        Sc_ProcessWorkCardEntry sc_processWorkCardEntry = (Sc_ProcessWorkCardEntry) sc_ProcessWorkCardEntryList.get(i).clone();
+                        sc_ProcessWorkCardEntryList.add(i + j, sc_processWorkCardEntry);
+                    }
+                    sc_ProcessWorkCardEntryList.get(i + j).setFempid(gxpgPlanList.get(j).getEmpid());
+                    sc_ProcessWorkCardEntryList.get(i + j).setJobNumber(gxpgPlanList.get(j).getUsernumber());
+                    sc_ProcessWorkCardEntryList.get(i + j).setName(gxpgPlanList.get(j).getUsername());
+                    int qty = (int) (processWorkCardPlanEntryList.get(i + j).getHavedispatchingnumber().floatValue() * gxpgPlanList.get(j).getPer());
+                    sc_ProcessWorkCardEntryList.get(i + j).setFqty(new BigDecimal(qty));
+                    Log.e("jindi", gxpgPlanList.get(j).getProcessname() + ",name:" + gxpgPlanList.get(j).getUsername() + ",qty:" + qty);
+                }
+                //赋值i，跳过多个派工
+                if (gxpgPlanList.size() > 1) {
+                    i = i + gxpgPlanList.size() - 1;
+                }
+            }
+            mMenuAdapter.notifyDataSetChanged();
+        } catch (DbException e) {
+            e.printStackTrace();
+            Log.e("jindi", e.toString());
+        }
+    }
+
+    public void submitData() {
+        //保存最近工序计划
+        saveGxpgPlan();
+
+        Gson g = new Gson();
         RequestParams params = new RequestParams(define.InsertProcessPlanEntry);
         params.setAsJsonContent(true);
         params.setBodyContent(g.toJson(sc_ProcessWorkCardEntryList));
@@ -321,7 +398,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 tv_tip.setText("提交失败:" + ex.toString());
                 Alerter.create(act)
                         .setTitle("提示")
-                        .setText("提交失败:"+ex.getMessage())
+                        .setText("提交失败:" + ex.getMessage())
                         .setBackgroundColorRes(R.color.colorAlert)
                         .show();
             }
@@ -335,6 +412,36 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
             public void onFinished() {
             }
         });
+    }
+
+    //保存工序计划
+    public void saveGxpgPlan() {
+        ArrayList<GxpgPlan> gxpgPlanList = new ArrayList<>();
+        for (int i = 0; i < sc_ProcessWorkCardEntryList.size(); i++) {
+            //先删除原先保留的工序计划
+            try {
+                WhereBuilder b = WhereBuilder.b();
+                b.and("processname","=",sc_ProcessWorkCardEntryList.get(i).getFprocessname()); //构造修改的条件
+                dbManager.delete(GxpgPlan.class, b);
+            } catch (DbException e) {
+                e.printStackTrace();
+            }
+
+            GxpgPlan gxpgPlan = new GxpgPlan();
+            gxpgPlan.setProcessname(sc_ProcessWorkCardEntryList.get(i).getFprocessname());
+            gxpgPlan.setUsername(sc_ProcessWorkCardEntryList.get(i).getName());
+            gxpgPlan.setUsernumber(sc_ProcessWorkCardEntryList.get(i).getJobNumber());
+            gxpgPlan.setEmpid(sc_ProcessWorkCardEntryList.get(i).getFempid());
+            gxpgPlan.setPer(sc_ProcessWorkCardEntryList.get(i).getFqty().floatValue() / processWorkCardPlanEntryList.get(i).getHavedispatchingnumber().floatValue());
+            Log.e("jindi", "processname:" + sc_ProcessWorkCardEntryList.get(i).getFprocessname() + ",processname:" + sc_ProcessWorkCardEntryList.get(i).getName() +
+                    ",Qty:" + sc_ProcessWorkCardEntryList.get(i).getFqty());
+            gxpgPlanList.add(gxpgPlan);
+        }
+        try {
+            dbManager.save(gxpgPlanList);
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -372,4 +479,121 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
 
         }
     };
+
+    /**
+     * 菜单点击监听。
+     */
+    private OnSwipeMenuItemClickListener menuItemClickListener = new OnSwipeMenuItemClickListener() {
+        /**
+         * Item的菜单被点击的时候调用。
+         * @param closeable       closeable. 用来关闭菜单。
+         * @param adapterPosition adapterPosition. 这个菜单所在的item在Adapter中position。
+         * @param menuPosition    menuPosition. 这个菜单的position。比如你为某个Item创建了2个MenuItem，那么这个position可能是是 0、1，
+         * @param direction       如果是左侧菜单，值是：SwipeMenuRecyclerView#LEFT_DIRECTION，如果是右侧菜单，值是：SwipeMenuRecyclerView
+         *                        #RIGHT_DIRECTION.
+         */
+        @Override
+        public void onItemClick(Closeable closeable, final int adapterPosition, int menuPosition, int direction) {
+
+            if (direction == SwipeMenuRecyclerView.RIGHT_DIRECTION) {
+                //Toast.makeText(mContext, "list第" + adapterPosition + "; 右侧菜单第" + menuPosition, Toast.LENGTH_SHORT).show();
+            } else if (direction == SwipeMenuRecyclerView.LEFT_DIRECTION) {
+                //Toast.makeText(mContext, "list第" + adapterPosition + "; 左侧菜单第" + menuPosition, Toast.LENGTH_SHORT).show();
+            }
+
+            // TODO 如果是删除：推荐调用Adapter.notifyItemRemoved(position)，不推荐Adapter.notifyDataSetChanged();
+            if (menuPosition == 0) {// 处理按钮被点击。
+                ProcessWorkCardPlanEntry processWorkCardPlanEntry = (ProcessWorkCardPlanEntry) processWorkCardPlanEntryList.get(adapterPosition).clone();
+                processWorkCardPlanEntryList.add(adapterPosition + 1, processWorkCardPlanEntry);
+
+                Sc_ProcessWorkCardEntry sc_processWorkCardEntry = (Sc_ProcessWorkCardEntry) sc_ProcessWorkCardEntryList.get(adapterPosition).clone();
+                sc_processWorkCardEntry.setFentryid(sc_processWorkCardEntry.getFentryid()+1);
+                sc_ProcessWorkCardEntryList.add(adapterPosition + 1, sc_processWorkCardEntry);
+                //插入工序以后的所有entryid都要加1
+                for(int i=adapterPosition + 2;i<sc_ProcessWorkCardEntryList.size();i++){
+                    sc_ProcessWorkCardEntryList.get(i).setFentryid(sc_ProcessWorkCardEntryList.get(i).getFentryid()+1);
+                }
+                mMenuAdapter.notifyItemInserted(adapterPosition + 1);
+            } else if (menuPosition == 1) {
+                final AlertDialog.Builder normalDialog =
+                        new AlertDialog.Builder(act);
+                normalDialog.setTitle("提示");
+                normalDialog.setMessage("你确定要删除这条数据");
+                normalDialog.setPositiveButton("确定",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                int gxCount = 0;
+                                for (int i = 0; i < processWorkCardPlanEntryList.size(); i++) {
+                                    if (processWorkCardPlanEntryList.get(i).getProcesscode().equals(processWorkCardPlanEntryList.get(adapterPosition).getProcesscode())) {
+                                        gxCount++;
+                                    }
+                                }
+                                if (gxCount <= 1) {
+                                    final AlertDialog.Builder normalDialog =
+                                            new AlertDialog.Builder(act);
+                                    normalDialog.setTitle("提示");
+                                    normalDialog.setMessage("本道工序仅有此一条数据,不允许删除");
+                                    normalDialog.setNegativeButton("取消",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                    normalDialog.show();
+                                } else {
+                                    processWorkCardPlanEntryList.remove(adapterPosition);
+                                    sc_ProcessWorkCardEntryList.remove(adapterPosition);
+                                    mMenuAdapter.notifyItemRemoved(adapterPosition);
+                                }
+                            }
+                        });
+                normalDialog.setNegativeButton("取消",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                normalDialog.show();
+            }
+            closeable.smoothCloseMenu();// 关闭被点击的菜单。
+        }
+    };
+
+    public DbManager initDb() {
+        DbManager.DaoConfig daoConfig = new DbManager.DaoConfig()
+                // 数据库的名字
+                .setDbName("jindi")
+                // 保存到指定路径
+                // .setDbDir(new
+                // File(Environment.getExternalStorageDirectory().getAbsolutePath()))
+                // 数据库的版本号
+                .setDbVersion(1)
+                //设置数据库打开的监听
+                .setDbOpenListener(new DbManager.DbOpenListener() {
+                    @Override
+                    public void onDbOpened(DbManager db) {
+                        //开启数据库支持多线程操作，提升性能，对写入加速提升巨大
+                        db.getDatabase().enableWriteAheadLogging();
+                    }
+                })
+                //设置表创建的监听
+                .setTableCreateListener(new DbManager.TableCreateListener() {
+                    @Override
+                    public void onTableCreated(DbManager db, TableEntity<?> table) {
+                        Log.i("jindi", "onTableCreated：" + table.getName());
+                    }
+                })
+                // 数据库版本更新监听
+                .setDbUpgradeListener(new DbManager.DbUpgradeListener() {
+                    @Override
+                    public void onUpgrade(DbManager arg0, int arg1, int arg2) {
+                        LogUtil.e("数据库版本更新了！");
+                    }
+                });
+        return x.getDb(daoConfig);
+    }
 }

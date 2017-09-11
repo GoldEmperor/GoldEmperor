@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.beardedhen.androidbootstrap.BootstrapDropDown;
 import com.goldemperor.MainActivity.OnItemClickListener;
+import com.goldemperor.MainActivity.Utils;
 import com.goldemperor.MainActivity.define;
 import com.goldemperor.R;
 import com.goldemperor.Widget.CheckBox;
@@ -219,7 +220,7 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
             });
         }
 
-        public void setData(ProcessWorkCardPlanEntry p, final int position) {
+        public void setData(final ProcessWorkCardPlanEntry p, final int position) {
             /*
             if (CheckBoxList.get(position) == 1) {
                 checkBox.setChecked(true);
@@ -262,7 +263,10 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                     // TODO Auto-generated method stub
                     /**这是文本框改变之后 会执行的动作
                      */
-                    if(edit_dispatchingnumber.isFocused()&&edit_dispatchingnumber.getText().length()>0) {
+                    if(edit_dispatchingnumber.isFocused()&&edit_dispatchingnumber.getText().length()>0&& Utils.isNumeric(edit_dispatchingnumber.getText().toString())) {
+                        if(Integer.valueOf(edit_dispatchingnumber.getText().toString().trim())>p.getDispatchingnumber().intValue()){
+                            edit_dispatchingnumber.setText(String.valueOf(p.getDispatchingnumber().intValue()));
+                        }
                         gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFqty(new BigDecimal(edit_dispatchingnumber.getText().toString().trim()));
                         Log.e("jindi", "afterTextChanged:"+getAdapterPosition());
                     }
