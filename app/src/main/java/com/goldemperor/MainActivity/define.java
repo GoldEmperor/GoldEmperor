@@ -51,7 +51,7 @@ public class define {
 
     public static final String NeiUpdateXML = "http://192.168.99.79:8020/AndroidUpdate/GoldEmperor/update.xml";
 
-    public static final String IsHaveControl = "http://192.168.99.79:8012/ERPPublicServer.asmx/IsHaveControl";
+    public static final String IsHaveControl = "http://192.168.88.254:8056/ERPPublicServer.asmx/IsHaveControl";//"http://192.168.99.79:8012/ERPPublicServer.asmx/IsHaveControl";
 
     public static final String GetPlanEntry = "http://220.189.245.171:8080/wechatMvn/android/getPlanEntry.do";
 

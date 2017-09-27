@@ -20,6 +20,7 @@ import com.goldemperor.MainActivity.ListViewDecoration;
 import com.goldemperor.MainActivity.OnItemClickListener;
 import com.goldemperor.MainActivity.Utils;
 import com.goldemperor.MainActivity.define;
+
 import com.goldemperor.R;
 import com.goldemperor.Widget.ScrollListenerHorizontalScrollView;
 import com.google.gson.Gson;

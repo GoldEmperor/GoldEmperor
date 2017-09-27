@@ -24,7 +24,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
-
+    <!-- android 获取 手機系統信息 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- the following 2 com.xiaomi.mipushdemo should be changed to your package name -->
     <permission
         android:name="com.goldemperor.permission.MIPUSH_RECEIVE"

@@ -22,6 +22,7 @@ import com.goldemperor.GxReport.GxReport;
 import com.goldemperor.LoginActivity.LoginActivity;
 import com.goldemperor.PgdActivity.PgdActivity;
 import com.goldemperor.PgdActivity.PgdResult;
+import com.goldemperor.Public.SystemUtil;
 import com.goldemperor.SetActivity.SetActivity;
 import com.goldemperor.R;
 import com.goldemperor.StockCheck.StockCheckActivity;
@@ -181,7 +182,13 @@ public class ContentActivity extends AppCompatActivity {
         btn_cxstockin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getControl("1050101");
+                String SystemModel = SystemUtil.getSystemModel();
+                Log.e("jindi", "手机型号：" + SystemModel);
+                if (SystemModel.equals("MT65")) {
+                    Intent i = new Intent(mContext, CxStockInActivity.class);
+                    mContext.startActivity(i);
+                } else
+                    getControl("1050101");
             }
         });
 
