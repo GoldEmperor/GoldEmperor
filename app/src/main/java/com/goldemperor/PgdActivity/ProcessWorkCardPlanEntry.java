@@ -3,7 +3,7 @@ package com.goldemperor.PgdActivity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class ProcessWorkCardPlanEntry {
+public class ProcessWorkCardPlanEntry implements Cloneable{
     private Long finterid;
 
     private Integer forganizename;//组织名称;
@@ -631,5 +631,14 @@ public class ProcessWorkCardPlanEntry {
 		this.fscmoid = fscmoid;
 	}
 
+    public Object clone() {
+        ProcessWorkCardPlanEntry o = null;
+        try {
+            o = (ProcessWorkCardPlanEntry) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return o;
+    }
 	
 }

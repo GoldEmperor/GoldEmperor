@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 
-public class Sc_ProcessWorkCardEntry {
+public class Sc_ProcessWorkCardEntry implements Cloneable {
     private String fmtono;
 
     private Integer fpartsid;
@@ -404,5 +404,15 @@ public class Sc_ProcessWorkCardEntry {
 
     public void setFroutingid(Integer froutingid) {
         this.froutingid = froutingid;
+    }
+
+    public Object clone() {
+        Sc_ProcessWorkCardEntry o = null;
+        try {
+            o = (Sc_ProcessWorkCardEntry) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return o;
     }
 }
