@@ -8,7 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.goldemperor.sql.stock_check;
+import com.goldemperor.StockCheck.sql.stock_check;
 import com.goldemperor.MainActivity.GsonFactory;
 import com.goldemperor.MainActivity.ListViewDecoration;
 import com.goldemperor.MainActivity.OnItemClickListener;

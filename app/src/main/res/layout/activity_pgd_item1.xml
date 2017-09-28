@@ -41,6 +41,20 @@
                 android:textSize="20dp" />
 
             <TextView
+                android:id="@+id/tv_style"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="工厂型体"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/tv_orderCount"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="20dp" />
+
+            <TextView
                 android:id="@+id/tv_number"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
@@ -48,12 +62,6 @@
                 android:text="派工单号"
                 android:textSize="20dp" />
 
-            <TextView
-                android:id="@+id/tv_style"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:text="工厂型体"
-                android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/tv_date"
@@ -103,16 +111,50 @@
                     android:layout_width="match_parent"
                     android:layout_height="70dp"
                     android:layout_centerHorizontal="true"
-                    android:orientation="horizontal">
-                </LinearLayout>
+                    android:orientation="horizontal"></LinearLayout>
 
             </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_count"
-                android:layout_width="70dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="合计"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/tv_reportednumber"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="已汇报数量"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/tv_reportednotnumber"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="已汇报未计工数"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/tv_reportednotInnumber"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="已汇报未入库数"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/tv_alreadynumber"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="已入库数"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/tv_nonumber"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="未入库数"
                 android:textSize="20dp" />
 
             <TextView
@@ -141,6 +183,13 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="计划完工日期"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="派工单状态"
                 android:textSize="20dp" />
         </LinearLayout>
     </com.goldemperor.Widget.ScrollListenerHorizontalScrollView>

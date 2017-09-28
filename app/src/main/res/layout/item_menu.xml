@@ -20,19 +20,35 @@
     android:layout_height="wrap_content"
     android:background="@drawable/select_white"
     android:padding="5dp">
-
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="4"
+        >
     <TextView
         android:id="@+id/tv_number"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="单号"
         android:textSize="20dp"
+        android:layout_weight="1"
         android:layout_marginLeft="@dimen/item_margin"
         />
 
     <TextView
+        android:id="@+id/tv_supplier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="供应商:"
+        android:textSize="20dp"
+        android:layout_weight="3"
+        android:layout_marginLeft="@dimen/item_margin"
+        />
+    </LinearLayout>
+    <TextView
         android:id="@+id/tv_date"
-        android:layout_below="@id/tv_number"
+        android:layout_below="@id/top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="日期"

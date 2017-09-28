@@ -44,7 +44,7 @@
 
             <TextView
                 android:id="@+id/tv_processname"
-                android:layout_width="200dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
                 android:text="工序名称"
@@ -85,7 +85,12 @@
                     app:roundedCorners="true" />
             </LinearLayout>
 
-
+            <TextView
+                android:id="@+id/tv_havedispatchingnumber"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="应派工数"
+                android:textSize="20dp" />
             <EditText
                 android:id="@+id/edit_dispatchingnumber"
                 android:layout_width="100dp"
@@ -96,31 +101,10 @@
                 android:textSize="20dp" />
 
             <TextView
-                android:id="@+id/tv_havedispatchingnumber"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:text="应派工数"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/tv_nodispatchingnumber"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:text="应派工欠数"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/tv_alreadynumber"
+                android:id="@+id/tv_noReportednumber"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:text="实际汇报数量"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/tv_nonumber"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:text="汇报欠数"
+                android:text="0"
                 android:textSize="20dp" />
 
         </LinearLayout>

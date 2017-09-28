@@ -25,7 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.goldemperor.sql.stock_check;
+import com.goldemperor.StockCheck.sql.stock_check;
 import com.goldemperor.MainActivity.OnItemClickListener;
 import com.goldemperor.R;
 import com.goldemperor.MainActivity.define;
@@ -76,6 +76,7 @@ public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder>
         TextView tv_number;
         TextView tv_date;
         TextView tv_proposer;
+        TextView tv_supplier;
         TextView tv_status;
         OnItemClickListener mOnItemClickListener;
 
@@ -84,6 +85,7 @@ public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder>
             itemView.setOnClickListener(this);
             tv_number = (TextView) itemView.findViewById(R.id.tv_number);
             tv_proposer = (TextView) itemView.findViewById(R.id.tv_proposer);
+            tv_supplier = (TextView) itemView.findViewById(R.id.tv_supplier);
             tv_date = (TextView) itemView.findViewById(R.id.tv_date);
             tv_status = (TextView) itemView.findViewById(R.id.tv_status);
         }
@@ -92,6 +94,8 @@ public class MenuAdapter extends SwipeMenuAdapter<MenuAdapter.DefaultViewHolder>
             tv_number.setText("单号:"+sc.getNumber());
             tv_date.setText("日期:"+sc.getApplydate());
             tv_proposer.setText("申请人:"+sc.getProposer());
+            String supplier = sc.getSupplier() == null ? "未填" : sc.getSupplier();
+            tv_supplier.setText("供应商:" + supplier);
             if(sc.getStatus().equals(define.DONE)) {
                 tv_status.setText("状态:已签收");
                 SpannableStringBuilder builder = new SpannableStringBuilder(tv_status.getText().toString());

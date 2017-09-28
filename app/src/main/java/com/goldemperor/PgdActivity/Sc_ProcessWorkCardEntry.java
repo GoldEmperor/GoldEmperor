@@ -85,6 +85,18 @@ public class Sc_ProcessWorkCardEntry implements Cloneable {
 
     private String name;
 
+    public float reportNumber;
+
+    public Sc_ProcessWorkCardEntry(){
+        reportNumber=0f;
+    }
+    public float getReportNumber() {
+        return reportNumber;
+    }
+
+    public void setReportNumber(float reportNumber) {
+        this.reportNumber = reportNumber;
+    }
 
     public String getJobNumber() {
         return jobNumber;
@@ -93,6 +105,8 @@ public class Sc_ProcessWorkCardEntry implements Cloneable {
     public void setJobNumber(String jobNumber) {
         this.jobNumber = jobNumber;
     }
+
+
 
     public String getName() {
         return name;

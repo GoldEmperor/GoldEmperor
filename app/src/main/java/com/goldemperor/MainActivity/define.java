@@ -11,7 +11,11 @@ public class define {
 
     public static final String SubmitNumberRequest = "http://220.189.245.171:8881/SubmitNumberRequest";
 
+    public static final String SubmitRequest = "http://220.189.245.171:8881/SubmitRequest";
+
     public static final String GetData = "http://220.189.245.171:8881/GetData";
+
+    public static final String GetDataBydate = "http://220.189.245.171:8881/GetDataBydate";
 
     public static final String SubmitCheck = "http://220.189.245.171:8881/SubmitCheck";
 
@@ -24,6 +28,8 @@ public class define {
     public static final String SubmitResult= "http://220.189.245.171:8881/SubmitResult";
 
     public static final String SubmitRefuse = "http://220.189.245.171:8881/SubmitRefuse";
+
+    public static final String GetDataBySupplier = "http://220.189.245.171:8881/GetDataBySupplier";
 
 
 
@@ -57,7 +63,7 @@ public class define {
 
     public static final String GetEmpByDeptID = "http://220.189.245.171:8080/wechatMvn/mes/GetEmpByDeptID.do";
 
-    public static final String SCWorkCard2SCProcessWorkCard = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/SCWorkCard2SCProcessWorkCard";
+    public static final String SCWorkCard2SCProcessWorkCardBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/SCWorkCard2SCProcessWorkCardBysuitID";
 
     public static final String GetProcessPlanEntry = "http://220.189.245.171:8080/wechatMvn/android/getProcessPlanEntry.do";
 
@@ -66,6 +72,34 @@ public class define {
     public static final String GetUserID = "http://192.168.99.79:8056/ERPForWeixinServer.ASMX/GetUserID";
 
     public static final String InsertProcessPlanEntry = "http://220.189.245.171:8080/wechatMvn/android/insertProcessPlanEntry.do";
+
+    public static final String GetPlanbyBillNumber = "http://220.189.245.171:8080/wechatMvn/android/getPlanbyBillNumber.do";
+
+    public static final String SCProcessWorkCardReWriteBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/SCProcessWorkCardReWriteBysuitID";
+
+    public static final String SCProcessWorkCard2SCProcessOutPutBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/SCProcessWorkCard2SCProcessOutPutBysuitID";
+
+    public static final String GetRouteEntryBody = "http://220.189.245.171:8080/wechatMvn/android/getRouteEntryBody.do";
+
+    public static final String SCProcessOutPutSaveBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/SCProcessOutPutSaveBysuitID";
+
+    public static final String SCProcessOutPutReWriteBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/SCProcessOutPutReWriteBysuitID";
+
+    public static final String GetSCProcessOutPutQtyBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/GetSCProcessOutPutQtyBysuitID";
+
+    public static final String WechatPostByFEmpID = "http://59.56.103.32:8030/api/MessagePost/WechatPostByFEmpID";
+
+    public static final String GetWorkPlanMaterial = "http://220.189.245.171:8080/wechatMvn/android/getWorkPlanMaterial.do";
+
+    public static final String GetWorkPlanQtyBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/GetWorkPlanQtyBysuitID";
+
+    public static final String GetPlanFInterIDbyTime = "http://220.189.245.171:8080/wechatMvn/android/getPlanFInterIDbyTime.do";
+
+    public static final String GetWorkCardPlanNew = "http://220.189.245.171:8080/wechatMvn/android/getWorkCardPlanNew.do";
+
+    public static final String UpdateProcessPassQty = "http://220.189.245.171:8080/wechatMvn/android/updateProcessPassQty.do";
+
+    public static final String GetWorkCardProcessQty = "http://220.189.245.171:8080/wechatMvn/android/getWorkCardProcessQty.do";
 
     public static final String SharedName = "data";
 
@@ -104,6 +138,8 @@ public class define {
 
     public static final String SharedFOrganizeid= "FOrganizeid";
 
+    public static final String SharedSupplier= "Supplier";
+
     public static final String NONE = "-1";
 
     public static final String WAIT = "1";
@@ -121,4 +157,9 @@ public class define {
 
     public static boolean isWaiNet=true;
 
+
+    public static String appKey = "afeeb3ab6b0090293a70a5ba1d26a478";
+    public static String appSecret = "e3c0d24ddd06";
+    public static String nonce = "98269826";
+    public static String template_id="T2gJu-16hG6W5BWZIYzjLVozzwOylpBeGPUXi2_zmOk";
 }

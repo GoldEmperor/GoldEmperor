@@ -127,6 +127,7 @@ public class ProcessWorkCardPlanEntry implements Cloneable{
     private Integer fprocessoutputid;
 
     private int froutingid;
+
     public void setFroutingid(int froutingid) {
         this.froutingid = froutingid;
     }

@@ -15,8 +15,11 @@
  */
 package com.goldemperor.PgdActivity;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,8 +27,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapDropDown;
+import com.beardedhen.androidbootstrap.api.defaults.ExpandDirection;
 import com.goldemperor.MainActivity.OnItemClickListener;
 import com.goldemperor.MainActivity.Utils;
 import com.goldemperor.MainActivity.define;
@@ -35,13 +40,19 @@ import com.goldemperor.Widget.ScrollListenerHorizontalScrollView;
 import com.google.gson.Gson;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuAdapter;
 
+import org.xutils.DbManager;
 import org.xutils.common.Callback;
+import org.xutils.ex.DbException;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import static com.goldemperor.PgdActivity.PgdActivity.selectWorkCardPlan;
 
 /**
  * Created by YOLANDA on 2016/7/22.
@@ -63,7 +74,11 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
 
     public static GxpgActivity gxpgActivity;
 
-    public GxpgAdapter(List<ProcessWorkCardPlanEntry> ls, String[][] nameList, GxpgActivity gxpgActivity) {
+    public static DbManager dbManager;
+
+    public static int listSize;
+
+    public GxpgAdapter(List<ProcessWorkCardPlanEntry> ls, String[][] nameList, GxpgActivity gxpgActivity, DbManager dbManager) {
         this.ls = ls;
         CheckBoxList = new ArrayList<Integer>();
         for (int i = 0; i < 500; i++) {
@@ -75,6 +90,7 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
             dropStrings[i] = nameList[i][1] + "  " + nameList[i][0];
         }
         this.gxpgActivity = gxpgActivity;
+        this.dbManager = dbManager;
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -83,7 +99,9 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
 
     @Override
     public int getItemCount() {
+        listSize = ls.size();
         return ls == null ? 0 : ls.size();
+
     }
 
     @Override
@@ -117,13 +135,10 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
         TextView tv_processcode;
         TextView tv_processname;
         TextView tv_havedispatchingnumber;
-        TextView tv_nodispatchingnumber;
-        TextView tv_alreadynumber;
-        TextView tv_nonumber;
+        TextView tv_noReportednumber;
 
         String[][] nameList;
         public ScrollListenerHorizontalScrollView ScrollView;
-
 
         public DefaultViewHolder(View itemView, final String[][] nameList) {
             super(itemView);
@@ -138,9 +153,8 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
             tv_processcode = (TextView) itemView.findViewById(R.id.tv_processcode);
             tv_processname = (TextView) itemView.findViewById(R.id.tv_processname);
             tv_havedispatchingnumber = (TextView) itemView.findViewById(R.id.tv_havedispatchingnumber);
-            tv_nodispatchingnumber = (TextView) itemView.findViewById(R.id.tv_nodispatchingnumber);
-            tv_alreadynumber = (TextView) itemView.findViewById(R.id.tv_alreadynumber);
-            tv_nonumber = (TextView) itemView.findViewById(R.id.tv_nonumber);
+
+            tv_noReportednumber = (TextView) itemView.findViewById(R.id.tv_noReportednumber);
 
             this.nameList = nameList;
 
@@ -178,7 +192,7 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                     // TODO Auto-generated method stub
                     /**这是文本框改变之后 会执行的动作
                      */
-                    if (edit_userNumber.getText().toString().trim().length() >= 6&&edit_userNumber.isFocused()) {
+                    if (edit_userNumber.getText().toString().trim().length() >= 6 && edit_userNumber.isFocused()) {
                         getUserInfo(edit_userNumber.getText().toString().trim());
                     }
                 }
@@ -198,6 +212,7 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                         gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFempid(Integer.valueOf(ur.getData().getEmp_ID()));
                         gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setName(ur.getData().getEmp_Name());
                         gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setJobNumber(ur.getData().getEmp_Code());
+                        gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFdeptmentid(ur.getData().getEmp_Departid());
                     } else {
                         nameDropDown.setText("无此工号");
                     }
@@ -240,8 +255,11 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                 }
             });
      */
-            String Undispatchingnumber = String.valueOf((p.getUndispatchingnumber() == null ? p.getHavedispatchingnumber().intValue() : p.getUndispatchingnumber()).intValue());
-            edit_dispatchingnumber.setText(String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFqty().intValue()));
+
+            DecimalFormat df = new DecimalFormat("#.0");
+            tv_noReportednumber.setText(df.format(gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getReportNumber()));
+
+            edit_dispatchingnumber.setText(String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFqty()));
 
             edit_dispatchingnumber.addTextChangedListener(new TextWatcher() {
 
@@ -263,12 +281,51 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                     // TODO Auto-generated method stub
                     /**这是文本框改变之后 会执行的动作
                      */
-                    if(edit_dispatchingnumber.isFocused()&&edit_dispatchingnumber.getText().length()>0&& Utils.isNumeric(edit_dispatchingnumber.getText().toString())) {
-                        if(Integer.valueOf(edit_dispatchingnumber.getText().toString().trim())>p.getDispatchingnumber().intValue()){
-                            edit_dispatchingnumber.setText(String.valueOf(p.getDispatchingnumber().intValue()));
+                    if (edit_dispatchingnumber.isFocused() && edit_dispatchingnumber.getText().length() > 0 && Utils.isNumeric(edit_dispatchingnumber.getText().toString())) {
+
+                        if (Float.valueOf(edit_dispatchingnumber.getText().toString().trim()) != 0) {
+                            //先不管超标设置总数
+                            if (Float.valueOf(edit_dispatchingnumber.getText().toString().trim()) > p.getHavedispatchingnumber().intValue()) {
+                                edit_dispatchingnumber.setText(String.valueOf(p.getHavedispatchingnumber().intValue()));
+                            }
+                            gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFqty(new BigDecimal(edit_dispatchingnumber.getText().toString().trim()));
+                            //设置后判断总数
+                            float count = 0;
+                            for (int i = 0; i < gxpgActivity.sc_ProcessWorkCardEntryList.size(); i++) {
+                                if (gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname().equals(gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getFprocessname())) {
+                                    count += gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFqty().floatValue();
+                                    Log.e("jindi", "qty:" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFqty().floatValue());
+                                }
+
+                            }
+
+                            //超标就将数量设为0
+                            if (count > p.getHavedispatchingnumber().floatValue()) {
+                                Log.e("jindi", "afterTextChanged:" + getAdapterPosition());
+                                edit_dispatchingnumber.setText("0");
+                                gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFqty(new BigDecimal(0));
+                                Toast.makeText(gxpgActivity, "无法派工,派工总数超标", Toast.LENGTH_LONG).show();
+                            }
+
+
+                            float per = gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getFqty().floatValue() / (gxpgActivity.processWorkCardPlanEntryList.get(0).getHavedispatchingnumber().floatValue());
+
+                            //Log.e("jindi","per:"+per);
+
+
+                            try {
+                                GxpgPlan gxpgPlan = dbManager.selector(GxpgPlan.class).where("style", " = ", selectWorkCardPlan.getPlantbody()).and("processname", "=", gxpgActivity.processWorkCardPlanEntryList.get(getAdapterPosition()).getProcessname()).and("username", "=", gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getName()).findFirst();
+                                if (gxpgPlan != null) {
+                                    gxpgPlan.setPer(per);
+                                    dbManager.saveOrUpdate(gxpgPlan);
+                                }
+                            } catch (DbException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFqty(new BigDecimal(0));
                         }
-                        gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFqty(new BigDecimal(edit_dispatchingnumber.getText().toString().trim()));
-                        Log.e("jindi", "afterTextChanged:"+getAdapterPosition());
+
                     }
                 }
             });
@@ -277,16 +334,65 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
             tv_processname.setText(p.getProcessname());
 
             //数据加载有延迟需要先判断
-            if(gxpgActivity.sc_ProcessWorkCardEntryList.get(position)!=null) {
+            if (gxpgActivity.sc_ProcessWorkCardEntryList.get(position) != null)
+
+            {
                 nameDropDown.setText(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getName());
                 edit_userNumber.setText(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getJobNumber());
             }
 
-            tv_havedispatchingnumber.setText(String.valueOf(p.getHavedispatchingnumber().intValue()));
+            tv_havedispatchingnumber.setText(String.valueOf(p.getHavedispatchingnumber().
+                    intValue()));
 
-            tv_nodispatchingnumber.setText(Undispatchingnumber);
-            tv_alreadynumber.setText(String.valueOf(p.getReportednumber().intValue()));
-            tv_nonumber.setText(String.valueOf(p.getHavedispatchingnumber().intValue() - p.getReportednumber().intValue()));
+            try {
+                GxpgPlan gxpgPlan = dbManager.selector(GxpgPlan.class).where("style", " = ", p.getPlantbody()).and("processname", "=", p.getProcessname()).and("username", "=", gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getName()).findFirst();
+
+                if (gxpgPlan != null) {
+                    // tv_noReportednumber.setText(df.format(gxpgActivity.norecord*gxpgPlan.getPer()));
+                    Log.e("jindi", "per:" + gxpgPlan.getPer());
+                }
+
+            } catch (DbException e) {
+                e.printStackTrace();
+            }
+
+            tv_noReportednumber.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View v) {
+                    //do something
+                    final EditText editText = new EditText(gxpgActivity);
+                    editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    AlertDialog.Builder inputDialog =
+                            new AlertDialog.Builder(gxpgActivity);
+                    inputDialog.setTitle("修改计工数").setView(editText);
+                    inputDialog.setNegativeButton("取消", null);
+                    inputDialog.setPositiveButton("确定",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (Utils.isNumeric(editText.getText().toString())) {
+                                        gxpgActivity.sc_ProcessWorkCardEntryList.get(position).setReportNumber(Float.valueOf(editText.getText().toString()));
+                                        float count=0;
+                                        for(int i=0;i<gxpgActivity.sc_ProcessWorkCardEntryList.size();i++){
+                                            if(gxpgActivity.processWorkCardPlanEntryList.get(i).getProcessname().equals(gxpgActivity.processWorkCardPlanEntryList.get(position).getProcessname())){
+                                                count+=gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getReportNumber();
+                                            }
+                                        }
+                                        if(count>gxpgActivity.norecord){
+                                            Toast.makeText(gxpgActivity,"计工数超过汇报数",Toast.LENGTH_LONG).show();
+                                            gxpgActivity.sc_ProcessWorkCardEntryList.get(position).setReportNumber(0f);
+                                        }else if(count<gxpgActivity.norecord){
+                                            Toast.makeText(gxpgActivity,"计工数少于汇报数",Toast.LENGTH_LONG).show();
+                                        }
+                                        gxpgActivity.mMenuAdapter.notifyDataSetChanged();
+                                    }else{
+                                        Toast.makeText(gxpgActivity,"请输入数字",Toast.LENGTH_LONG);
+                                    }
+                                }
+                            }).show();
+                }
+            });
+            int alreadyNoreportedNumberCount = PgdActivity.selectWorkCardPlan.getAlreadynumberCount() - p.getReportednumber().intValue();
 
         }
 

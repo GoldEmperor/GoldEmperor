@@ -24,7 +24,7 @@
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
-        android:text="金帝之家"
+        android:text="金帝MES"
         android:textColor="#FFFFFF"
         android:textSize="25dp" />
 </RelativeLayout>

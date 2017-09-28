@@ -118,6 +118,36 @@
 
         </activity>
 
+        <activity android:name="com.goldemperor.PgdActivity.InstructorActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="工艺指导书"
+            android:screenOrientation="portrait">
+
+
+        </activity>
+
+        <activity android:name="com.goldemperor.PgdActivity.AssignActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="人员分配"
+            android:screenOrientation="landscape">
+
+
+        </activity>
+
+        <activity android:name="com.goldemperor.PgdActivity.TechniqueActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="工艺路线"
+            android:screenOrientation="landscape">
+
+
+        </activity>
+        <activity android:name="com.goldemperor.PgdActivity.MaterialActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="用料清单"
+            android:screenOrientation="landscape">
+
+
+        </activity>
         <activity android:name="com.goldemperor.StockCheck.WaitView.UpdataActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="上传照片"

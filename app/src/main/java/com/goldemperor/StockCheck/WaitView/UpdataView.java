@@ -119,7 +119,7 @@ public class UpdataView extends TakePhotoFragment {
             public void onClick(View v) {
                 List<People> list = new ArrayList<>();
                 list.add(new People(define.TAKE_PHOTO, "拍照"));
-                list.add(new People(define.SELECT_PHOTO, "从相册选择"));
+                //list.add(new People(define.SELECT_PHOTO, "从相册选择"));
                 new SuperDialog.Builder(act)
                         //.setAlpha(0.5f)
                         //.setGravity(Gravity.CENTER)

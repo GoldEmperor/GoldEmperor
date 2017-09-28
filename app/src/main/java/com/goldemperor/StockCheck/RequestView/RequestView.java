@@ -35,6 +35,8 @@ public class RequestView {
     private EditText edit_number;
     private EditText edit_proposer;
 
+    private EditText edit_supplier;
+
     private com.goldemperor.Widget.CheckBox checkMessage;
 
     public RequestView(final StockCheckActivity act, final View view) {
@@ -45,8 +47,12 @@ public class RequestView {
         edit_number=(EditText)view.findViewById(R.id.edit_number);
         edit_proposer=(EditText)view.findViewById(R.id.edit_proposer);
 
+        edit_supplier=(EditText)view.findViewById(R.id.edit_supplier);
+
         edit_number.setText(dataPref.getString(define.SharedCheckNumber,""));
         edit_proposer.setText(dataPref.getString(define.SharedUser,""));
+
+        edit_supplier.setText(dataPref.getString(define.SharedSupplier,""));
 
         submit = (BootstrapButton) view.findViewById(R.id.submit);
 
@@ -59,6 +65,9 @@ public class RequestView {
 
                 dataEditor.putString(define.SharedCheckNumber, edit_number.getText().toString());
                 dataEditor.putString(define.SharedProposer, edit_proposer.getText().toString());
+
+                dataEditor.putString(define.SharedSupplier, edit_supplier.getText().toString());
+
                 dataEditor.commit();
 
                 if (edit_number.getText().toString().trim().isEmpty()) {
@@ -80,9 +89,10 @@ public class RequestView {
                             }))
                             .show(act);
                 } else {
-                    RequestParams params = new RequestParams(define.SubmitNumberRequest);
+                    RequestParams params = new RequestParams(define.SubmitRequest);
                     params.addQueryStringParameter("number", edit_number.getText().toString().trim());
                     params.addQueryStringParameter("proposer", edit_proposer.getText().toString().trim());
+                    params.addQueryStringParameter("supplier", edit_supplier.getText().toString().trim());
                     x.http().get(params, new Callback.CommonCallback<String>() {
                         @Override
                         public void onSuccess(final String result) {

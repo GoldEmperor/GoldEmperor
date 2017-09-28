@@ -11,7 +11,6 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.goldemperor.MainActivity.GsonFactory;
@@ -19,7 +18,7 @@ import com.goldemperor.StockCheck.WaitView.ListViewDecoration;
 import com.goldemperor.StockCheck.WaitView.LookImageAdapter;
 import com.goldemperor.StockCheck.WaitView.stock_check_image;
 import com.google.gson.Gson;
-import com.goldemperor.sql.stock_check;
+import com.goldemperor.StockCheck.sql.stock_check;
 import com.goldemperor.R;
 import com.goldemperor.MainActivity.define;
 

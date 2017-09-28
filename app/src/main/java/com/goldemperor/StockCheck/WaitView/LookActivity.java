@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,18 +13,15 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.goldemperor.MainActivity.GsonFactory;
 import com.google.gson.Gson;
-import com.goldemperor.sql.stock_check;
+import com.goldemperor.StockCheck.sql.stock_check;
 import com.goldemperor.R;
 import com.goldemperor.MainActivity.define;
-import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
 import com.tapadoo.alerter.Alerter;
 import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 

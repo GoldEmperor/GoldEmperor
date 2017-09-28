@@ -12,6 +12,9 @@ public class GxpgPlan {
     @Column(name = "id",isId = true,autoGen = true,property = "NOT NULL")
     private int id;
 
+    @Column(name = "style")
+    private String style;
+
     @Column(name = "processname")
     private String processname;
 
@@ -34,6 +37,13 @@ public class GxpgPlan {
     }
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getStyle() {
+        return style;
+    }
+    public void setStyle(String style) {
+        this.style = style;
     }
 
     public String getProcessname() {

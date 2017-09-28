@@ -37,6 +37,13 @@ public final class Utils {
         return t;
     }
 
+    public static String getCurrentDataAndTime() {
+        long time = System.currentTimeMillis();//long now = android.os.SystemClock.uptimeMillis();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd ");
+        Date d1 = new Date(time);
+        String t = format.format(d1);
+        return t;
+    }
 
     public static int getCurrentYear() {
         long time = System.currentTimeMillis();//long now = android.os.SystemClock.uptimeMillis();
@@ -311,13 +318,9 @@ public final class Utils {
 
     }
 
-    public static boolean isNumeric(String str){
-        Pattern pattern = Pattern.compile("[0-9]*");
-        Matcher isNum = pattern.matcher(str);
-        if( !isNum.matches() ){
-            return false;
-        }
-        return true;
+    public static boolean isNumeric(String str) {
+        String reg = "^[0-9]+(.[0-9]+)?$";
+        return str.matches(reg);
     }
 }
 

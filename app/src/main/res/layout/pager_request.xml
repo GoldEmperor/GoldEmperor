@@ -48,6 +48,19 @@
         android:textSize="20sp"
         />
 
+    <EditText
+        android:id="@+id/edit_supplier"
+        android:layout_below="@+id/edit_proposer"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:hint="请填写供应商"
+        android:layout_centerHorizontal="true"
+        android:textColorHint="@color/material_light_blue"
+        android:textCursorDrawable="@drawable/text_cursor_cyan"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        />
+
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/submit"
@@ -55,7 +68,7 @@
         android:layout_height="50dp"
         android:text="提交"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/edit_proposer"
+        android:layout_below="@+id/edit_supplier"
         android:layout_marginTop="30dp"
         app:bootstrapBrand="success"
         app:buttonMode="regular"

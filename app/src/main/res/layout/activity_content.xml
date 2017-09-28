@@ -192,7 +192,7 @@
 
                 <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/btn_process_query"
-                    android:layout_width="85dp"
+                    android:layout_width="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_height="wrap_content"
@@ -209,7 +209,7 @@
 
                 <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/btn_set"
-                    android:layout_width="85dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     fancy:fb_borderColor="#FFFFFF"

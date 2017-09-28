@@ -15,6 +15,7 @@
  */
 package com.goldemperor.PgdActivity;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,6 +95,9 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
         TextView tv_group;
         TextView tv_style;
 
+        TextView tv_alreadynumber;
+        TextView tv_nonumber;
+
 
         TextView tv_materialcode;
         TextView tv_materialname;
@@ -104,6 +108,15 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
 
         TextView tv_planendtime;
 
+        TextView tv_status;
+
+        TextView tv_orderCount;
+
+        TextView tv_reportednumber;
+
+        TextView tv_reportednotnumber;
+
+        TextView tv_reportednotInnumber;
 
         public DefaultViewHolder(View itemView) {
             super(itemView);
@@ -119,12 +132,15 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
 
             //ScrollView.setOnScrollStateChangedListener(this);
             //ScrollView.setOnScrollChangeListener(this);
+            tv_orderCount = (TextView) itemView.findViewById(R.id.tv_orderCount);
             tv_followNumber = (TextView) itemView.findViewById(R.id.tv_followNumber);
             tv_number = (TextView) itemView.findViewById(R.id.tv_number);
             tv_date = (TextView) itemView.findViewById(R.id.tv_date);
             tv_group = (TextView) itemView.findViewById(R.id.tv_group);
             tv_style = (TextView) itemView.findViewById(R.id.tv_style);
 
+            tv_alreadynumber= (TextView) itemView.findViewById(R.id.tv_alreadynumber);
+            tv_nonumber= (TextView) itemView.findViewById(R.id.tv_nonumber);
 
             tv_materialcode = (TextView) itemView.findViewById(R.id.tv_materialcode);
             tv_materialname = (TextView) itemView.findViewById(R.id.tv_materialname);
@@ -132,11 +148,20 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
             tv_batch = (TextView) itemView.findViewById(R.id.tv_batch);
             tv_planstarttime = (TextView) itemView.findViewById(R.id.tv_planstarttime);
             tv_planendtime = (TextView) itemView.findViewById(R.id.tv_planendtime);
+            tv_status= (TextView) itemView.findViewById(R.id.tv_status);
 
             tv_count = (TextView) itemView.findViewById(R.id.tv_count);
+
+
+            tv_reportednumber = (TextView) itemView.findViewById(R.id.tv_reportednumber);
+
+            tv_reportednotnumber = (TextView) itemView.findViewById(R.id.tv_reportednotnumber);
+
+            tv_reportednotInnumber = (TextView) itemView.findViewById(R.id.tv_reportednotInnumber);
         }
 
         public void setData(WorkCardPlan o) {
+            tv_orderCount.setText(String.valueOf(o.getFconfirmqty().intValue()));
             tv_followNumber.setText(o.getPlanbill());
             tv_number.setText(o.getOrderbill());
             try {
@@ -154,9 +179,25 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
             tv_unit.setText(o.getUnit());
             tv_batch.setText(o.getBatch());
 
+
+            tv_alreadynumber.setText(String.valueOf(o.getAlreadynumberCount()));
+            tv_nonumber.setText(String.valueOf(o.getNonumberCount()));
+            tv_status.setText(o.getPlanStatus());
+            if(o.getPlanStatus().equals("未排")){
+                tv_status.setTextColor(Color.rgb(255, 0, 0));
+            }else{
+                tv_status.setTextColor(Color.rgb(0, 0, 0));
+            }
             int count = 0;
             sizeItemLinearLayout.removeAllViews();
             sizeNumItemLinearLayout.removeAllViews();
+
+            tv_reportednumber.setText(String.valueOf(o.getReportednumber().intValue()));
+
+            tv_reportednotnumber.setText(String.valueOf(o.getReportednotnumber().intValue()));
+
+            tv_reportednotInnumber.setText(String.valueOf((o.getReportednotInnumber()==null?0:o.getReportednotInnumber()).intValue()));
+
             for (int i = 0; i < o.getSizeList().size(); i++) {
                 sizeItemLinearLayout.addView(addSizeView(o.getSizeList().get(i)[0][0]));
                 sizeNumItemLinearLayout.addView(addSizeView(o.getSizeList().get(i)[0][1]));

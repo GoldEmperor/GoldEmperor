@@ -24,6 +24,8 @@ public class WorkCardPlan {
 
     private String fgroup;
 
+    private int fdeptid;
+
     private String batch;
 
     private String remark;
@@ -59,6 +61,10 @@ public class WorkCardPlan {
     private BigDecimal alreadynumber;
 
     private BigDecimal nonumber;
+
+    private int alreadynumberCount;
+
+    private int nonumberCount;
 
     private String lastcodetime;
 
@@ -108,9 +114,76 @@ public class WorkCardPlan {
 
     private String fsize;
 
+    private String planStatus;
 
-
+    private String froutingid;
     private List<String[][]> sizeList;
+
+
+    private Integer fsourceinterid;
+
+    private Integer fsourceentryid;
+
+    private BigDecimal fconfirmqty;//生产订单总数
+
+    private BigDecimal  reportednumber;//已汇报数量
+
+    private BigDecimal  notreportnumber;//未汇报数量
+
+    private BigDecimal  cumulativenumber;//累计计工数
+
+    private BigDecimal  reportednotnumber;//已汇报未计工数
+
+    private BigDecimal  reportednotInnumber;//已汇报未入库数
+
+    public Integer getFdeptid() {
+        return fdeptid;
+    }
+
+    public void setFdeptid(Integer fdeptid) {
+        this.fdeptid = fdeptid;
+    }
+
+    public BigDecimal getReportednumber() {
+        return reportednumber;
+    }
+
+    public void setReportednumber(BigDecimal reportednumber) {
+        this.reportednumber = reportednumber;
+    }
+
+    public BigDecimal getNotreportnumber() {
+        return notreportnumber;
+    }
+
+    public void setNotreportnumber(BigDecimal notreportnumber) {
+        this.notreportnumber = notreportnumber;
+    }
+
+    public BigDecimal getCumulativenumber() {
+        return cumulativenumber;
+    }
+
+    public void setCumulativenumber(BigDecimal cumulativenumber) {
+        this.cumulativenumber = cumulativenumber;
+    }
+
+    public BigDecimal getReportednotnumber() {
+        return reportednotnumber;
+    }
+
+    public void setReportednotnumber(BigDecimal reportednotnumber) {
+        this.reportednotnumber = reportednotnumber;
+    }
+
+    public BigDecimal getReportednotInnumber() {
+        return reportednotInnumber;
+    }
+
+    public void setReportednotInnumber(BigDecimal reportednotInnumber) {
+        this.reportednotInnumber = reportednotInnumber;
+    }
+
 
     public List<String[][]> getSizeList() {
         return sizeList;
@@ -118,6 +191,9 @@ public class WorkCardPlan {
 
     public WorkCardPlan(){
         sizeList=new ArrayList<String[][]>();
+        alreadynumberCount=0;
+        nonumberCount=0;
+        planStatus="未排";
     }
     public void addSize(String[][] s) {
         this.sizeList.add(s);
@@ -130,6 +206,22 @@ public class WorkCardPlan {
 
     public void setFinterid(Long finterid) {
         this.finterid = finterid;
+    }
+
+    public String getPlanStatus() {
+        return planStatus;
+    }
+
+    public void setPlanStatus(String planStatus) {
+        this.planStatus = planStatus;
+    }
+
+    public String getFroutingid() {
+        return froutingid;
+    }
+
+    public void setFroutingid(String froutingid) {
+        this.froutingid = froutingid;
     }
 
     public String getForganizename() {
@@ -340,6 +432,23 @@ public class WorkCardPlan {
         this.nonumber = nonumber;
     }
 
+    public int getAlreadynumberCount() {
+        return alreadynumberCount;
+    }
+
+    public void setAlreadynumberCount(int alreadynumberCount) {
+        this.alreadynumberCount = alreadynumberCount;
+    }
+
+    public int getNonumberCount() {
+        return nonumberCount;
+    }
+
+    public void setNonumberCount(int nonumberCount) {
+        this.nonumberCount = nonumberCount;
+    }
+
+
     public String getLastcodetime() {
         return lastcodetime;
     }
@@ -530,5 +639,29 @@ public class WorkCardPlan {
 
     public void setFsize(String fsize) {
         this.fsize = fsize == null ? null : fsize.trim();
+    }
+
+    public Integer getFsourceinterid() {
+        return fsourceinterid;
+    }
+
+    public void setFsourceinterid(Integer fsourceinterid) {
+        this.fsourceinterid = fsourceinterid;
+    }
+
+    public Integer getFsourceentryid() {
+        return fsourceentryid;
+    }
+
+    public void setFsourceentryid(Integer fsourceentryid) {
+        this.fsourceentryid = fsourceentryid;
+    }
+
+    public BigDecimal getFconfirmqty() {
+        return fconfirmqty;
+    }
+
+    public void setFconfirmqty(BigDecimal fconfirmqty) {
+        this.fconfirmqty = fconfirmqty;
     }
 }

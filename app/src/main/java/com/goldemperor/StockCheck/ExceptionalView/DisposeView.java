@@ -1,14 +1,9 @@
 package com.goldemperor.StockCheck.ExceptionalView;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
@@ -40,26 +35,18 @@ import com.goldemperor.StockCheck.WaitView.ListViewDecoration;
 import com.goldemperor.StockCheck.WaitView.LookImageAdapter;
 import com.goldemperor.StockCheck.WaitView.stock_check_image;
 import com.google.gson.Gson;
-import com.goldemperor.sql.stock_check;
-import com.goldemperor.MainActivity.OSSHelper;
-import com.goldemperor.MainActivity.People;
+import com.goldemperor.StockCheck.sql.stock_check;
 import com.goldemperor.R;
 import com.goldemperor.MainActivity.TakePhotoHelper;
-import com.goldemperor.MainActivity.Utils;
 import com.goldemperor.MainActivity.define;
 import com.jph.takephoto.app.TakePhotoFragment;
 import com.jph.takephoto.model.TResult;
-import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
-import com.mylhyl.superdialog.SuperDialog;
-import com.mylhyl.superdialog.res.values.ColorRes;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
