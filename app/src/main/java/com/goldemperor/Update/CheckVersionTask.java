@@ -34,7 +34,7 @@ import java.io.InputStream;
      * 从服务器获取xml解析并进行比对版本号
 	 */
 public class CheckVersionTask implements Runnable {
-    protected static final String TAG = "CxStockInActivity";
+    protected static final String TAG = "ScReportActivity";
     public Activity act;
     public UpdataInfo myinfo;
 

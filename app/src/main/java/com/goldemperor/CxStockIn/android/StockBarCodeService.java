@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 public class StockBarCodeService extends Thread {
-    protected static final String TAG = "CxStockInActivity";
+    protected static final String TAG = "ScReportActivity";
     //正式库
     public static final String asmxURL = SystemConfig.WebServiceURL;//"http://192.168.88.254:8011/ErpForAndroidStockServer.asmx";// getString(R.string.cxstockin_webservice_url);//"http://localhost:3087/ErpForAndroidStockServer.asmx";//
     //开发库

@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginService extends Thread {
-    protected static final String TAG = "CxStockInActivity";
+    protected static final String TAG = "ScReportActivity";
     public Handler myHandler;
     public Context myContext;
     public UserInfo myuserInfo;

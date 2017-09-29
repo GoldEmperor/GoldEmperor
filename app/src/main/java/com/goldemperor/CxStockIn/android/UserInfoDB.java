@@ -42,7 +42,7 @@ public class UserInfoDB {
     public static final String KEY_BillTypePosition="D_BillTypePosition";//单据类型序号
     public static final String KEY_LoginTime="D_LoginTime";//单据类型序号
 
-    private static final String TAG = "CxStockInActivity";
+    private static final String TAG = "ScReportActivity";
     private DatabaseHelper mDbHelper;
     private SQLiteDatabase mDb;
     static final String SQLITE_TABLE = "t_LastUserInfo";//表名

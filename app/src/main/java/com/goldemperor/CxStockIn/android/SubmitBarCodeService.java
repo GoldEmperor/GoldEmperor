@@ -22,7 +22,7 @@ import java.util.Map;
 
 //向webservice服务器提交条形码数据
 public class SubmitBarCodeService extends Thread {
-    protected static final String TAG = "CxStockInActivity";
+    protected static final String TAG = "ScReportActivity";
     public Handler myHandler;
     public Context myContext;
     public UserInfo myuserInfo;

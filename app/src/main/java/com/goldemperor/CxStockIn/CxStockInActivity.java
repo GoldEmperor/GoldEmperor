@@ -76,7 +76,7 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
     //滑动删除变量
     public static String DeviceIMEI;//移动设备IMEI码
     public static Map<String, DeviceInfoMap> deviceInfoMap;//移动设备管理信息哈希表
-    public static final String TAG = "CxStockInActivity";
+    public static final String TAG = "ScReportActivity";
     private IntentFilter mFilter;
     private Button btnadd, btndelete, btnclear, btnsubmit;
     private EditText et_scanresult;
@@ -425,7 +425,7 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
             startActivity(intent);
             this.finish();
         } else
-            CxStockBarCodeDBHelper.ClearSubmitData(this, "CxStockInActivity");
+            CxStockBarCodeDBHelper.ClearSubmitData(this, "ScReportActivity");
     }
 
     public void ClearSubmitData(Context myContext, String MessageType) {

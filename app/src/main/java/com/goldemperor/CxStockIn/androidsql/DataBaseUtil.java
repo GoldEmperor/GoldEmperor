@@ -34,7 +34,7 @@ public class DataBaseUtil {
                 String s1 = rs.getString("FName");
                 String s2 = rs.getString("FNumber");
                 result += s1 + "  -  " + s2 + "\n";
-                Log.i("CxStockInActivity", "testSQL:" + s1 + "  -  " + s2);
+                Log.i("ScReportActivity", "testSQL:" + s1 + "  -  " + s2);
                 //Log.i(TAG, "testSQL:"+ s1 + "  -  " + s2);
                 System.out.println(s1 + "  -  " + s2);
             }

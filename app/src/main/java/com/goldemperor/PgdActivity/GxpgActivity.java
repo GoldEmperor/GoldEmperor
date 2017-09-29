@@ -170,7 +170,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
 
         top_record.setText(String.valueOf("累计计工数:" + selectWorkCardPlan.getCumulativenumber().intValue()));
         reportCount = selectWorkCardPlan.getCumulativenumber().intValue();
-
+        Log.e("jindi","reportCount:"+reportCount);
         //取出姓名和员工工号数据
         top_norecord = (TextView) findViewById(R.id.top_norecord);
 
@@ -475,10 +475,12 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
     }
 
     private void refreshData() {
+
         top_record.setText("累计计工数:" + String.valueOf(reportCount));
         //top_noReportednumber.setText("汇报欠数:" + String.valueOf(processWorkCardPlanEntryList.get(0).getHavedispatchingnumber().intValue() - reportCount));
         norecord = selectWorkCardPlan.getReportednumber().intValue() - reportCount;
         top_norecord.setText("已汇报未计工数:" + String.valueOf(norecord));
+        //Log.e("jindi","reportCount:"+reportCount+" norecord"+norecord);
         mMenuAdapter.notifyDataSetChanged();
     }
 
@@ -539,9 +541,17 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         sc_processWorkCardEntry.setFroutingid(processWorkCardPlanEntry.getFroutingid());
         sc_processWorkCardEntry.setFqty(processWorkCardPlanEntry.getDispatchingnumber());
 
-        if (sc_processWorkCardEntry.getFqty() == null || sc_processWorkCardEntry.getFqty().intValue() == 0) {
-            sc_processWorkCardEntry.setFqty(new BigDecimal(processWorkCardPlanEntry.getHavedispatchingnumber().floatValue()));
+        try {
+            List<GxpgPlanStatus> gxpgPlanStatusesList = dbManager.selector(GxpgPlanStatus.class).where("planbill", " = ",selectWorkCardPlan.getPlanbill()).and("orderbill","=",selectWorkCardPlan.getOrderbill()).findAll();
+            if ((sc_processWorkCardEntry.getFqty() == null || sc_processWorkCardEntry.getFqty().intValue() == 0)&&gxpgPlanStatusesList.size()<1) {
+                sc_processWorkCardEntry.setFqty(new BigDecimal(processWorkCardPlanEntry.getHavedispatchingnumber().floatValue()));
+            }
+        } catch (DbException e) {
+            e.printStackTrace();
         }
+
+
+
         if (processWorkCardPlanEntry.getFempid() == 0) {
             sc_processWorkCardEntry.setName(nameList[0][0]);
             sc_processWorkCardEntry.setJobNumber(nameList[0][1]);
@@ -847,7 +857,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                     sc_ProcessWorkCardEntryList.get(i).setFentryid(sc_ProcessWorkCardEntryList.get(i).getFentryid() + 1);
                 }
                 sc_processWorkCardEntry.setFqty(new BigDecimal(0));
-
+                sc_processWorkCardEntry.setFfinishqty(new BigDecimal(0));
 
                 sc_ProcessWorkCardEntryList.add(adapterPosition + 1, sc_processWorkCardEntry);
 
@@ -998,26 +1008,28 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                             }
                         }
 
-                        Log.e("jindi", "maxCount" + maxCount);
+                        Log.e("jindi", "maxCount：" + maxCount);
                         if (count > maxCount) {
                             maxCount = count;
                         }
-                        if (maxCount > norecord) {
+                        if (maxCount > Float.valueOf(norecord)+0.01f) {
                             break;
                         } else {
                             float qty = sc_ProcessWorkCardEntryList.get(i).getReportNumber();
                             DecimalFormat df = new DecimalFormat("#.0");
                             processOutPut.getReturnMsg().get(i).setFqty(new BigDecimal(df.format(qty)));
-                            Log.e("jindi", df.format(qty));
+                            Log.e("jindi","qty:"+df.format(qty));
                         }
 
                     }
-                    if (maxCount > norecord) {
+                    Log.e("jindi","norecord:"+norecord);
+                    if (maxCount > Float.valueOf(norecord)+0.01f) {
                         Toast.makeText(mContext, "计工数超过汇报数", Toast.LENGTH_LONG).show();
                     } else if (maxCount <= 0) {
                         Toast.makeText(mContext, "计工数不能小于零", Toast.LENGTH_LONG).show();
                     } else {
                         reportCount = (int) maxCount;
+                        Log.e("jindi","reportCount:"+reportCount);
                         submitProcessOutPut();
                     }
 
@@ -1058,7 +1070,9 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         params.addParameter("PushJsonCondition", g.toJson(processOutPut.getReturnMsg()));
         params.addParameter("Type", "insert");
         params.addParameter("suitID", "32");
-
+        //String log=params.toString();
+        //Log.e("jindi",log.substring(0,log.length()/2));
+        //Log.e("jindi",log.substring(log.length()/2));
         //Log.e("jindi", params.toString());
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
@@ -1108,7 +1122,8 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         RequestParams params = new RequestParams(define.SCProcessOutPutReWriteBysuitID);
         params.addParameter("PushJsonCondition", g.toJson(pushJsonConditionList));
         params.addParameter("suitID", "32");
-        //Log.e("jindi",params.toString());
+        //Log.e("jindi", params.toString());
+
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -1119,7 +1134,9 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 }
                 Log.e("jindi", result);
                 if (result.contains("success")) {
-                    UpdateProcessPassQty();
+                    //UpdateProcessPassQty();
+                    Toast.makeText(mContext, "工序汇报录入成功", Toast.LENGTH_LONG).show();
+                    GetWorkCardProcessQty();
                 } else {
                     Toast.makeText(mContext, "工序汇报录入失败", Toast.LENGTH_LONG).show();
                 }
@@ -1147,7 +1164,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         RequestParams params = new RequestParams(define.UpdateProcessPassQty);
         params.addQueryStringParameter("FInterID", String.valueOf(selectWorkCardPlan.getFinterid()));
         params.addQueryStringParameter("FQty", String.valueOf(reportCount));
-        Log.e("jindi", params.toString());
+        //Log.e("jindi", params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -1200,6 +1217,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
 
                 //String reportStr = result.substring(result.indexOf("ReturnMsg"), result.indexOf(",")).replace("ReturnMsg\":", "").replace("\"", "");
                 reportCount = pq.getData().get(0).getCumulativenumber().intValue();
+                Log.e("jindi","reportCount:"+reportCount);
                 refreshData();
             }
 

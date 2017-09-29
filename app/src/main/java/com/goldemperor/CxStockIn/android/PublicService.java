@@ -20,7 +20,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class PublicService {
-    protected static final String TAG = "CxStockInActivity";
+    protected static final String TAG = "ScReportActivity";
     //根据设备的IMEI码获得指令单号
     public static String GetNowInsertMoNo(Context context, String asmxURL, String Methoname, String paramsKey, String paramsValue) {
         try {

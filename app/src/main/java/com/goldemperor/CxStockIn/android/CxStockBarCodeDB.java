@@ -38,7 +38,7 @@ public class  CxStockBarCodeDB{
     public static final String KEY_ROWID = "D_ID";
     public static final String KEY_BARCODE = "D_BarCode";
 
-    private static final String TAG = "CxStockInActivity";
+    private static final String TAG = "ScReportActivity";
     private DatabaseHelper mDbHelper;
     private SQLiteDatabase mDb;
 //    private LinkedList<String> myList;

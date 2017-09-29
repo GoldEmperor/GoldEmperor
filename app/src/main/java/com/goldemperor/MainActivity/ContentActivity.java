@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -16,30 +15,22 @@ import com.goldemperor.Banner.DataProvider;
 import com.goldemperor.Banner.SimpleImageBanner;
 import com.goldemperor.Banner.SimpleTextBanner;
 import com.goldemperor.Banner.ViewFindUtils;
-import com.goldemperor.CxStockIn.CxStockInActivity;
 import com.goldemperor.CxStockIn.android.NetworkHelper;
 import com.goldemperor.GxReport.GxReport;
 import com.goldemperor.LoginActivity.LoginActivity;
 import com.goldemperor.PgdActivity.PgdActivity;
-import com.goldemperor.PgdActivity.PgdResult;
 import com.goldemperor.Public.SystemUtil;
 import com.goldemperor.SetActivity.SetActivity;
 import com.goldemperor.R;
 import com.goldemperor.StockCheck.StockCheckActivity;
 import com.goldemperor.Update.CheckVersionTask;
-import com.google.gson.Gson;
 import com.tapadoo.alerter.Alerter;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
 
 import mehdi.sakout.fancybuttons.FancyButton;
 
@@ -57,12 +48,13 @@ public class ContentActivity extends AppCompatActivity {
     private FancyButton orderBtn;
     private FancyButton processBtn;
     private FancyButton produceBtn;
-    private FancyButton processQueryBtn;
 
 
     private FancyButton btn_cxstockin;
     private FancyButton btn_pgstockin;
     private FancyButton btn_cgstockin;
+
+    private FancyButton btn_process_sc;
 
     private FancyButton btn_cxscanbarcode;
 
@@ -135,8 +127,8 @@ public class ContentActivity extends AppCompatActivity {
         orderBtn = (FancyButton) findViewById(R.id.btn_order);
         orderBtn.setIconResource(R.drawable.btn_order);
 
-        processQueryBtn = (FancyButton) findViewById(R.id.btn_process_query);
-        processQueryBtn.setIconResource(R.drawable.btn_query);
+        btn_process_sc = (FancyButton) findViewById(R.id.btn_process_sc);
+        btn_process_sc.setIconResource(R.drawable.btn_query);
 
         btn_cxstockin = (FancyButton) findViewById(R.id.btn_cxstockin);
         btn_cxstockin.setIconResource(R.drawable.btn_saoyisao);
@@ -166,6 +158,22 @@ public class ContentActivity extends AppCompatActivity {
             }
         });
 
+
+        btn_process_sc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String SystemModel = SystemUtil.getSystemModel();
+                Log.e("jindi", "手机型号：" + SystemModel);
+                if (SystemModel.equals("MT65")) {
+                    Intent i = new Intent(mContext, com.goldemperor.ScReport.ScReportActivity.class);
+                    mContext.startActivity(i);
+                } else {
+                    getControl("1050501");
+                }
+            }
+        });
+
+
         orderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,10 +193,11 @@ public class ContentActivity extends AppCompatActivity {
                 String SystemModel = SystemUtil.getSystemModel();
                 Log.e("jindi", "手机型号：" + SystemModel);
                 if (SystemModel.equals("MT65")) {
-                    Intent i = new Intent(mContext, CxStockInActivity.class);
+                    Intent i = new Intent(mContext, com.goldemperor.CxStockIn.CxStockInActivity.class);
                     mContext.startActivity(i);
-                } else
+                } else {
                     getControl("1050101");
+                }
             }
         });
 
@@ -236,7 +245,10 @@ public class ContentActivity extends AppCompatActivity {
                             .show();
                 } else if (result.contains("true")) {
                     if (controlID.equals("1050101")) {
-                        Intent i = new Intent(mContext, CxStockInActivity.class);
+                        Intent i = new Intent(mContext, com.goldemperor.CxStockIn.CxStockInActivity.class);
+                        mContext.startActivity(i);
+                    }else if(controlID.equals("1050501")){
+                        Intent i = new Intent(mContext, com.goldemperor.ScReport.ScReportActivity.class);
                         mContext.startActivity(i);
                     }
                 } else {

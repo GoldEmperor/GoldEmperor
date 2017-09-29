@@ -64,7 +64,7 @@ public class CxLoginActivity extends Activity {
     public UserLoginInfo userLoginInfo = null;
     public CxStockInActivity.BarCodeHandler barCodeHandler;
     public LoginHandler myLoginHandler;
-    public static final String TAG = "CxStockInActivity";
+    public static final String TAG = "ScReportActivity";
     private Map<String, AccountSuit> AccountSuitMap;//账套哈希表
     private Map<String, Organization> OrganizationMap;//组织哈希表
     private AccountSuit NowSelectAccountSuit;

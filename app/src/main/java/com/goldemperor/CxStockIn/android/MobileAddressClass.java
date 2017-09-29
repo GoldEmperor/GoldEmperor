@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
  * Created by xufanglou on 2016-07-15.
  */
 public class MobileAddressClass {
-    protected static final String TAG = "CxStockInActivity";
+    protected static final String TAG = "ScReportActivity";
 
     public MobileAddressClass() {
 
