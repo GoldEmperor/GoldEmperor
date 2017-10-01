@@ -1,5 +1,6 @@
 package com.goldemperor.CxStockIn;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -18,6 +19,7 @@ import android.os.Message;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -31,6 +33,7 @@ import android.widget.Toast;
 
 
 import com.goldemperor.CxStockIn.DialogLoadding.WeiboDialogUtils;
+import com.goldemperor.PgdActivity.InstructorActivity;
 import com.goldemperor.Update.CheckVersionTask;
 import com.goldemperor.Update.DownLoadManager;
 import com.goldemperor.CxStockIn.android.CxStockBarCodeDB;
@@ -64,8 +67,7 @@ import java.util.Map;
 import java.util.TimerTask;
 
 
-
-public class CxStockInActivity extends FragmentActivity implements OnDeleteListioner, ListViewonSingleTapUpListenner,ActionSheet.OnActionSheetSelected, OnCancelListener{
+public class CxStockInActivity extends FragmentActivity implements OnDeleteListioner, ListViewonSingleTapUpListenner, ActionSheet.OnActionSheetSelected, OnCancelListener {
 
     //滑动删除变量
     LinkedList<String[]> mlist = new LinkedList<String[]>();
@@ -97,6 +99,13 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
     private SimpleCursorAdapter adapter;
     private ScanManager mScanMgr;
     public UpdataInfo info;
+
+    //扫入工号条码窗口相关
+    private Context mContext;
+    private Activity act;
+    private boolean isUserCode;
+    private TextView userScanText;
+    private String userNumber;
 //    //条形码列表的适配器
 //    private ContactsCursorAdapter m_contactsAdapter;
 //
@@ -107,18 +116,23 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cxstockin_activity_main);
+        mContext = this;
+        act=this;
+        isUserCode = false;
+
+        //扫入工号条码窗口相关
 
         //滑动删除实例化
         this.mDelSlideListView = (DelSlideListView) this.findViewById(R.id.listv);
-        mMyAdapter = new MyAdapter(this,mlist);
+        mMyAdapter = new MyAdapter(this, mlist);
         mDelSlideListView.setAdapter(mMyAdapter);
         mDelSlideListView.setDeleteListioner(this);
-        mDelSlideListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        mDelSlideListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                                     long arg3) {
                 //获得选中项的HashMap对象
-                String s=arg0.getItemAtPosition(arg2).toString();
+                String s = arg0.getItemAtPosition(arg2).toString();
                 et_scanresult.setText(s);
 
             }
@@ -151,7 +165,12 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
         btnclear = (Button) this.findViewById(R.id.btnclear);
         btnclear.setOnClickListener(new ClickEvent(this));
         btnsubmit = (Button) this.findViewById(R.id.btnsubmit);
-        btnsubmit.setOnClickListener(new ClickEvent(this));
+        btnsubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submit();
+            }
+        });
         txtcount = (TextView) this.findViewById(R.id.txtcount);
 
         stockin = (RadioButton) this.findViewById(R.id.stockin);
@@ -186,14 +205,16 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
     public void onSingleTapUp() {
 
     }
+
     /*连续单击两次back键退出系统*/
     private long exitTime;
+
     @Override
     public void onBackPressed() {
-        if((System.currentTimeMillis()-exitTime) > 500){
+        if ((System.currentTimeMillis() - exitTime) > 500) {
             Toast.makeText(getApplicationContext(), "连续按两次退出程序", Toast.LENGTH_SHORT).show();
             exitTime = System.currentTimeMillis();
-        }else{
+        } else {
             super.onBackPressed();
         }
     }
@@ -209,9 +230,9 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
     public void onDelete(int ID) {
         delID = ID;
         //获得所要删除的条形码信息
-        String SelDelbarcode= mlist.get(delID)[1];
+        String SelDelbarcode = mlist.get(delID)[1];
         //弹出删除确认窗体
-        ActionSheet.showSheet(this, this, this,SelDelbarcode);
+        ActionSheet.showSheet(this, this, this, SelDelbarcode);
     }
 
 
@@ -230,7 +251,7 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
         switch (whichButton) {
             case 0://删除单条条形码
 //                mlist.remove(delID);
-                int delCodeID= Integer.parseInt(mlist.get(delID)[0]);
+                int delCodeID = Integer.parseInt(mlist.get(delID)[0]);
                 CxStockBarCodeDBHelper.deleteTicketbarcode(delCodeID);
                 mDelSlideListView.SnapToScreen();
 //                mMyAdapter.notifyDataSetChanged();
@@ -242,6 +263,49 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
             default:
                 break;
         }
+    }
+    private  void submit(){
+        isUserCode = true;
+        userNumber = null;
+        android.support.v7.app.AlertDialog.Builder normalDialog =
+                new android.support.v7.app.AlertDialog.Builder(act);
+        View dialogView = LayoutInflater.from(mContext)
+                .inflate(R.layout.dialog_scan, null);
+        userScanText = (TextView) dialogView.findViewById(R.id.tv_scan_user);
+        normalDialog.setTitle("提示");
+        normalDialog.setView(dialogView);
+        normalDialog.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        isUserCode = false;
+                        if (userNumber == null) {
+                            Toast.makeText(mContext, "尚未扫入工号", Toast.LENGTH_LONG).show();
+                            dialog.dismiss();
+                        } else {
+                            //员工工号已获取，在此处进行操作
+                            dialog.dismiss();
+                            ArrayList<BarCode> lists2 = CxStockBarCodeDBHelper.GetAllData();
+                            if (lists2.size() == 0) {
+                                Toast.makeText(getApplicationContext(), "没有数据,无须提交", Toast.LENGTH_SHORT).show();
+                                btnsubmit.setEnabled(true);
+                                return;
+                            }
+                            SubmitBarCode();
+                        }
+                    }
+                });
+        normalDialog.setNegativeButton("取消",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        isUserCode = false;
+                        btnsubmit.setEnabled(true);
+                        dialog.dismiss();
+                    }
+                });
+
+        normalDialog.show();
     }
     //滑动删除
     private void registerReceiver() {
@@ -281,7 +345,16 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
                     String Mono = "";
                     et_scanresult.setText(scanResult);
                     et_scanresult.invalidate();
-                    InsertBarCode(scanResult);
+                    //判断是否扫入员工工号
+                    if (!isUserCode) {
+                        InsertBarCode(scanResult);
+                    } else {
+                        Log.e("jindi", scanResult);
+                        userNumber = scanResult;
+                        userScanText.setText("已扫入工号:" + scanResult);
+
+
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     et_scanresult.setText("data encode failed.");
@@ -319,7 +392,7 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
         }
 
         @Override
-        public void onClick(View v) {
+        public void onClick(final View v) {
             try {
                 v.setEnabled(false);
                 switch (v.getId()) {
@@ -336,23 +409,15 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
                         ClearBarCode();
                         break;
                     case R.id.btnsubmit:
-                        ArrayList<BarCode> lists2 = CxStockBarCodeDBHelper.GetAllData();
-                        if (lists2.size() == 0) {
-                            Toast.makeText(getApplicationContext(), "没有数据,无须提交", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        SubmitBarCode();
+
                         break;
                     default:
                         break;
                 }
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
-            }
-            finally {
+            } finally {
                 v.setEnabled(true);
             }
             //Toast.makeText(myContext, "点击提交按钮", Toast.LENGTH_SHORT).show();
@@ -439,7 +504,7 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
     public void IniMainActivtyControl() {
         if (CxStockInActivity.loginActivity_instance.userLoginInfo.userInfo == null)
             return;
-        String BillTypeID =CxStockInActivity.loginActivity_instance.userLoginInfo.userInfo.getBillTypeID();
+        String BillTypeID = CxStockInActivity.loginActivity_instance.userLoginInfo.userInfo.getBillTypeID();
         if (BillTypeID == "1")
             stockin.setChecked(true);
         else if (BillTypeID == "24")
@@ -452,6 +517,7 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
         else
             checkBoxRed.setChecked(false);
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -467,6 +533,7 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
 //        }
         mMyAdapter.notifyDataSetChanged();
     }
+
     @Override
     protected void onDestroy() {
         mReceiver = null;
@@ -488,7 +555,6 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
     public void onStop() {
         super.onStop();
     }
-
 
 
     /*
@@ -530,6 +596,7 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
         }
 
         android.app.Dialog dd;
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -547,9 +614,7 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
                         CxStockBarCodeDBHelper.ClearBarcodes();//生产成功后再删除本地数据，否则不删除
                         //this.m.notifyDataSetChanged();
                         Toast.makeText(getApplicationContext(), "成功生成单据编号：" + CxStockInActivity.loginActivity_instance.userLoginInfo.userInfo.getStockBillNO(), Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
+                    } else {
                         Toast.makeText(getApplicationContext(), "失败提示：" + CxStockInActivity.loginActivity_instance.userLoginInfo.userInfo.getStockBillNO(), Toast.LENGTH_SHORT).show();
                     }
                     btnsubmit.setEnabled(true);
@@ -574,10 +639,9 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
 //                        SubmitBarCodeService Athread = new SubmitBarCodeService(this, myContext, loginActivity_instance, AllDataJson);
 //                        Athread.start();
 
-                    }else
-                    {
+                    } else {
                         //dd= DialogThridUtils.showWaitDialog(MainActivity.this,"提交中..",false,false);
-                        dd= WeiboDialogUtils.createLoadingDialog(CxStockInActivity.this,"提交中..");
+                        dd = WeiboDialogUtils.createLoadingDialog(CxStockInActivity.this, "提交中..");
                     }
 //                    else {
 //                        SubmitBarCodeService Athread = new SubmitBarCodeService(this, myContext, loginActivity_instance, AllDataJson);
@@ -589,7 +653,7 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
                     //CxStockBarCodeDBHelper.ClearBarcodes();
 
                     break;
-                case  MessageEnum.LoginMain:
+                case MessageEnum.LoginMain:
                     LoginMain();
                     break;
             }
