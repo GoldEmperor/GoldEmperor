@@ -38,7 +38,7 @@ public class define {
     public static final String Register = "http://220.189.245.171:8881/Register";
 
     public static final String GetCode = "http://59.56.103.32:8030/api/MessagePost/GetCode";
-
+    //根据条形码获得工序派工信息
     public static final String GetScProcessWorkCardInfo = "http://192.168.99.79:8012/ErpForAndroidStockServer.asmx/GetScProcessWorkCardInfo";
 
     public static final String WaiGetScProcessWorkCardInfo = "http://220.189.245.171:8012/ErpForAndroidStockServer.asmx/GetScProcessWorkCardInfo";
@@ -57,41 +57,41 @@ public class define {
 
     public static final String NeiUpdateXML = "http://192.168.99.79:8020/AndroidUpdate/GoldEmperor/update.xml";
 
-    public static final String IsHaveControl = "http://192.168.88.254:8056/ERPPublicServer.asmx/IsHaveControl";//"http://192.168.99.79:8012/ERPPublicServer.asmx/IsHaveControl";
+    public static final String IsHaveControl = "http://192.168.99.79:8012/ERPPublicServer.asmx/IsHaveControl";//"http://192.168.99.79:8012/ERPPublicServer.asmx/IsHaveControl";
 
     public static final String GetPlanEntry = "http://220.189.245.171:8080/wechatMvn/android/getPlanEntry.do";
 
     public static final String GetEmpByDeptID = "http://220.189.245.171:8080/wechatMvn/mes/GetEmpByDeptID.do";
 
-    public static final String SCWorkCard2SCProcessWorkCardBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/SCWorkCard2SCProcessWorkCardBysuitID";
+    public static final String SCWorkCard2SCProcessWorkCardBysuitID = "http://192.168.99.79:8012/ErpForAndroidStockServer.asmx/SCWorkCard2SCProcessWorkCardBysuitID";
 
     public static final String GetProcessPlanEntry = "http://220.189.245.171:8080/wechatMvn/android/getProcessPlanEntry.do";
 
     public static final String GetEmpByFNumber = "http://220.189.245.171:8080/wechatMvn/mes/GetEmpByFNumber.do";
 
-    public static final String GetUserID = "http://192.168.99.79:8056/ERPForWeixinServer.ASMX/GetUserID";
+    public static final String GetUserID = "http://192.168.99.79:8012/ERPForWeixinServer.ASMX/GetUserID";
 
     public static final String InsertProcessPlanEntry = "http://220.189.245.171:8080/wechatMvn/android/insertProcessPlanEntry.do";
 
     public static final String GetPlanbyBillNumber = "http://220.189.245.171:8080/wechatMvn/android/getPlanbyBillNumber.do";
 
-    public static final String SCProcessWorkCardReWriteBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/SCProcessWorkCardReWriteBysuitID";
+    public static final String SCProcessWorkCardReWriteBysuitID = "http://192.168.99.79:8012/ErpForAndroidStockServer.asmx/SCProcessWorkCardReWriteBysuitID";
 
-    public static final String SCProcessWorkCard2SCProcessOutPutBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/SCProcessWorkCard2SCProcessOutPutBysuitID";
+    public static final String SCProcessWorkCard2SCProcessOutPutBysuitID = "http://192.168.99.79:8012/ErpForAndroidStockServer.asmx/SCProcessWorkCard2SCProcessOutPutBysuitID";
 
     public static final String GetRouteEntryBody = "http://220.189.245.171:8080/wechatMvn/android/getRouteEntryBody.do";
 
-    public static final String SCProcessOutPutSaveBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/SCProcessOutPutSaveBysuitID";
+    public static final String SCProcessOutPutSaveBysuitID = "http://192.168.99.79:8012/ErpForAndroidStockServer.asmx/SCProcessOutPutSaveBysuitID";
 
-    public static final String SCProcessOutPutReWriteBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/SCProcessOutPutReWriteBysuitID";
+    public static final String SCProcessOutPutReWriteBysuitID = "http://192.168.99.79:8012/ErpForAndroidStockServer.asmx/SCProcessOutPutReWriteBysuitID";
 
-    public static final String GetSCProcessOutPutQtyBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/GetSCProcessOutPutQtyBysuitID";
+    public static final String GetSCProcessOutPutQtyBysuitID = "http://192.168.99.79:8012/ErpForAndroidStockServer.asmx/GetSCProcessOutPutQtyBysuitID";
 
     public static final String WechatPostByFEmpID = "http://59.56.103.32:8030/api/MessagePost/WechatPostByFEmpID";
 
     public static final String GetWorkPlanMaterial = "http://220.189.245.171:8080/wechatMvn/android/getWorkPlanMaterial.do";
 
-    public static final String GetWorkPlanQtyBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/GetWorkPlanQtyBysuitID";
+    public static final String GetWorkPlanQtyBysuitID = "http://192.168.99.79:8012/ErpForAndroidStockServer.asmx/GetWorkPlanQtyBysuitID";
 
     public static final String GetPlanFInterIDbyTime = "http://220.189.245.171:8080/wechatMvn/android/getPlanFInterIDbyTime.do";
 

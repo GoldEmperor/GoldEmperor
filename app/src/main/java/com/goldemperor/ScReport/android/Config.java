@@ -5,7 +5,7 @@ package com.goldemperor.ScReport.android;
  * 系统配置类
  */
 public class Config {
-    private static int billTypeID = 1;//默认为入库单
+    private static int billTypeID = 108;//默认为生产汇报单
     public void setbillTypeID(int billTypeID) {
         this.billTypeID = billTypeID;
     }

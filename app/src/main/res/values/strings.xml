@@ -37,7 +37,7 @@
     <!--成型后段扫码入库-begin-->
     <!-- 所对应的webservice 接口URL-->
     <string name="cxstockin_form_name">成型后段扫码入库</string>
-    <string name="cxstockin_webservice_url">http://192.168.88.254:8056/ErpForWMSServer.asmx</string>
+    <string name="cxstockin_webservice_url">http://192.168.99.79:8012/ErpForWMSServer.asmx</string>
     <string name="cxstockin_stockin">入库单</string>
     <string name="cxstockin_scstockin">生产入库单</string>
     <string name="cxstockin_stockout">领料单</string>
@@ -61,6 +61,10 @@
     <string name="cxstockin_phonenum">手机号：</string>
     <string name="cxstockin_title_activity_login">用户登录</string>
 
+
+    <!-- 生产汇报信息-->
+    <string name="screport_barcode">派工单条形码</string>
+    <string name="screport_form_name">生产汇报扫码</string>
     <!-- 用户登录信息-->
     <string name="cxstockin_spinner_zzt">当前账套</string>
     <string name="cxstockin_spinner_org">组织名称</string>

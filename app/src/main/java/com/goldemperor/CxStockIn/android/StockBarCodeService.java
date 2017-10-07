@@ -31,7 +31,7 @@ public class StockBarCodeService extends Thread {
     public static final String asmxURL = SystemConfig.WebServiceURL;//"http://192.168.88.254:8011/ErpForAndroidStockServer.asmx";// getString(R.string.cxstockin_webservice_url);//"http://localhost:3087/ErpForAndroidStockServer.asmx";//
     //开发库
     // public static final String asmxURL = "http://localhost:3087/ErpForAndroidStockServer.asmx";
-    //public static final String asmxURL = "http://192.168.88.254:8056/ErpForAndroidStockServer.asmx";
+    //public static final String asmxURL = "http://192.168.99.79:8012/ErpForAndroidStockServer.asmx";
     private static String _BarCode = "";//扫入条码
     private static String _MoNO = "";//指令单号
     public Handler myHandler;

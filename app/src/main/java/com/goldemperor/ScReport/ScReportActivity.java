@@ -25,15 +25,15 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.goldemperor.CxStockIn.android.NetworkHelper;
+import com.goldemperor.CxStockIn.android.TelephonyManagerClass;
 import com.goldemperor.R;
 import com.goldemperor.ScReport.DialogLoadding.WeiboDialogUtils;
 import com.goldemperor.ScReport.android.CommDB;
 import com.goldemperor.ScReport.android.Config;
-import com.goldemperor.ScReport.android.CxStockBarCodeDB;
-import com.goldemperor.ScReport.android.NetworkHelper;
+import com.goldemperor.ScReport.android.ScReportBarCodeDB;
 import com.goldemperor.ScReport.android.PublicService;
 import com.goldemperor.ScReport.android.SubmitBarCodeService;
-import com.goldemperor.ScReport.android.TelephonyManagerClass;
 import com.goldemperor.CxStockIn.deleteslide.ActionSheet;
 import com.goldemperor.CxStockIn.deleteslide.MyAdapter;
 import com.goldemperor.CxStockIn.widget.DelSlideListView;
@@ -76,7 +76,7 @@ public class ScReportActivity extends FragmentActivity implements OnDeleteListio
     public String TABLE_NAME = "t_ScReportBarCode";
 
     private CommDB comDBHelper;
-    public CxStockBarCodeDB CxStockBarCodeDBHelper;
+    public ScReportBarCodeDB ScReportBarCodeDBHelper;
     private RadioButton stockin;
     public Config myConfig;//=new Config();
     public static boolean IsNeedCheckVersion = true;//是否检查自动更新
@@ -94,7 +94,7 @@ public class ScReportActivity extends FragmentActivity implements OnDeleteListio
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.scstockin_activity_main);
+        setContentView(R.layout.screport_activity_main);
 
         //滑动删除实例化
         this.mDelSlideListView = (DelSlideListView) this.findViewById(R.id.listv);
@@ -153,10 +153,10 @@ public class ScReportActivity extends FragmentActivity implements OnDeleteListio
         mFilter = new IntentFilter("ACTION_BAR_SCAN");
         //将广播的优先级调到最高1000
         mFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
-        if (CxStockBarCodeDBHelper == null)
-            CxStockBarCodeDBHelper = new CxStockBarCodeDB(this, barCodeHandler, mMyAdapter, txtcount);
+        if (ScReportBarCodeDBHelper == null)
+            ScReportBarCodeDBHelper = new ScReportBarCodeDB(this, barCodeHandler, mMyAdapter, txtcount);
         mainActivity_instance = ScReportActivity.this;//以便在别的activity中可以直接调用
-        mainActivity_instance.CxStockBarCodeDBHelper = CxStockBarCodeDBHelper;
+        mainActivity_instance.ScReportBarCodeDBHelper = ScReportBarCodeDBHelper;
 
         //加载器监听器
 
@@ -217,7 +217,7 @@ public class ScReportActivity extends FragmentActivity implements OnDeleteListio
             case 0://删除单条条形码
 //                mlist.remove(delID);
                 int delCodeID= Integer.parseInt(mlist.get(delID)[0]);
-                CxStockBarCodeDBHelper.deleteTicketbarcode(delCodeID);
+                ScReportBarCodeDBHelper.deleteTicketbarcode(delCodeID);
                 mDelSlideListView.SnapToScreen();
 //                mMyAdapter.notifyDataSetChanged();
 
@@ -287,10 +287,10 @@ public class ScReportActivity extends FragmentActivity implements OnDeleteListio
         try {
             comDBHelper = new CommDB(this);
             comDBHelper.open();
-            if (CxStockBarCodeDBHelper == null)
-                CxStockBarCodeDBHelper = new CxStockBarCodeDB(this, barCodeHandler, mMyAdapter, txtcount);
-            CxStockBarCodeDBHelper.open();
-            CxStockBarCodeDBHelper.RefreshTable();
+            if (ScReportBarCodeDBHelper == null)
+                ScReportBarCodeDBHelper = new ScReportBarCodeDB(this, barCodeHandler, mMyAdapter, txtcount);
+            ScReportBarCodeDBHelper.open();
+            ScReportBarCodeDBHelper.RefreshTable();
 
         } catch (SQLException e) {
         }
@@ -316,13 +316,13 @@ public class ScReportActivity extends FragmentActivity implements OnDeleteListio
                         DeleteBarCode();
                         break;
                     case R.id.btnclear:
-                        ArrayList<BarCode> lists = CxStockBarCodeDBHelper.GetAllData();
+                        ArrayList<BarCode> lists = ScReportBarCodeDBHelper.GetAllData();
                         if (lists.size() == 0)
                             return;
                         ClearBarCode();
                         break;
                     case R.id.btnsubmit:
-                        ArrayList<BarCode> lists2 = CxStockBarCodeDBHelper.GetAllData();
+                        ArrayList<BarCode> lists2 = ScReportBarCodeDBHelper.GetAllData();
                         if (lists2.size() == 0) {
                             Toast.makeText(getApplicationContext(), "没有数据,无须提交", Toast.LENGTH_SHORT).show();
                             return;
@@ -367,7 +367,7 @@ public class ScReportActivity extends FragmentActivity implements OnDeleteListio
 
     //添加记录
     public void InsertBarCode(String Barcode) {
-        CxStockBarCodeDBHelper.InsertBarcode(Barcode);
+        ScReportBarCodeDBHelper.InsertBarcode(Barcode);
     }
 
     ///删除记录
@@ -377,7 +377,7 @@ public class ScReportActivity extends FragmentActivity implements OnDeleteListio
 
     ///清空记录
     public void ClearBarCode() {
-        CxStockBarCodeDBHelper.deleteAllBarcodes();
+        ScReportBarCodeDBHelper.deleteAllBarcodes();
     }
 
     public boolean CheckNetAvailable() {
@@ -411,14 +411,14 @@ public class ScReportActivity extends FragmentActivity implements OnDeleteListio
             startActivity(intent);
             this.finish();
         } else
-            CxStockBarCodeDBHelper.ClearSubmitData(this, "ScReportActivity");
+            ScReportBarCodeDBHelper.ClearSubmitData(this, "ScReportActivity");
     }
 
     public void ClearSubmitData(Context myContext, String MessageType) {
-        if (CxStockBarCodeDBHelper == null)
-            CxStockBarCodeDBHelper = new CxStockBarCodeDB(myContext, barCodeHandler, mMyAdapter, txtcount);
+        if (ScReportBarCodeDBHelper == null)
+            ScReportBarCodeDBHelper = new ScReportBarCodeDB(myContext, barCodeHandler, mMyAdapter, txtcount);
         //CxStockBarCodeDBHelper=new CxStockBarCodeDB(getApplicationContext(),barCodeHandler,et_scan_table,txtcount);////CxStockBarCodeDBHelper=new CxStockBarCodeDB(this,barCodeHandler,et_scan_table,txtcount);
-        CxStockBarCodeDBHelper.ClearSubmitData(myContext, MessageType);
+        ScReportBarCodeDBHelper.ClearSubmitData(myContext, MessageType);
     }
 
     //根据登录信息重新初始化控件信息
@@ -451,8 +451,8 @@ public class ScReportActivity extends FragmentActivity implements OnDeleteListio
         mFilter = null;
         comDBHelper.close();
         comDBHelper = null;
-        CxStockBarCodeDBHelper.close();
-        CxStockBarCodeDBHelper = null;
+        ScReportBarCodeDBHelper.close();
+        ScReportBarCodeDBHelper = null;
         super.onDestroy();
 
     }
@@ -513,7 +513,7 @@ public class ScReportActivity extends FragmentActivity implements OnDeleteListio
             super.handleMessage(msg);
             switch (msg.what) {
                 case MessageEnum.ClearBarCodeData://删除本地所有数据
-                    CxStockBarCodeDBHelper.ClearBarcodes();
+                    ScReportBarCodeDBHelper.ClearBarcodes();
 //                    redrawscan_table();
                     break;
                 case MessageEnum.SubmitClearData://成功提交数据，生产单据后，删除本地所有数据
@@ -522,7 +522,7 @@ public class ScReportActivity extends FragmentActivity implements OnDeleteListio
                     String Result = PublicService.parseResultJson(myMessageObject2.Content, StockBillNO);
                     if (Result.equals("success")) {
                         //new Dialog(myContext,this).ClearBarCodeDataDialog("提示", "已成功生成单据编号："+MainActivity.loginActivity_instance.userLoginInfo.userInfo.getStockBillNO());
-                        CxStockBarCodeDBHelper.ClearBarcodes();//生产成功后再删除本地数据，否则不删除
+                        ScReportBarCodeDBHelper.ClearBarcodes();//生产成功后再删除本地数据，否则不删除
                         //this.m.notifyDataSetChanged();
                         Toast.makeText(getApplicationContext(), "成功生成单据编号：" + ScReportActivity.loginActivity_instance.userLoginInfo.userInfo.getStockBillNO(), Toast.LENGTH_SHORT).show();
                     }
@@ -541,7 +541,7 @@ public class ScReportActivity extends FragmentActivity implements OnDeleteListio
                     MessageObject myMessageObject = (MessageObject) msg.obj;
                     Context LoginContext = myMessageObject.context;
                     String MessageType = myMessageObject.MessageType;
-                    String AllDataJson = CxStockBarCodeDBHelper.GetAllDataJson();//先获得json数据
+                    String AllDataJson = ScReportBarCodeDBHelper.GetAllDataJson();//先获得json数据
                     if (MessageType == "CxLoginActivty") {
 
                         Intent intent = new Intent(LoginContext, ScReportActivity.class);

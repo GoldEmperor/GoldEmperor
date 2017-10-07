@@ -7,6 +7,8 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.goldemperor.CxStockIn.android.Dialog;
+import com.goldemperor.CxStockIn.android.URLCode;
 import com.goldemperor.ScReport.ScLoginActivity;
 import com.goldemperor.model.MessageEnum;
 import com.goldemperor.model.MessageObject;
@@ -42,15 +44,15 @@ public class SubmitBarCodeService extends Thread {
             if (myloginActivity_instance == null)
                 return;
             String params = GetDefaultStockParams(myloginActivity_instance.userLoginInfo.userInfo);
-            String DefaultStockID = PublicService.GetWebServiceParamsComnon(myContext, StockBarCodeService.asmxURL, "GetDefaultStockID", params);
-            if (DefaultStockID.equals("0")) {
-                Toast.makeText(myContext, "当前登录用户尚未配置默认仓库,请联系系统管理员", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            myloginActivity_instance.userLoginInfo.userInfo.setDefaultStockID(DefaultStockID);
+//            String DefaultStockID = PublicService.GetWebServiceParamsComnon(myContext, StockBarCodeService.asmxURL, "GetDefaultStockID", params);
+//            if (DefaultStockID.equals("0")) {
+//                Toast.makeText(myContext, "当前登录用户尚未配置默认仓库,请联系系统管理员", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//            myloginActivity_instance.userLoginInfo.userInfo.setDefaultStockID(DefaultStockID);
             params = GetBarCodeParams(myloginActivity_instance.userLoginInfo.userInfo);
             //设定账套下拉框 ,发送显示指令单命令 Looper.prepare();
-            String result = PublicService.GetWebServiceParamsComnon(myContext, StockBarCodeService.asmxURL, "SubmitCxBarCode2CollectBill", params);
+            String result = PublicService.GetWebServiceParamsComnon(myContext, StockBarCodeService.asmxURL, "SubmitWorkCardBarCode2CollectBill", params);
 
 
          //  String result="{'Result':'success','StockBillNO':''}";
@@ -110,9 +112,9 @@ public class SubmitBarCodeService extends Thread {
         Map<String, String> ParamsMap = new HashMap<String, String>();
         String params = "";
         ParamsMap.put("UserID", userInfo.getUserID());
+        ParamsMap.put("EmpID", userInfo.getEmpID());
         ParamsMap.put("Red", userInfo.getRed());
-        ParamsMap.put("DefaultStockID", userInfo.getDefaultStockID());
-        ParamsMap.put("BillTypeID", userInfo.getBillTypeID());
+        ParamsMap.put("TranType", userInfo.getBillTypeID());
         ParamsMap.put("OrganizeID", userInfo.getOrganizationID());
         ParamsMap.put("barcodeJson", URLCode.toURLEncoded(myallDataJson));
 

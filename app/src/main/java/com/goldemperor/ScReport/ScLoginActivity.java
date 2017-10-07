@@ -21,14 +21,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.goldemperor.CxStockIn.android.NetworkHelper;
 import com.goldemperor.MainActivity.MainActivity;
 import com.goldemperor.R;
 import com.goldemperor.ScReport.android.LoginService;
-import com.goldemperor.ScReport.android.NetworkHelper;
 import com.goldemperor.ScReport.android.PublicService;
 import com.goldemperor.ScReport.android.UserInfoDB;
 import com.goldemperor.ScReport.android.UserLoginHelper;
-import com.goldemperor.ScReport.android.XmlUtils;
+import com.goldemperor.CxStockIn.android.XmlUtils;
 import com.goldemperor.model.AccountSuit;
 import com.goldemperor.model.MessageEnum;
 import com.goldemperor.model.MessageObject;

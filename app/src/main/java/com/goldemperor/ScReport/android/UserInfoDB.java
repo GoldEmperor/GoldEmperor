@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Handler;
 import android.util.Log;
 
+import com.goldemperor.CxStockIn.android.Dialog;
 import com.goldemperor.model.UserInfo;
 import com.goldemperor.model.UserLoginInfo;
 

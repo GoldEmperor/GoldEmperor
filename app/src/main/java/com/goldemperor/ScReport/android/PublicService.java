@@ -5,6 +5,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.util.Xml;
 
+import com.goldemperor.CxStockIn.android.Dialog;
 import com.goldemperor.model.UserInfo;
 
 import org.json.JSONException;

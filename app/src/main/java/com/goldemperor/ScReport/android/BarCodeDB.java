@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.goldemperor.CxStockIn.android.Dialog;
 import com.goldemperor.R;
 import com.goldemperor.CxStockIn.deleteslide.MyAdapter;
 import com.goldemperor.model.BarCode;
@@ -35,7 +36,7 @@ public class BarCodeDB {
     private SQLiteDatabase mDb;
 //    private LinkedList<String> myList;
     private TextView mytxtcount;
-    static final String SQLITE_TABLE = "t_BarCode";
+    static final String SQLITE_TABLE = "t_ScReportBarCode";
     private Handler myHandler;
     private Context myContext;
     private MyAdapter myAdapter;

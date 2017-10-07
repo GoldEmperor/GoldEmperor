@@ -12,22 +12,22 @@ import java.lang.reflect.Field;
  * 本地SQLLite访问类
  */
 public class CommDB {
-    public static final String DATABASE_NAME = "BarCodeDataBase"; //数据库名称
+    public static final String DATABASE_NAME = "ScBarCodeDataBase"; //数据库名称
 
     public static final int DATABASE_VERSION = 1;
     //创建该数据库下条形码表的语句
-    private static final String CREATE_TABLE_CxStockBarCode =
-            "CREATE TABLE if not exists " + CxStockBarCodeDB.SQLITE_TABLE + " (" +
-                    CxStockBarCodeDB.KEY_ROWID + " integer PRIMARY KEY autoincrement," +
-                    CxStockBarCodeDB.KEY_BARCODE + " [nvarchar] (50)  NOT NULL);";//成型条形码列允许重复,因为是老外的条码
+//    private static final String CREATE_TABLE_CxStockBarCode =
+//            "CREATE TABLE if not exists " + ScReportBarCodeDB.SQLITE_TABLE + " (" +
+//                    ScReportBarCodeDB.KEY_ROWID + " integer PRIMARY KEY autoincrement," +
+//                    ScReportBarCodeDB.KEY_BARCODE + " [nvarchar] (50)  NOT NULL);";//成型条形码列允许重复,因为是老外的条码
     //创建该数据库下条形码表的语句
     private static final String CREATE_TABLE_BarCode =
             "CREATE TABLE if not exists " + BarCodeDB.SQLITE_TABLE + " (" +
                     BarCodeDB.KEY_ROWID + " integer PRIMARY KEY autoincrement," +
                     BarCodeDB.KEY_BARCODE + " [nvarchar] (50)  NOT NULL ," +
                     " UNIQUE (" + BarCodeDB.KEY_BARCODE + "));";//设定条形码列不能重复,自己生成的条码
-    // 创建成型条形码表索引
-    private static final String CREATECXINDEX = "   CREATE INDEX if not exists  IX_" + CxStockBarCodeDB.KEY_BARCODE + " ON  [" + CxStockBarCodeDB.SQLITE_TABLE + "]([" + CxStockBarCodeDB.KEY_BARCODE + "])";
+//    // 创建成型条形码表索引
+//    private static final String CREATECXINDEX = "   CREATE INDEX if not exists  IX_" + ScReportBarCodeDB.KEY_BARCODE + " ON  [" + ScReportBarCodeDB.SQLITE_TABLE + "]([" + ScReportBarCodeDB.KEY_BARCODE + "])";
     // 创建外购入单单，生产入库单表索引
     private static final String CREATEINDEX = "   CREATE INDEX if not exists  IX_" + BarCodeDB.KEY_BARCODE + " ON  [" + BarCodeDB.SQLITE_TABLE + "]([" + BarCodeDB.KEY_BARCODE + "])";
 
@@ -74,8 +74,8 @@ public class CommDB {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            db.execSQL(CREATE_TABLE_CxStockBarCode);//创建成型条码条形码表
-            db.execSQL(CREATECXINDEX);//创建成型条形码表索引
+//            db.execSQL(CREATE_TABLE_CxStockBarCode);//创建成型条码条形码表
+//            db.execSQL(CREATECXINDEX);//创建成型条形码表索引
             db.execSQL(CREATE_TABLE_BarCode);//创建外购入单单，生产入库单条形码表
             db.execSQL(CREATEINDEX);//创建条形码表索引
             db.execSQL(CREATE_TABLE_UserInfo);//创建最后次用户登录信息表

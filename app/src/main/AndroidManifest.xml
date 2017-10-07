@@ -221,7 +221,7 @@
         <activity
             android:name="com.goldemperor.ScReport.ScLoginActivity"
             android:configChanges="orientation"
-            android:label="@string/cxstockin_form_name"
+            android:label="@string/screport_form_name"
             android:windowSoftInputMode="adjustUnspecified|stateHidden">
         </activity>
         //注册广播BroadcastReceiver和Service

@@ -6,7 +6,8 @@ package com.goldemperor.model;
 
 public class SystemConfig {
     //webservice网址
-    public static String WebServiceURL="http://192.168.88.254:8056/ErpForAndroidStockServer.asmx";
+//    public static String WebServiceURL="http://192.168.99.79:8012/ErpForAndroidStockServer.asmx";
+    public static String WebServiceURL="http://192.168.99.79:8012/ErpForAndroidStockServer.asmx";
 //    public static String WebServiceURL="http://localhost:3087/ErpForAndroidStockServer.asmx";
   //  public static String WebServiceURL="http://10.0.2.2:3087/ErpForAndroidStockServer.asmx";
 }

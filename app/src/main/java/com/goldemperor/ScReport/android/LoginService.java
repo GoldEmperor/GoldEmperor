@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.goldemperor.CxStockIn.android.URLCode;
 import com.goldemperor.model.MessageEnum;
 import com.goldemperor.model.MessageObject;
 import com.goldemperor.model.UserInfo;

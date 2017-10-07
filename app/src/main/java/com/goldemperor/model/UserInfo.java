@@ -44,7 +44,15 @@ public class UserInfo {
         return this.BillTypeID;
     }
 
-    public String UserID;//单据类型ID
+    public String EmpID="0";//单据类型ID
+    public void setEmpID(String empID) {
+        this.EmpID = empID;
+    }
+
+    public String getEmpID() {
+        return this.EmpID;
+    }
+    public String UserID;//
 
     public void setUserID(String userID) {
         this.UserID = userID;
