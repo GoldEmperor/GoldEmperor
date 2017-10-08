@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.util.Util;
 import com.goldemperor.MainActivity.ListViewDecoration;
 import com.goldemperor.MainActivity.OnItemClickListener;
 import com.goldemperor.MainActivity.Utils;
@@ -351,6 +352,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         btn_report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_report.setEnabled(false);
                 saveData();
             }
         });
@@ -629,7 +631,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         sc_processWorkCardEntry.setFmodelid(processWorkCardPlanEntry.getFmodelid());
         sc_processWorkCardEntry.setFroutingid(processWorkCardPlanEntry.getFroutingid());
         sc_processWorkCardEntry.setFqty(processWorkCardPlanEntry.getDispatchingnumber());
-
+        sc_processWorkCardEntry.setHaveSave(true);
         try {
             List<GxpgPlanStatus> gxpgPlanStatusesList = dbManager.selector(GxpgPlanStatus.class).where("planbill", " = ", selectWorkCardPlan.getPlanbill()).and("orderbill", "=", selectWorkCardPlan.getOrderbill()).findAll();
             if ((sc_processWorkCardEntry.getFqty() == null || sc_processWorkCardEntry.getFqty().intValue() == 0) && gxpgPlanStatusesList.size() < 1) {
@@ -856,7 +858,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         Gson g = new Gson();
         RequestParams params = new RequestParams(define.SCProcessWorkCardReWriteBysuitID);
         params.addBodyParameter("PushJsonCondition", g.toJson(pushJsonConditionList));
-        params.addBodyParameter("suitID", "32");
+        params.addBodyParameter("suitID", define.suitID);
         //Log.e("jindi",params.toString());
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
@@ -901,7 +903,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         Gson g = new Gson();
         RequestParams params = new RequestParams(define.SCProcessWorkCardReWriteBysuitID);
         params.addBodyParameter("PushJsonCondition", g.toJson(pushJsonConditionList));
-        params.addBodyParameter("suitID", "32");
+        params.addBodyParameter("suitID", define.suitID);
         //Log.e("jindi",params.toString());
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
@@ -954,7 +956,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
             } catch (DbException e) {
                 e.printStackTrace();
             }
-
+            sc_ProcessWorkCardEntryList.get(i).setHaveSave(true);
             GxpgPlan gxpgPlan = new GxpgPlan();
             gxpgPlan.setStyle(processWorkCardPlanEntryList.get(i).getPlantbody());
             gxpgPlan.setProcessname(sc_ProcessWorkCardEntryList.get(i).getFprocessname());
@@ -1049,7 +1051,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 }
                 sc_processWorkCardEntry.setFqty(new BigDecimal(0));
                 sc_processWorkCardEntry.setFfinishqty(new BigDecimal(0));
-
+                sc_processWorkCardEntry.setHaveSave(false);
                 sc_ProcessWorkCardEntryList.add(adapterPosition + 1, sc_processWorkCardEntry);
 
                 mMenuAdapter.notifyItemInserted(adapterPosition + 1);
@@ -1082,9 +1084,13 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                                             });
                                     normalDialog.show();
                                 } else {
-                                    processWorkCardPlanEntryList.remove(adapterPosition);
-                                    sc_ProcessWorkCardEntryList.remove(adapterPosition);
-                                    mMenuAdapter.notifyItemRemoved(adapterPosition);
+                                    //if(sc_ProcessWorkCardEntryList.get(adapterPosition).getHaveSave()) {
+                                        //Toast.makeText(mContext,"本道工序已保存到预排,无法删除",Toast.LENGTH_LONG).show();
+                                    //}else{
+                                        processWorkCardPlanEntryList.remove(adapterPosition);
+                                        sc_ProcessWorkCardEntryList.remove(adapterPosition);
+                                        mMenuAdapter.notifyItemRemoved(adapterPosition);
+                                    //}
                                 }
                             }
                         });
@@ -1151,7 +1157,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         RequestParams params = new RequestParams(define.SCProcessWorkCard2SCProcessOutPutBysuitID);
         params.addParameter("PushJsonCondition", g.toJson(pushJsonConditionList));
         params.addParameter("UserID", dataPref.getString(define.SharedUserId, "0"));
-        params.addParameter("suitID", "32");
+        params.addParameter("suitID", define.suitID);
         //Log.e("jindi",params.toString());
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
@@ -1168,10 +1174,13 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                     processOutPut = g.fromJson(result, ProcessOutPut.class);
 
                     for (int i = 0; i < processOutPut.getReturnMsg().size(); i++) {
+                        processOutPut.getReturnMsg().get(i).setFworkcardinterid(processOutPut.getReturnMsg().get(i).getFworkcardinterid());
                         processOutPut.getReturnMsg().get(i).setFcheckerid(processOutPut.getReturnMsg().get(i).getFbillerid());
                         processOutPut.getReturnMsg().get(i).setFemp(sc_ProcessWorkCardEntryList.get(i).getName());
                         processOutPut.getReturnMsg().get(i).setFempid(sc_ProcessWorkCardEntryList.get(i).getFempid());
                         processOutPut.getReturnMsg().get(i).setFdeptnumber(String.valueOf(sc_ProcessWorkCardEntryList.get(i).getFdeptmentid()));
+                        processOutPut.getReturnMsg().get(i).setFNewWorkCardInterID(sc_ProcessWorkCardEntryList.get(i).getFsourceinterid());
+                        processOutPut.getReturnMsg().get(i).setFNewWorkCardEntryID(sc_ProcessWorkCardEntryList.get(i).getFsourceentryid());
                     }
 
                     //TextView tv_processname = (TextView) layout.findViewById(R.id.tv_processname);
@@ -1216,8 +1225,10 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                     Log.e("jindi", "norecord:" + norecord);
                     if (maxCount > Float.valueOf(norecord) + 0.01f) {
                         Toast.makeText(mContext, "计工数超过汇报数", Toast.LENGTH_LONG).show();
+                        btn_report.setEnabled(true);
                     } else if (maxCount <= 0) {
                         Toast.makeText(mContext, "计工数不能小于零", Toast.LENGTH_LONG).show();
+                        btn_report.setEnabled(true);
                     } else {
                         reportCount = (int) maxCount;
                         Log.e("jindi", "reportCount:" + reportCount);
@@ -1260,10 +1271,9 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         RequestParams params = new RequestParams(define.SCProcessOutPutSaveBysuitID);
         params.addParameter("PushJsonCondition", g.toJson(processOutPut.getReturnMsg()));
         params.addParameter("Type", "insert");
-        params.addParameter("suitID", "32");
+        params.addParameter("suitID", define.suitID);
         //String log=params.toString();
-        //Log.e("jindi",log.substring(0,log.length()/2));
-        //Log.e("jindi",log.substring(log.length()/2));
+        //Utils.e("jindi",log);
         //Log.e("jindi", params.toString());
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
@@ -1279,6 +1289,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                     SCProcessOutPutReWriteBysuitID();
                 } else {
                     Toast.makeText(mContext, "工序汇报超额", Toast.LENGTH_LONG).show();
+                    btn_report.setEnabled(true);
                 }
             }
 
@@ -1312,7 +1323,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         Gson g = new Gson();
         RequestParams params = new RequestParams(define.SCProcessOutPutReWriteBysuitID);
         params.addParameter("PushJsonCondition", g.toJson(pushJsonConditionList));
-        params.addParameter("suitID", "32");
+        params.addParameter("suitID", define.suitID);
         //Log.e("jindi", params.toString());
 
         x.http().post(params, new Callback.CommonCallback<String>() {
@@ -1331,6 +1342,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 } else {
                     Toast.makeText(mContext, "工序汇报录入失败", Toast.LENGTH_LONG).show();
                 }
+                btn_report.setEnabled(true);
             }
 
             //请求异常后的回调方法

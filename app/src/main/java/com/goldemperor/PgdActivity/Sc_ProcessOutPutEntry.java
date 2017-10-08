@@ -4,109 +4,128 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class Sc_ProcessOutPutEntry {
-	 private Integer finterid;
+    private Integer finterid;
 
-	    private Integer forganizeid;//生产组织
+    private Integer forganizeid;//生产组织
 
-	    private Integer fbilltypeid;//单据类型;
+    private Integer fbilltypeid;//单据类型;
 
-	    private Integer fbillstyle;//汇报类型;
+    private Integer fbillstyle;//汇报类型;
 
-	    private Integer fpushtypeid;//下推类型;
+    private Integer fpushtypeid;//下推类型;
 
-	    private String fbillnumber;//汇报单号;
+    private String fbillnumber;//汇报单号;
 
-	    private String outputdate;//汇报日期;
+    private String outputdate;//汇报日期;
 
-	    private String fdeptnumber;//生产车间;
+    private String fdeptnumber;//生产车间;
 
-	  
 
-	    private Integer fcodecollectid;//采集单id;
+    private Integer fcodecollectid;//采集单id;
 
-	    private Double ftotalqty;//合计数量;
+    private Double ftotalqty;//合计数量;
 
-	    private Double ftotalamount;//合计金额;
+    private Double ftotalamount;//合计金额;
 
-	    private String fbiller;//制单;
+    private String fbiller;//制单;
 
-	    private String fchecker;//审核;
+    private String fchecker;//审核;
 
-        private String fbillerid;
+    private String fbillerid;
 
-        private String fcheckerid;
+    private String fcheckerid;
 
-	    private String outputname;//汇报;
+    private String outputname;//汇报;
 
-	    private Integer years;//年;
+    private Integer years;//年;
 
-	    private Integer months;//月;
+    private Integer months;//月;
 
-	    private Integer fpartid;//部件ID
+    private Integer fpartid;//部件ID
 
-	    private Integer fproductid;//形体ID
+    private Integer fproductid;//形体ID
 
-	    private Integer fprdmoid;//生产订单ID
+    private Integer fprdmoid;//生产订单ID
 
-	    private Integer fmoid;//指令单ID
+    private Integer fmoid;//指令单ID
 
-	    private Integer fempid;//员工ID
+    private Integer fempid;//员工ID
 
-	    private Integer foperplanningid;//工序计划ID
+    private Integer foperplanningid;//工序计划ID
 
-	    private Integer frow;//序号
+    private Integer frow;//序号
 
-	    private String fmtono;//计划跟踪号
+    private String fmtono;//计划跟踪号
 
-	    private String productionorders;//生产订单编号
+    private String productionorders;//生产订单编号
 
-	    private String processplannumber;//工序计划号
+    private String processplannumber;//工序计划号
 
-	    private String processoutputnumber;//工序派工单号
+    private String processoutputnumber;//工序派工单号
 
-	    private String partname;//部件
+    private String partname;//部件
 
-	    private String productnumber;//产品编码
+    private String productnumber;//产品编码
 
-	    private String productname;//产品名称
+    private String productname;//产品名称
 
-	    private Integer fitemid;
+    private Integer fitemid;
 
-	    private String materialcode;//物料编码
+    private String materialcode;//物料编码
 
-	    private String fprocessnumber;//工序编码
+    private String fprocessnumber;//工序编码
 
-	    private String fprocessname;//工序名称
+    private String fprocessname;//工序名称
 
-	    private String femp;//员工
+    private String femp;//员工
 
-	    private String fsize;//尺码
+    private String fsize;//尺码
 
-	    private BigDecimal fqty;//汇报数量
+    private BigDecimal fqty;//汇报数量
 
-	    private BigDecimal fprice;//工价
+    private BigDecimal fprice;//工价
 
-	    private BigDecimal famount;//金额
+    private BigDecimal famount;//金额
 
-	    private String fnote;//备注
+    private String fnote;//备注
 
-	    private BigDecimal fsourceqty;//派工数量
+    private BigDecimal fsourceqty;//派工数量
 
-	    private String fcardno;//条形码
+    private String fcardno;//条形码
 
-	    private Integer fsourceinterid;
+    private Integer fsourceinterid;
 
-	    private Integer fsourceentryid;
+    private Integer fsourceentryid;
 
-	    private Integer fworkcardinterid;//派工单ID
+    private Integer fworkcardinterid;//派工单ID
 
-	    private String productionorder;//生产单号
+    private String productionorder;//生产单号
 
-	    private String fproductname;//型体
+    private String fproductname;//型体
 
-	    private String routname;//工艺路线
+    private String routname;//工艺路线
 
-	    private Integer froutingid;//路线ID
+    private Integer froutingid;//路线ID
+
+    public int FNewWorkCardInterID;
+
+    public int FNewWorkCardEntryID;
+
+    public int getFNewWorkCardInterID() {
+        return FNewWorkCardInterID;
+    }
+
+    public void setFNewWorkCardInterID(Integer FNewWorkCardInterID) {
+        this.FNewWorkCardInterID = FNewWorkCardInterID;
+    }
+
+    public int getFNewWorkCardEntryID() {
+        return FNewWorkCardEntryID;
+    }
+
+    public void setFNewWorkCardEntryID(int FNewWorkCardEntryID) {
+        this.FNewWorkCardEntryID = FNewWorkCardEntryID;
+    }
 
     public Integer getFinterid() {
         return finterid;
@@ -492,7 +511,7 @@ public class Sc_ProcessOutPutEntry {
         this.fsourceentryid = fsourceentryid;
     }
 
-  
+
     public String getProductionorder() {
         return productionorder;
     }
@@ -501,7 +520,7 @@ public class Sc_ProcessOutPutEntry {
         this.productionorder = productionorder == null ? null : productionorder.trim();
     }
 
-   
+
     public String getRoutname() {
         return routname;
     }

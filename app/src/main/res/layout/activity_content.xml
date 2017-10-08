@@ -67,7 +67,7 @@
                     fancy:fb_fontIconSize="25sp"
                     fancy:fb_iconPosition="top"
                     fancy:fb_radius="10dp"
-                    fancy:fb_text="生产派单"
+                    fancy:fb_text="现场管理"
                     fancy:fb_textColor="#FFFFFF" />
 
                 <mehdi.sakout.fancybuttons.FancyButton

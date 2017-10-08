@@ -2,6 +2,7 @@ package com.goldemperor.MainActivity;
 
 public class define {
 
+
     public static final String endpoint = "http://jindi.zealji.com/";
 
     public static final String bucket = "glodemperor";
@@ -9,97 +10,118 @@ public class define {
     public static String OSS_KEY = "LTAILVsmSDSxWo7D";
     public static String OSS_SECRET = "iWSOmHPErPqWRuC7vNrq5b7qS4hSDn";
 
-    public static final String SubmitNumberRequest = "http://220.189.245.171:8881/SubmitNumberRequest";
 
-    public static final String SubmitRequest = "http://220.189.245.171:8881/SubmitRequest";
+    public static String suitID="1";
 
-    public static final String GetData = "http://220.189.245.171:8881/GetData";
+    public static String IP1718081="http://220.189.245.171:8881/";
 
-    public static final String GetDataBydate = "http://220.189.245.171:8881/GetDataBydate";
+    public static String IP328030="http://59.56.103.32:8030/";
 
-    public static final String SubmitCheck = "http://220.189.245.171:8881/SubmitCheck";
+    public static String IP1718080="http://220.189.245.171:8080/";
 
-    public static final String GetDataById = "http://220.189.245.171:8881/GetDataById";
+    public static String IP1718020="http://220.189.245.171:8020/";
 
-    public static final String Done = "http://220.189.245.171:8881/Done";
-
-    public static final String Exceptional = "http://220.189.245.171:8881/Exceptional";
-
-    public static final String SubmitResult= "http://220.189.245.171:8881/SubmitResult";
-
-    public static final String SubmitRefuse = "http://220.189.245.171:8881/SubmitRefuse";
-
-    public static final String GetDataBySupplier = "http://220.189.245.171:8881/GetDataBySupplier";
+    public static String IP798020="http://192.168.99.79:8020/";
 
 
+    public static String IP798012="http://192.168.99.79:8012/";
 
-    public static final String Login = "http://59.56.103.32:8030/api/get/login";
+    public static String IP1718012="http://220.189.245.171:8012/";
 
-    public static final String Register = "http://220.189.245.171:8881/Register";
+    public static final String SubmitNumberRequest = IP1718081+"SubmitNumberRequest";
 
-    public static final String GetCode = "http://59.56.103.32:8030/api/MessagePost/GetCode";
+    public static final String SubmitRequest = IP1718081+"SubmitRequest";
 
-    public static final String GetScProcessWorkCardInfo = "http://192.168.99.79:8012/ErpForAndroidStockServer.asmx/GetScProcessWorkCardInfo";
+    public static final String GetData = IP1718081+"GetData";
 
-    public static final String WaiGetScProcessWorkCardInfo = "http://220.189.245.171:8012/ErpForAndroidStockServer.asmx/GetScProcessWorkCardInfo";
+    public static final String GetDataBydate = IP1718081+"GetDataBydate";
 
-    public static final String UpdataImage = "http://220.189.245.171:8881/UpdataImage";
+    public static final String SubmitCheck = IP1718081+"SubmitCheck";
 
-    public static final String GetImage = "http://220.189.245.171:8881/GetImage";
+    public static final String GetDataById = IP1718081+"GetDataById";
 
-    public static final String SubmitProcessBarCode2CollectBill = "http://192.168.99.79:8012/ErpForAndroidStockServer.asmx/SubmitProcessBarCode2CollectBill";
+    public static final String Done = IP1718081+"Done";
 
-    public static final String WaiSubmitProcessBarCode2CollectBill = "http://220.189.245.171:8012/ErpForAndroidStockServer.asmx/SubmitProcessBarCode2CollectBill";
+    public static final String Exceptional = IP1718081+"Exceptional";
 
-    public static final String GetPlanbyTime = "http://220.189.245.171:8080/wechatMvn/android/getPlanbyTime.do";
+    public static final String SubmitResult= IP1718081+"SubmitResult";
 
-    public static final String UpdateXML = "http://220.189.245.171:8020/AndroidUpdate/GoldEmperor/update.xml";
+    public static final String SubmitRefuse = IP1718081+"SubmitRefuse";
 
-    public static final String NeiUpdateXML = "http://192.168.99.79:8020/AndroidUpdate/GoldEmperor/update.xml";
+    public static final String GetDataBySupplier = IP1718081+"GetDataBySupplier";
 
-    public static final String IsHaveControl = "http://192.168.88.254:8056/ERPPublicServer.asmx/IsHaveControl";//"http://192.168.99.79:8012/ERPPublicServer.asmx/IsHaveControl";
 
-    public static final String GetPlanEntry = "http://220.189.245.171:8080/wechatMvn/android/getPlanEntry.do";
 
-    public static final String GetEmpByDeptID = "http://220.189.245.171:8080/wechatMvn/mes/GetEmpByDeptID.do";
+    public static final String Login = IP328030+"api/get/login";
 
-    public static final String SCWorkCard2SCProcessWorkCardBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/SCWorkCard2SCProcessWorkCardBysuitID";
+    public static final String Register = IP1718081+"Register";
 
-    public static final String GetProcessPlanEntry = "http://220.189.245.171:8080/wechatMvn/android/getProcessPlanEntry.do";
+    public static final String GetCode = IP328030+"api/MessagePost/GetCode";
 
-    public static final String GetEmpByFNumber = "http://220.189.245.171:8080/wechatMvn/mes/GetEmpByFNumber.do";
+    public static final String GetScProcessWorkCardInfoBysuitID= IP798012+"ErpForAndroidStockServer.asmx/GetScProcessWorkCardInfoBysuitID";
 
-    public static final String GetUserID = "http://192.168.99.79:8056/ERPForWeixinServer.ASMX/GetUserID";
+    public static final String WaiGetScProcessWorkCardInfoBysuitID = IP1718012+"ErpForAndroidStockServer.asmx/GetScProcessWorkCardInfoBysuitID";
 
-    public static final String InsertProcessPlanEntry = "http://220.189.245.171:8080/wechatMvn/android/insertProcessPlanEntry.do";
+    public static final String UpdataImage = IP1718081+"UpdataImage";
 
-    public static final String GetPlanbyBillNumber = "http://220.189.245.171:8080/wechatMvn/android/getPlanbyBillNumber.do";
+    public static final String GetImage = IP1718081+"GetImage";
 
-    public static final String SCProcessWorkCardReWriteBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/SCProcessWorkCardReWriteBysuitID";
+    public static final String SubmitProcessBarCode2CollectBill = IP798012+"ErpForAndroidStockServer.asmx/SubmitProcessBarCode2CollectBill";
 
-    public static final String SCProcessWorkCard2SCProcessOutPutBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/SCProcessWorkCard2SCProcessOutPutBysuitID";
+    public static final String WaiSubmitProcessBarCode2CollectBill = IP1718012+"ErpForAndroidStockServer.asmx/SubmitProcessBarCode2CollectBill";
 
-    public static final String GetRouteEntryBody = "http://220.189.245.171:8080/wechatMvn/android/getRouteEntryBody.do";
+    public static final String GetPlanbyTime = IP1718080+"wechatMvn/android/getPlanbyTime.do";
 
-    public static final String SCProcessOutPutSaveBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/SCProcessOutPutSaveBysuitID";
+    public static final String UpdateXML = IP1718020+"AndroidUpdate/GoldEmperor/update.xml";
 
-    public static final String SCProcessOutPutReWriteBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/SCProcessOutPutReWriteBysuitID";
+    public static final String NeiUpdateXML = IP798020+"AndroidUpdate/GoldEmperor/update.xml";
 
-    public static final String GetSCProcessOutPutQtyBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/GetSCProcessOutPutQtyBysuitID";
+    public static final String IsHaveControl = IP798012+"ERPPublicServer.asmx/IsHaveControl";//"http://192.168.99.79:8012/ERPPublicServer.asmx/IsHaveControl";
 
-    public static final String WechatPostByFEmpID = "http://59.56.103.32:8030/api/MessagePost/WechatPostByFEmpID";
+    public static final String GetPlanEntry = IP1718080+"wechatMvn/android/getPlanEntry.do";
 
-    public static final String GetWorkPlanMaterial = "http://220.189.245.171:8080/wechatMvn/android/getWorkPlanMaterial.do";
+    public static final String GetEmpByDeptID = IP1718080+"wechatMvn/mes/GetEmpByDeptID.do";
 
-    public static final String GetWorkPlanQtyBysuitID = "http://192.168.99.79:8056/ErpForAndroidStockServer.asmx/GetWorkPlanQtyBysuitID";
+    public static final String SCWorkCard2SCProcessWorkCardBysuitID = IP798012+"ErpForAndroidStockServer.asmx/SCWorkCard2SCProcessWorkCardBysuitID";
 
-    public static final String GetPlanFInterIDbyTime = "http://220.189.245.171:8080/wechatMvn/android/getPlanFInterIDbyTime.do";
+    public static final String GetProcessPlanEntry = IP1718080+"wechatMvn/android/getProcessPlanEntry.do";
 
-    public static final String GetWorkCardPlanNew = "http://220.189.245.171:8080/wechatMvn/android/getWorkCardPlanNew.do";
+    public static final String GetEmpByFNumber = IP1718080+"wechatMvn/mes/GetEmpByFNumber.do";
 
-    public static final String UpdateProcessPassQty = "http://220.189.245.171:8080/wechatMvn/android/updateProcessPassQty.do";
+    public static final String GetUserID = IP798012+"ERPForWeixinServer.ASMX/GetUserID";
 
-    public static final String GetWorkCardProcessQty = "http://220.189.245.171:8080/wechatMvn/android/getWorkCardProcessQty.do";
+    public static final String InsertProcessPlanEntry = IP1718080+"wechatMvn/android/insertProcessPlanEntry.do";
+
+    public static final String GetPlanbyBillNumber = IP1718080+"wechatMvn/android/getPlanbyBillNumber.do";
+
+    public static final String SCProcessWorkCardReWriteBysuitID = IP798012+"ErpForAndroidStockServer.asmx/SCProcessWorkCardReWriteBysuitID";
+
+    public static final String SCProcessWorkCard2SCProcessOutPutBysuitID = IP798012+"ErpForAndroidStockServer.asmx/SCProcessWorkCard2SCProcessOutPutBysuitID";
+
+    public static final String GetRouteEntryBody = IP1718080+"wechatMvn/android/getRouteEntryBody.do";
+
+    public static final String SCProcessOutPutSaveBysuitID = IP798012+"ErpForAndroidStockServer.asmx/SCProcessOutPutSaveBysuitID";
+
+    public static final String SCProcessOutPutReWriteBysuitID = IP798012+"ErpForAndroidStockServer.asmx/SCProcessOutPutReWriteBysuitID";
+
+    public static final String GetSCProcessOutPutQtyBysuitID = IP798012+"ErpForAndroidStockServer.asmx/GetSCProcessOutPutQtyBysuitID";
+
+    public static final String WechatPostByFEmpID = IP328030+"api/MessagePost/WechatPostByFEmpID";
+
+    public static final String GetWorkPlanMaterial = IP1718080+"wechatMvn/android/getWorkPlanMaterial.do";
+
+    public static final String GetWorkPlanQtyBysuitID = IP798012+"ErpForAndroidStockServer.asmx/GetWorkPlanQtyBysuitID";
+
+    public static final String GetPlanFInterIDbyTime = IP1718080+"wechatMvn/android/getPlanFInterIDbyTime.do";
+
+    public static final String GetWorkCardPlanNew = IP1718080+"wechatMvn/android/getWorkCardPlanNew.do";
+
+    public static final String UpdateProcessPassQty = IP1718080+"wechatMvn/android/updateProcessPassQty.do";
+
+    public static final String GetWorkCardProcessQty = IP1718080+"wechatMvn/android/getWorkCardProcessQty.do";
+
+    public static final String WorkCardProcessHaveOutPutBysuitID =IP798012+"ErpForAndroidStockServer.asmx/WorkCardProcessHaveOutPutBysuitID";
+
 
     public static final String SharedName = "data";
 

@@ -311,7 +311,17 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                         .setTextColor(Color.WHITE)
                         .setWidth(width)
                         .setHeight(height);
-                swipeRightMenu.addMenuItem(addItem); // 添加一个按钮到右侧菜单。
+                swipeLeftMenu.addMenuItem(addItem); // 添加一个按钮到右侧菜单。
+
+                SwipeMenuItem addItem2 = new SwipeMenuItem(mContext)
+                        .setBackgroundDrawable(R.drawable.selector_red)
+                        .setImage(R.mipmap.ic_action_module_black)
+                        .setText("品质异常")
+                        .setTextColor(Color.WHITE)
+                        .setWidth(width)
+                        .setHeight(height);
+                swipeLeftMenu.addMenuItem(addItem2); // 添加一个按钮到右侧菜单。
+
 
 
             }
@@ -645,7 +655,9 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         RequestParams params = new RequestParams(define.GetPlanbyBillNumber);
         params.setReadTimeout(60000);
         params.addQueryStringParameter("FPlanBill", searchText);
-        x.http().post(params, new Callback.CommonCallback<String>() {
+        params.addQueryStringParameter("suitID", define.suitID);
+        Log.e("jindi",params.toString());
+        x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(final String result) {
                 pgdWorkCardPlan.clear();
@@ -717,7 +729,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         RequestParams params = new RequestParams(define.GetWorkPlanQtyBysuitID);
         params.addQueryStringParameter("FSourceInterId", dataPref.getString(define.SharedFDeptmentid, ""));
         params.addQueryStringParameter("FSourceEntryId", dataPref.getString(define.SharedFDeptmentid, ""));
-        params.addQueryStringParameter("suitID","32");
+        params.addQueryStringParameter("suitID",define.suitID);
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -810,7 +822,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         params.addParameter("BillTypeID", "3");
         params.addParameter("UserID", dataPref.getString(define.SharedUserId, "0"));
         params.addParameter("DeptmentID", dataPref.getString(define.SharedFDeptmentid, "0"));
-        params.addParameter("suitID", "32");
+        params.addParameter("suitID", define.suitID);
         //Log.e("jindi",params.toString());
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
@@ -864,9 +876,14 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
        if(mMenuAdapter!=null) {
-           Log.e("jindi","e");
+           Log.e("jindi","onActivityResult");
+           pgdWorkCardPlan.clear();
+           showWorkCardPlan.clear();
+           currentPosition = 0;
+           refreshLayout.setEnableLoadmore(true);
+           mMenuAdapter.notifyDataSetChanged();
+           tv_tip.setVisibility(View.VISIBLE);
            getData(StartTime, EndTime);
-           //mMenuAdapter.notifyDataSetChanged();
        }
 
     }

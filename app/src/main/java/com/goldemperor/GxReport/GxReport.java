@@ -232,7 +232,7 @@ public class GxReport extends AppCompatActivity implements EasyPermissions.Permi
             Log.e("jindi", "encodeError");
         }
         params.addBodyParameter("barcodeJson", sjlJsonEncode);
-        params.addBodyParameter("OrganizeID", "1");
+        params.addBodyParameter("OrganizeID", define.suitID);
         params.addBodyParameter("BillTypeID", "1");
         params.addBodyParameter("EmpID", dataPref.getString(define.SharedEmpId, "none"));
         params.addBodyParameter("UserID", "1");

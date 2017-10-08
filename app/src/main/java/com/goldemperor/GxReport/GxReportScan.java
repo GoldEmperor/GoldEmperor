@@ -104,14 +104,16 @@ public class GxReportScan extends AppCompatActivity implements QRCodeView.Delega
         }
         if (flag && result.length() > 10) {
 
-            String path = define.GetScProcessWorkCardInfo;
+            String path = define.GetScProcessWorkCardInfoBysuitID;
             if (define.isWaiNet) {
-                path = define.WaiGetScProcessWorkCardInfo;
+                path = define.WaiGetScProcessWorkCardInfoBysuitID;
             }
             RequestParams params = new RequestParams(path);
             params.setConnectTimeout(60000);
             params.setReadTimeout(60000);
             params.addQueryStringParameter("BarCodeNumber", result);
+            params.addQueryStringParameter("suitID", define.suitID);
+            Log.e("jindi",params.toString());
             x.http().get(params, new Callback.CommonCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
