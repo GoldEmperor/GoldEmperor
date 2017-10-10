@@ -255,145 +255,145 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                 }
             });
      */
+            if(getAdapterPosition()<gxpgActivity.sc_ProcessWorkCardEntryList.size()) {
+                DecimalFormat df = new DecimalFormat("#.0");
+                tv_noReportednumber.setText(df.format(gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getReportNumber()));
 
-            DecimalFormat df = new DecimalFormat("#.0");
-            tv_noReportednumber.setText(df.format(gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getReportNumber()));
+                edit_dispatchingnumber.setText(String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFqty()));
 
-            edit_dispatchingnumber.setText(String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFqty()));
+                edit_dispatchingnumber.addTextChangedListener(new TextWatcher() {
 
-            edit_dispatchingnumber.addTextChangedListener(new TextWatcher() {
-
-                @Override
-                public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-                    // TODO Auto-generated method stub
-                    //这个应该是在改变的时候会做的动作吧，具体还没用到过。
-                }
-
-                @Override
-                public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                                              int arg3) {
-                    // TODO Auto-generated method stub
-                    //这是文本框改变之前会执行的动作
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    // TODO Auto-generated method stub
-                    /**这是文本框改变之后 会执行的动作
-                     */
-                    if (edit_dispatchingnumber.isFocused() && edit_dispatchingnumber.getText().length() > 0 && Utils.isNumeric(edit_dispatchingnumber.getText().toString())) {
-
-                        if (Float.valueOf(edit_dispatchingnumber.getText().toString().trim()) != 0) {
-                            //先不管超标设置总数
-                            if (Float.valueOf(edit_dispatchingnumber.getText().toString().trim()) > p.getHavedispatchingnumber().intValue()) {
-                                edit_dispatchingnumber.setText(String.valueOf(p.getHavedispatchingnumber().intValue()));
-                            }
-                            gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFqty(new BigDecimal(edit_dispatchingnumber.getText().toString().trim()));
-                            //设置后判断总数
-                            float count = 0;
-                            for (int i = 0; i < gxpgActivity.sc_ProcessWorkCardEntryList.size(); i++) {
-                                if (gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname().equals(gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getFprocessname())) {
-                                    count += gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFqty().floatValue();
-                                    Log.e("jindi", "qty:" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFqty().floatValue());
-                                }
-
-                            }
-
-                            //超标就将数量设为0
-                            if (count > p.getHavedispatchingnumber().floatValue()) {
-                                Log.e("jindi", "afterTextChanged:" + getAdapterPosition());
-                                edit_dispatchingnumber.setText("0");
-                                gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFqty(new BigDecimal(0));
-                                Toast.makeText(gxpgActivity, "无法派工,派工总数超标", Toast.LENGTH_LONG).show();
-                            }
-
-
-                            float per = gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getFqty().floatValue() / (gxpgActivity.processWorkCardPlanEntryList.get(0).getHavedispatchingnumber().floatValue());
-
-                            //Log.e("jindi","per:"+per);
-
-
-                            try {
-                                GxpgPlan gxpgPlan = dbManager.selector(GxpgPlan.class).where("style", " = ", selectWorkCardPlan.getPlantbody()).and("processname", "=", gxpgActivity.processWorkCardPlanEntryList.get(getAdapterPosition()).getProcessname()).and("username", "=", gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getName()).findFirst();
-                                if (gxpgPlan != null) {
-                                    gxpgPlan.setPer(per);
-                                    dbManager.saveOrUpdate(gxpgPlan);
-                                }
-                            } catch (DbException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFqty(new BigDecimal(0));
-                        }
-
+                    @Override
+                    public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+                        // TODO Auto-generated method stub
+                        //这个应该是在改变的时候会做的动作吧，具体还没用到过。
                     }
-                }
-            });
 
-            tv_processcode.setText(p.getProcesscode());
-            tv_processname.setText(p.getProcessname());
+                    @Override
+                    public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                                  int arg3) {
+                        // TODO Auto-generated method stub
+                        //这是文本框改变之前会执行的动作
+                    }
 
-            //数据加载有延迟需要先判断
-            if (gxpgActivity.sc_ProcessWorkCardEntryList.get(position) != null)
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        // TODO Auto-generated method stub
+                        /**这是文本框改变之后 会执行的动作
+                         */
+                        if (edit_dispatchingnumber.isFocused() && edit_dispatchingnumber.getText().length() > 0 && Utils.isNumeric(edit_dispatchingnumber.getText().toString())) {
 
-            {
-                nameDropDown.setText(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getName());
-                edit_userNumber.setText(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getJobNumber());
-            }
-
-            tv_havedispatchingnumber.setText(String.valueOf(p.getHavedispatchingnumber().
-                    intValue()));
-
-            try {
-                GxpgPlan gxpgPlan = dbManager.selector(GxpgPlan.class).where("style", " = ", p.getPlantbody()).and("processname", "=", p.getProcessname()).and("username", "=", gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getName()).findFirst();
-
-                if (gxpgPlan != null) {
-                    // tv_noReportednumber.setText(df.format(gxpgActivity.norecord*gxpgPlan.getPer()));
-                    Log.e("jindi", "per:" + gxpgPlan.getPer());
-                }
-
-            } catch (DbException e) {
-                e.printStackTrace();
-            }
-
-            tv_noReportednumber.setOnClickListener(new View.OnClickListener() {
-
-                public void onClick(View v) {
-                    //do something
-                    final EditText editText = new EditText(gxpgActivity);
-                    editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                    AlertDialog.Builder inputDialog =
-                            new AlertDialog.Builder(gxpgActivity);
-                    inputDialog.setTitle("修改计工数").setView(editText);
-                    inputDialog.setNegativeButton("取消", null);
-                    inputDialog.setPositiveButton("确定",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if (Utils.isNumeric(editText.getText().toString())) {
-                                        gxpgActivity.sc_ProcessWorkCardEntryList.get(position).setReportNumber(Float.valueOf(editText.getText().toString()));
-                                        float count=0;
-                                        for(int i=0;i<gxpgActivity.sc_ProcessWorkCardEntryList.size();i++){
-                                            if(gxpgActivity.processWorkCardPlanEntryList.get(i).getProcessname().equals(gxpgActivity.processWorkCardPlanEntryList.get(position).getProcessname())){
-                                                count+=gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getReportNumber();
-                                            }
-                                        }
-                                        if(count>gxpgActivity.norecord){
-                                            Toast.makeText(gxpgActivity,"计工数超过汇报数",Toast.LENGTH_LONG).show();
-                                            gxpgActivity.sc_ProcessWorkCardEntryList.get(position).setReportNumber(0f);
-                                        }else if(count<gxpgActivity.norecord){
-                                            Toast.makeText(gxpgActivity,"计工数少于汇报数",Toast.LENGTH_LONG).show();
-                                        }
-                                        gxpgActivity.mMenuAdapter.notifyDataSetChanged();
-                                    }else{
-                                        Toast.makeText(gxpgActivity,"请输入数字",Toast.LENGTH_LONG);
-                                    }
+                            if (Float.valueOf(edit_dispatchingnumber.getText().toString().trim()) != 0) {
+                                //先不管超标设置总数
+                                if (Float.valueOf(edit_dispatchingnumber.getText().toString().trim()) > p.getHavedispatchingnumber().intValue()) {
+                                    edit_dispatchingnumber.setText(String.valueOf(p.getHavedispatchingnumber().intValue()));
                                 }
-                            }).show();
-                }
-            });
-            int alreadyNoreportedNumberCount = PgdActivity.selectWorkCardPlan.getAlreadynumberCount() - p.getReportednumber().intValue();
+                                gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFqty(new BigDecimal(edit_dispatchingnumber.getText().toString().trim()));
+                                //设置后判断总数
+                                float count = 0;
+                                for (int i = 0; i < gxpgActivity.sc_ProcessWorkCardEntryList.size(); i++) {
+                                    if (gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname().equals(gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getFprocessname())) {
+                                        count += gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFqty().floatValue();
+                                        Log.e("jindi", "qty:" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFqty().floatValue());
+                                    }
 
+                                }
+
+                                //超标就将数量设为0
+                                if (count > p.getHavedispatchingnumber().floatValue()) {
+                                    Log.e("jindi", "afterTextChanged:" + getAdapterPosition());
+                                    edit_dispatchingnumber.setText("0");
+                                    gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFqty(new BigDecimal(0));
+                                    Toast.makeText(gxpgActivity, "无法派工,派工总数超标", Toast.LENGTH_LONG).show();
+                                }
+
+
+                                float per = gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getFqty().floatValue() / (gxpgActivity.processWorkCardPlanEntryList.get(0).getHavedispatchingnumber().floatValue());
+
+                                //Log.e("jindi","per:"+per);
+
+
+                                try {
+                                    GxpgPlan gxpgPlan = dbManager.selector(GxpgPlan.class).where("style", " = ", selectWorkCardPlan.getPlantbody()).and("processname", "=", gxpgActivity.processWorkCardPlanEntryList.get(getAdapterPosition()).getProcessname()).and("username", "=", gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getName()).findFirst();
+                                    if (gxpgPlan != null) {
+                                        gxpgPlan.setPer(per);
+                                        dbManager.saveOrUpdate(gxpgPlan);
+                                    }
+                                } catch (DbException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFqty(new BigDecimal(0));
+                            }
+
+                        }
+                    }
+                });
+
+                tv_processcode.setText(p.getProcesscode());
+                tv_processname.setText(p.getProcessname());
+
+                //数据加载有延迟需要先判断
+                if (gxpgActivity.sc_ProcessWorkCardEntryList.get(position) != null)
+
+                {
+                    nameDropDown.setText(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getName());
+                    edit_userNumber.setText(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getJobNumber());
+                }
+
+                tv_havedispatchingnumber.setText(String.valueOf(p.getHavedispatchingnumber().
+                        intValue()));
+
+                try {
+                    GxpgPlan gxpgPlan = dbManager.selector(GxpgPlan.class).where("style", " = ", p.getPlantbody()).and("processname", "=", p.getProcessname()).and("username", "=", gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getName()).findFirst();
+
+                    if (gxpgPlan != null) {
+                        // tv_noReportednumber.setText(df.format(gxpgActivity.norecord*gxpgPlan.getPer()));
+                        Log.e("jindi", "per:" + gxpgPlan.getPer());
+                    }
+
+                } catch (DbException e) {
+                    e.printStackTrace();
+                }
+
+                tv_noReportednumber.setOnClickListener(new View.OnClickListener() {
+
+                    public void onClick(View v) {
+                        //do something
+                        final EditText editText = new EditText(gxpgActivity);
+                        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                        AlertDialog.Builder inputDialog =
+                                new AlertDialog.Builder(gxpgActivity);
+                        inputDialog.setTitle("修改计工数").setView(editText);
+                        inputDialog.setNegativeButton("取消", null);
+                        inputDialog.setPositiveButton("确定",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (Utils.isNumeric(editText.getText().toString())) {
+                                            gxpgActivity.sc_ProcessWorkCardEntryList.get(position).setReportNumber(Float.valueOf(editText.getText().toString()));
+                                            float count = 0;
+                                            for (int i = 0; i < gxpgActivity.sc_ProcessWorkCardEntryList.size(); i++) {
+                                                if (gxpgActivity.processWorkCardPlanEntryList.get(i).getProcessname().equals(gxpgActivity.processWorkCardPlanEntryList.get(position).getProcessname())) {
+                                                    count += gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getReportNumber();
+                                                }
+                                            }
+                                            if (count > gxpgActivity.norecord) {
+                                                Toast.makeText(gxpgActivity, "计工数超过汇报数", Toast.LENGTH_LONG).show();
+                                                gxpgActivity.sc_ProcessWorkCardEntryList.get(position).setReportNumber(0f);
+                                            } else if (count < gxpgActivity.norecord) {
+                                                Toast.makeText(gxpgActivity, "计工数少于汇报数", Toast.LENGTH_LONG).show();
+                                            }
+                                            gxpgActivity.mMenuAdapter.notifyDataSetChanged();
+                                        } else {
+                                            Toast.makeText(gxpgActivity, "请输入数字", Toast.LENGTH_LONG);
+                                        }
+                                    }
+                                }).show();
+                    }
+                });
+                int alreadyNoreportedNumberCount = PgdActivity.selectWorkCardPlan.getAlreadynumberCount() - p.getReportednumber().intValue();
+            }
         }
 
         @Override

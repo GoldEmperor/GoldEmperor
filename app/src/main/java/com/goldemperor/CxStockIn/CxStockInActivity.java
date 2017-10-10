@@ -265,6 +265,16 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
         }
     }
     private  void submit(){
+
+        ArrayList<BarCode> lists2 = CxStockBarCodeDBHelper.GetAllData();
+        if (lists2.size() == 0) {
+            Toast.makeText(getApplicationContext(), "没有数据,无须提交", Toast.LENGTH_SHORT).show();
+            btnsubmit.setEnabled(true);
+            return;
+        }
+        SubmitBarCode();
+        /*
+
         isUserCode = true;
         userNumber = null;
         android.support.v7.app.AlertDialog.Builder normalDialog =
@@ -306,6 +316,7 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
                 });
 
         normalDialog.show();
+        */
     }
     //滑动删除
     private void registerReceiver() {
@@ -349,9 +360,9 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
                     if (!isUserCode) {
                         InsertBarCode(scanResult);
                     } else {
-                        Log.e("jindi", scanResult);
-                        userNumber = scanResult;
-                        userScanText.setText("已扫入工号:" + scanResult);
+                       // Log.e("jindi", scanResult);
+                        //userNumber = scanResult;
+                        //userScanText.setText("已扫入工号:" + scanResult);
 
 
                     }

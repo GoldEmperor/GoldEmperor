@@ -87,6 +87,17 @@ public class Sc_ProcessWorkCardEntry implements Cloneable {
 
     public float reportNumber;
 
+    public boolean haveSave;
+
+    public boolean getHaveSave() {
+        return haveSave;
+    }
+
+    public void setHaveSave(boolean haveSave) {
+        this.haveSave = haveSave;
+    }
+
+
     public Sc_ProcessWorkCardEntry(){
         reportNumber=0f;
     }
