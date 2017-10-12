@@ -172,8 +172,12 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
 
         tv_reportednumber.setText(String.valueOf("已汇报数:" + selectWorkCardPlan.getReportednumber().intValue()));
 
-        top_record.setText(String.valueOf("累计计工数:" + selectWorkCardPlan.getCumulativenumber().intValue()));
-        reportCount = selectWorkCardPlan.getCumulativenumber().intValue();
+        if(selectWorkCardPlan.getCumulativenumber()!=null) {
+            top_record.setText(String.valueOf("累计计工数:" + selectWorkCardPlan.getCumulativenumber().intValue()));
+            reportCount = selectWorkCardPlan.getCumulativenumber().intValue();
+        }
+
+
         Log.e("jindi", "reportCount:" + reportCount);
         //取出姓名和员工工号数据
         top_norecord = (TextView) findViewById(R.id.top_norecord);
@@ -199,6 +203,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
 
         Intent intent = getIntent();
         finterid = intent.getIntExtra("finterid", 0);
+
         getData(finterid);
 
 
@@ -440,7 +445,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 GxpgResult gxpgs = g.fromJson(result, GxpgResult.class);
                 if (gxpgs != null && gxpgs.getData() != null) {
 
-                    tv_group.setText("组别:" + gxpgs.getData().get(0).getFdeptmentname());
+                    tv_group.setText("组别:"+selectWorkCardPlan.getFgroup());
                     tv_number.setText("派工单号:" + gxpgs.getData().get(0).getProcessbillnumber());
                     tv_planbill.setText("计划跟踪号:" + gxpgs.getData().get(0).getPlanbill());
                     tv_style.setText("工厂型体:" + gxpgs.getData().get(0).getPlantbody());
@@ -452,6 +457,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                     for(int i=0;i<sc_ProcessWorkCardEntryList.size();i++){
                         sc_ProcessWorkCardEntryList.get(i).setReportNumber(reportNumberList.get(i));
                     }
+
                     refreshData();
                     //自动应用计划工序
                     try {
@@ -469,9 +475,11 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
 
                     tv_tip.setVisibility(View.GONE);
 
+
                 } else {
                     tv_tip.setText("暂无数据");
                 }
+
                 mMenuAdapter.notifyDataSetChanged();
             }
 
@@ -480,7 +488,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
             public void onError(Throwable ex, boolean isOnCallback) {
                 Log.e("jindi", ex.toString());
                 tv_tip.setVisibility(View.VISIBLE);
-                tv_tip.setText("数据载入失败:" + ex.toString());
+                tv_tip.setText("数据载入失败1:" + ex.toString());
             }
 
             //主动调用取消请求的回调方法
@@ -511,7 +519,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 GxpgResult gxpgs = g.fromJson(result, GxpgResult.class);
                 if (gxpgs != null && gxpgs.getData() != null) {
 
-                    tv_group.setText("组别:" + gxpgs.getData().get(0).getFdeptmentname());
+                    tv_group.setText("组别:" + selectWorkCardPlan.getFgroup());
                     tv_number.setText("派工单号:" + gxpgs.getData().get(0).getProcessbillnumber());
                     tv_planbill.setText("计划跟踪号:" + gxpgs.getData().get(0).getPlanbill());
                     tv_style.setText("工厂型体:" + gxpgs.getData().get(0).getPlantbody());
@@ -551,7 +559,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
             public void onError(Throwable ex, boolean isOnCallback) {
                 Log.e("jindi", ex.toString());
                 tv_tip.setVisibility(View.VISIBLE);
-                tv_tip.setText("数据载入失败:" + ex.toString());
+                tv_tip.setText("数据载入失败2:" + ex.toString());
             }
 
             //主动调用取消请求的回调方法
@@ -632,9 +640,10 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         sc_processWorkCardEntry.setFroutingid(processWorkCardPlanEntry.getFroutingid());
         sc_processWorkCardEntry.setFqty(processWorkCardPlanEntry.getDispatchingnumber());
         sc_processWorkCardEntry.setHaveSave(true);
+
         try {
             List<GxpgPlanStatus> gxpgPlanStatusesList = dbManager.selector(GxpgPlanStatus.class).where("planbill", " = ", selectWorkCardPlan.getPlanbill()).and("orderbill", "=", selectWorkCardPlan.getOrderbill()).findAll();
-            if ((sc_processWorkCardEntry.getFqty() == null || sc_processWorkCardEntry.getFqty().intValue() == 0) && gxpgPlanStatusesList.size() < 1) {
+            if ((sc_processWorkCardEntry.getFqty() == null || sc_processWorkCardEntry.getFqty().intValue() == 0) &&(gxpgPlanStatusesList==null||gxpgPlanStatusesList.size() < 1)) {
                 sc_processWorkCardEntry.setFqty(new BigDecimal(processWorkCardPlanEntry.getHavedispatchingnumber().floatValue()));
             }
         } catch (DbException e) {
@@ -648,6 +657,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
             sc_processWorkCardEntry.setFempid(Integer.valueOf(nameList[0][2]));
             sc_processWorkCardEntry.setFdeptmentid(Integer.valueOf(nameList[0][3]));
         } else {
+
             sc_processWorkCardEntry.setFempid(processWorkCardPlanEntry.getFempid());
             String emp = processWorkCardPlanEntry.getFemp();
             String name = emp.substring(emp.indexOf("(") + 1, emp.length() - 1);
@@ -655,6 +665,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
             String jobNumber = emp.substring(0, emp.indexOf("("));
             sc_processWorkCardEntry.setJobNumber(jobNumber);
             sc_processWorkCardEntry.setFdeptmentid(processWorkCardPlanEntry.getFdeptmentid());
+
         }
 
         try {
@@ -1252,7 +1263,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
             public void onError(Throwable ex, boolean isOnCallback) {
                 Log.e("jindi", ex.toString());
                 tv_tip.setVisibility(View.VISIBLE);
-                tv_tip.setText("数据载入失败:" + ex.toString());
+                tv_tip.setText("数据载入失败3:" + ex.toString());
             }
 
             //主动调用取消请求的回调方法
