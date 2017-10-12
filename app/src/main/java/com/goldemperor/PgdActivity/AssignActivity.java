@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.goldemperor.MainActivity.ListViewDecoration;
 import com.goldemperor.MainActivity.OnItemClickListener;
@@ -18,12 +20,15 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import org.xutils.DbManager;
 import org.xutils.common.util.LogUtil;
+import org.xutils.db.sqlite.WhereBuilder;
 import org.xutils.db.table.TableEntity;
 import org.xutils.ex.DbException;
 import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import mehdi.sakout.fancybuttons.FancyButton;
 
 import static com.goldemperor.PgdActivity.PgdActivity.selectWorkCardPlan;
 
@@ -41,8 +46,9 @@ public class AssignActivity extends AppCompatActivity {
     private SharedPreferences.Editor dataEditor;
     private SwipeMenuRecyclerView mMenuRecyclerView;
     private AssignAdapter mMenuAdapter;
-
+    private FancyButton btn_clear;
     private DbManager dbManager;
+    private List<GxpgPlan> gxpgPlanList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +58,8 @@ public class AssignActivity extends AppCompatActivity {
         setContentView(R.layout.activity_gxpg_assign);
         //隐藏标题栏
         getSupportActionBar().hide();
+        Intent intent = getIntent();
+        final String planBody = intent.getStringExtra("planBody");
 
         mContext = this;
         act=this;
@@ -59,14 +67,27 @@ public class AssignActivity extends AppCompatActivity {
         dataEditor = dataPref.edit();
         dbManager = initDb();
 
+        btn_clear = (FancyButton) findViewById(R.id.btn_clear);
+        btn_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    WhereBuilder b = WhereBuilder.b();
+                    b.and("style", "=", planBody);
+                    dbManager.delete(GxpgPlan.class, b);
+                    gxpgPlanList.clear();
+                    mMenuAdapter.notifyDataSetChanged();
+                } catch (DbException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         mMenuRecyclerView = (SwipeMenuRecyclerView) findViewById(R.id.recycler_view);
         mMenuRecyclerView.setLayoutManager(new LinearLayoutManager(this));// 布局管理器。
         mMenuRecyclerView.addItemDecoration(new ListViewDecoration(this));// 添加分割线。
 
         try {
-            Intent intent = getIntent();
-            String planBody = intent.getStringExtra("planBody");
-            List<GxpgPlan> gxpgPlanList = dbManager.selector(GxpgPlan.class).where("style", " = ", planBody).findAll();
+            gxpgPlanList = dbManager.selector(GxpgPlan.class).where("style", " = ", planBody).findAll();
             //Log.e("jindi","size:"+gxpgPlanList.size());
             mMenuAdapter = new AssignAdapter(gxpgPlanList);
             mMenuAdapter.setOnItemClickListener(onItemClickListener);

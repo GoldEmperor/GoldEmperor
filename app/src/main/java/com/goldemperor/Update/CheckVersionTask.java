@@ -72,17 +72,19 @@ public class CheckVersionTask implements Runnable {
                     }
 
                     int ServerVersionCode = VersionService.getVersionCode(act.getBaseContext());//获得服务器的版本号
-                    String Version = myinfo.getVersion();
-                    //int NowversionCode = Integer.parseInt(Version);//本地的版本号
-                    String ServerVersionName = VersionService.getVersionName(act.getBaseContext());
-                    Log.e("jindi", ServerVersionName + "," + Version);
+                    if (myinfo != null) {
+                        String Version = myinfo.getVersion();
+                        //int NowversionCode = Integer.parseInt(Version);//本地的版本号
+                        String ServerVersionName = VersionService.getVersionName(act.getBaseContext());
+                        Log.e("jindi", ServerVersionName + "," + Version);
 //            if (myinfo.getVersion().equals(versionCode)) {
-                    if (!ServerVersionName.equals(Version)) {
-                        Log.i(TAG, "服务器版本号大于本地版本号 ,提示用户升级 ");
-                        showUpdataDialog(myinfo);
+                        if (!ServerVersionName.equals(Version)) {
+                            Log.i(TAG, "服务器版本号大于本地版本号 ,提示用户升级 ");
+                            showUpdataDialog(myinfo);
 
-                    } else {
-                        Log.i(TAG, "已经是最新版");
+                        } else {
+                            Log.i(TAG, "已经是最新版");
+                        }
                     }
                 }
             }.start();

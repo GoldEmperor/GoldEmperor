@@ -484,6 +484,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         params.setReadTimeout(60000);
         params.addQueryStringParameter("FStartTime", StartTime);
         params.addQueryStringParameter("EndTime", EndTime);
+        params.addQueryStringParameter("FDeptID", dataPref.getString(define.SharedFDeptmentid,"none"));
         Log.e("jindi",params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
@@ -656,7 +657,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         params.setReadTimeout(60000);
         params.addQueryStringParameter("FPlanBill", searchText);
         params.addQueryStringParameter("suitID", define.suitID);
-        Log.e("jindi",params.toString());
+        //Log.e("jindi",params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(final String result) {
