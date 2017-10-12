@@ -164,7 +164,7 @@ public class ContentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String SystemModel = SystemUtil.getSystemModel();
                 Log.e("jindi", "手机型号：" + SystemModel);
-                if (SystemModel.equals("MT65")) {
+                if (SystemModel.equals("MT65")||SystemModel.equals("NLS-MT66")) {
                     Intent i = new Intent(mContext, com.goldemperor.ScReport.ScReportActivity.class);
                     mContext.startActivity(i);
                 } else {
@@ -192,7 +192,7 @@ public class ContentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String SystemModel = SystemUtil.getSystemModel();
                 Log.e("jindi", "手机型号：" + SystemModel);
-                if (SystemModel.equals("MT65")) {
+                if (SystemModel.equals("MT65")||SystemModel.equals("NLS-MT66")) {
                     Intent i = new Intent(mContext, com.goldemperor.CxStockIn.CxStockInActivity.class);
                     mContext.startActivity(i);
                 } else {
