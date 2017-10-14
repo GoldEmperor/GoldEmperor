@@ -51,12 +51,14 @@ public class ContentActivity extends AppCompatActivity {
 
 
     private FancyButton btn_cxstockin;
-    private FancyButton btn_pgstockin;
-    private FancyButton btn_cgstockin;
+
+    private FancyButton btn_scstockin;
 
     private FancyButton btn_process_sc;
 
     private FancyButton btn_cxscanbarcode;
+
+    private FancyButton btn_supperinstock;
 
     private FancyButton setBtn;
 
@@ -133,14 +135,15 @@ public class ContentActivity extends AppCompatActivity {
         btn_cxstockin = (FancyButton) findViewById(R.id.btn_cxstockin);
         btn_cxstockin.setIconResource(R.drawable.btn_saoyisao);
 
-        btn_pgstockin = (FancyButton) findViewById(R.id.btn_pgstockin);
-        btn_pgstockin.setIconResource(R.drawable.btn_set);
 
-        btn_cgstockin = (FancyButton) findViewById(R.id.btn_cgstockin);
-        btn_cgstockin.setIconResource(R.drawable.btn_set);
+        btn_scstockin = (FancyButton) findViewById(R.id.btn_scstockin);
+        btn_scstockin.setIconResource(R.drawable.btn_set);
 
-        btn_cgstockin = (FancyButton) findViewById(R.id.btn_cxscanbarcode);
-        btn_cgstockin.setIconResource(R.drawable.btn_set);
+        btn_cxscanbarcode = (FancyButton) findViewById(R.id.btn_cxscanbarcode);
+        btn_cxscanbarcode.setIconResource(R.drawable.btn_set);
+
+        btn_supperinstock = (FancyButton) findViewById(R.id.btn_supperinstock);
+        btn_supperinstock.setIconResource(R.drawable.btn_set);
 
         setBtn = (FancyButton) findViewById(R.id.btn_set);
 
@@ -197,6 +200,33 @@ public class ContentActivity extends AppCompatActivity {
                     mContext.startActivity(i);
                 } else {
                     getControl("1050101");
+                }
+            }
+        });
+
+        btn_supperinstock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String SystemModel = SystemUtil.getSystemModel();
+                Log.e("jindi", "手机型号：" + SystemModel);
+                if (SystemModel.equals("MT65")||SystemModel.equals("NLS-MT66")) {
+                    Intent i = new Intent(mContext, com.goldemperor.SupperInstock.MainActivity.class);
+                    mContext.startActivity(i);
+                } else {
+                    getControl("1050301");
+                }
+            }
+        });
+        btn_scstockin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String SystemModel = SystemUtil.getSystemModel();
+                Log.e("jindi", "手机型号：" + SystemModel);
+                if (SystemModel.equals("MT65")||SystemModel.equals("NLS-MT66")) {
+                    Intent i = new Intent(mContext, com.goldemperor.ScInstock.MainActivity.class);
+                    mContext.startActivity(i);
+                } else {
+                    getControl("1050201");
                 }
             }
         });

@@ -106,8 +106,8 @@ public class ScReportActivity extends FragmentActivity implements OnDeleteListio
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                                     long arg3) {
                 //获得选中项的HashMap对象
-                String s=arg0.getItemAtPosition(arg2).toString();
-                et_scanresult.setText(s);
+
+                et_scanresult.setText(mlist.get(arg2)[1]);
 
             }
 

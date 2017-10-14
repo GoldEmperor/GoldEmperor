@@ -85,6 +85,22 @@
 
         </activity>
 
+        <activity android:name="com.goldemperor.SupperInstock.MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label=""
+            android:screenOrientation="portrait">
+
+
+        </activity>
+
+        <activity android:name="com.goldemperor.ScInstock.MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label=""
+            android:screenOrientation="portrait">
+
+
+        </activity>
+
         <activity android:name="com.goldemperor.LoginActivity.LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="登录"

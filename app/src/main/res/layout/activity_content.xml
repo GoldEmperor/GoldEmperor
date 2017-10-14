@@ -132,7 +132,7 @@
                 </mehdi.sakout.fancybuttons.FancyButton>
 
                 <mehdi.sakout.fancybuttons.FancyButton
-                    android:id="@+id/btn_pgstockin"
+                    android:id="@+id/btn_supperinstock"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -144,12 +144,12 @@
                     fancy:fb_fontIconSize="25sp"
                     fancy:fb_iconPosition="top"
                     fancy:fb_radius="10dp"
-                    fancy:fb_text="派工单扫码入库"
+                    fancy:fb_text="供应商扫码入库"
                     fancy:fb_textColor="#FFFFFF"
                     fancy:fb_textSize="10dp" />
 
                 <mehdi.sakout.fancybuttons.FancyButton
-                    android:id="@+id/btn_cgstockin"
+                    android:id="@+id/btn_scstockin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -161,7 +161,7 @@
                     fancy:fb_fontIconSize="25sp"
                     fancy:fb_iconPosition="top"
                     fancy:fb_radius="10dp"
-                    fancy:fb_text="采购订单扫码入库"
+                    fancy:fb_text="生产扫码入库"
                     fancy:fb_textColor="#FFFFFF"
                     fancy:fb_textSize="9dp" />
 
