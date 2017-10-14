@@ -1249,6 +1249,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 } else
 
                 {
+                    btn_report.setEnabled(true);
                     Alerter.create(act)
                             .setTitle("提示")
                             .setText("汇报单生成失败")

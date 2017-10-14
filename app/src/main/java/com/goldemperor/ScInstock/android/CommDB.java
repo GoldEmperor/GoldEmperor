@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
  * 本地SQLLite访问类
  */
 public class CommDB {
-    public static final String DATABASE_NAME = "supperBarCodeDataBase"; //数据库名称
+    public static final String DATABASE_NAME = "scBarCodeDataBase"; //数据库名称
 
     public static final int DATABASE_VERSION = 1;
     //创建该数据库下条形码表的语句
