@@ -78,7 +78,7 @@ public class TechniqueActivity extends AppCompatActivity {
     }
     public void getData(int finterid) {
 
-        RequestParams params = new RequestParams(define.GetRouteEntryBody);
+        RequestParams params = new RequestParams(define.IP8341+define.GetRouteEntryBody);
         params.setReadTimeout(60000);
         params.addQueryStringParameter("FInterID", String.valueOf(finterid));
         Log.e("jindi",params.toString());

@@ -99,7 +99,7 @@ public class MaterialAdapter extends SwipeMenuAdapter<MaterialAdapter.DefaultVie
             tv_fmodel.setText(sc_workPlanMaterial.getFmodel());
             tv_fcolor.setText(sc_workPlanMaterial.getFcolor());
 
-            tv_itemuint.setText(sc_workPlanMaterial.getItemuint());
+            tv_itemuint.setText(sc_workPlanMaterial.getFneedqty().intValue()+sc_workPlanMaterial.getItemuint());
         }
 
         @Override

@@ -27,7 +27,7 @@ public class IPClass {
     */
     public String getWifiIpAddress() {
         //获取 Wifi IP的方法
-        WifiManager wifiManager = (WifiManager) myActivity.getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager) myActivity.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         if (wifiManager.isWifiEnabled() && wifiManager.getWifiState() == wifiManager.WIFI_STATE_ENABLED) {
             WifiInfo wifiInfo = wifiManager.getConnectionInfo();
             if (wifiInfo != null) {
@@ -69,7 +69,7 @@ public class IPClass {
      获得设备mac地址
      */
     public String getLocalMacAddress() {
-        WifiManager wifi = (WifiManager) myActivity.getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifi = (WifiManager) myActivity.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo info = wifi.getConnectionInfo();
         return info.getMacAddress();
     }

@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Toast;
 
 
+import com.goldemperor.MainActivity.ContentActivity;
 import com.goldemperor.MainActivity.define;
 import com.goldemperor.model.MessageEnum;
 import com.goldemperor.model.UpdataInfo;
@@ -48,12 +49,7 @@ public class CheckVersionTask implements Runnable {
                 @Override
                 public void run() {
                     //从资源文件获取服务器update.xml地址
-                    String path = "";
-                    if (define.isWaiNet) {
-                        path = define.UpdateXML;
-                    } else {
-                        path = define.NeiUpdateXML;
-                    }
+                    String path = define.IP8020+define.UpdateXML;
                     //包装成url的对象
                     InputStream stream = HttpUtilHelper.GetInputStreamFromURL(path);
 //            StringBuilder sb= new StringBuilder("");

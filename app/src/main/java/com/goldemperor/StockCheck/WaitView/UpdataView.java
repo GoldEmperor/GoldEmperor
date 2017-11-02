@@ -223,6 +223,7 @@ public class UpdataView extends TakePhotoFragment {
                         //请求异常后的回调方法
                         @Override
                         public void onError(Throwable ex, boolean isOnCallback) {
+                            Log.e("jindi",ex.toString());
                             Alerter.create(act)
                                     .setTitle("提示")
                                     .setText("网络错误，单号提交失败")
@@ -286,6 +287,7 @@ public class UpdataView extends TakePhotoFragment {
                 params.addQueryStringParameter("checkId", bundle.getString("id"));
             }
         }
+        Log.e("jindi",params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(final String result) {
@@ -305,6 +307,7 @@ public class UpdataView extends TakePhotoFragment {
             //请求异常后的回调方法
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
+                Log.e("jindi",ex.toString());
                 Alerter.create(act)
                         .setTitle("提示")
                         .setText("网络错误，单号提交失败")

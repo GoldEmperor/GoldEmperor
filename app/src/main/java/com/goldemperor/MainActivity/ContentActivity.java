@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flyco.banner.anim.select.ZoomInEnter;
 import com.goldemperor.Banner.DataProvider;
@@ -24,6 +27,7 @@ import com.goldemperor.SetActivity.SetActivity;
 import com.goldemperor.R;
 import com.goldemperor.StockCheck.StockCheckActivity;
 import com.goldemperor.Update.CheckVersionTask;
+import com.goldemperor.Update.VersionService;
 import com.tapadoo.alerter.Alerter;
 
 import org.xutils.common.Callback;
@@ -47,7 +51,7 @@ public class ContentActivity extends AppCompatActivity {
 
     private FancyButton orderBtn;
     private FancyButton processBtn;
-    private FancyButton produceBtn;
+    private FancyButton btn_pzgl;
 
 
     private FancyButton btn_cxstockin;
@@ -61,6 +65,13 @@ public class ContentActivity extends AppCompatActivity {
     private FancyButton btn_supperinstock;
 
     private FancyButton setBtn;
+
+    private Button waiBtn;
+
+    private Button neiBtn;
+
+    private TextView netStatus;
+    private TextView version;
 
     private Context mContext;
     private Activity act;
@@ -123,8 +134,8 @@ public class ContentActivity extends AppCompatActivity {
         processBtn = (FancyButton) findViewById(R.id.btn_process);
         processBtn.setIconResource(R.drawable.btn_process);
 
-        produceBtn = (FancyButton) findViewById(R.id.btn_produce);
-        produceBtn.setIconResource(R.drawable.btn_produce);
+        btn_pzgl = (FancyButton) findViewById(R.id.btn_pzgl);
+        btn_pzgl.setIconResource(R.drawable.btn_produce);
 
         orderBtn = (FancyButton) findViewById(R.id.btn_order);
         orderBtn.setIconResource(R.drawable.btn_order);
@@ -167,7 +178,7 @@ public class ContentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String SystemModel = SystemUtil.getSystemModel();
                 Log.e("jindi", "手机型号：" + SystemModel);
-                if (SystemModel.equals("MT65")||SystemModel.equals("NLS-MT66")) {
+                if (SystemModel.equals("MT65") || SystemModel.equals("NLS-MT66")) {
                     Intent i = new Intent(mContext, com.goldemperor.ScReport.ScReportActivity.class);
                     mContext.startActivity(i);
                 } else {
@@ -195,7 +206,7 @@ public class ContentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String SystemModel = SystemUtil.getSystemModel();
                 Log.e("jindi", "手机型号：" + SystemModel);
-                if (SystemModel.equals("MT65")||SystemModel.equals("NLS-MT66")) {
+                if (SystemModel.equals("MT65") || SystemModel.equals("NLS-MT66")) {
                     Intent i = new Intent(mContext, com.goldemperor.CxStockIn.CxStockInActivity.class);
                     mContext.startActivity(i);
                 } else {
@@ -209,7 +220,7 @@ public class ContentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String SystemModel = SystemUtil.getSystemModel();
                 Log.e("jindi", "手机型号：" + SystemModel);
-                if (SystemModel.equals("MT65")||SystemModel.equals("NLS-MT66")) {
+                if (SystemModel.equals("MT65") || SystemModel.equals("NLS-MT66")) {
                     Intent i = new Intent(mContext, com.goldemperor.SupperInstock.MainActivity.class);
                     mContext.startActivity(i);
                 } else {
@@ -222,7 +233,7 @@ public class ContentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String SystemModel = SystemUtil.getSystemModel();
                 Log.e("jindi", "手机型号：" + SystemModel);
-                if (SystemModel.equals("MT65")||SystemModel.equals("NLS-MT66")) {
+                if (SystemModel.equals("MT65") || SystemModel.equals("NLS-MT66")) {
                     Intent i = new Intent(mContext, com.goldemperor.ScInstock.MainActivity.class);
                     mContext.startActivity(i);
                 } else {
@@ -244,23 +255,70 @@ public class ContentActivity extends AppCompatActivity {
 
             }
         });
+        btn_pzgl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!dataPref.getString(define.SharedPassword, define.NONE).equals(define.NONE)) {
+                    Intent i = new Intent(mContext, com.goldemperor.PzActivity.PgdActivity.class);
+                    mContext.startActivity(i);
+                } else {
+                    Intent i = new Intent(mContext, LoginActivity.class);
+                   mContext.startActivity(i);
+                }
+
+            }
+        });
+        netStatus= (TextView) findViewById(R.id.netStatus);
+        netStatus.setText("当前网络:内网");
+        waiBtn = (Button) findViewById(R.id.btn_wai);
+        waiBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                define.isWaiNet=true;
+                define.IP8012 = define.IP1718012;
+                define.IP8341=define.IP1718341;
+                define.IP8020=define.IP1718020;
+                define.IP8083=define.IP1718083;
+                UpdataAPK();
+                netStatus.setText("当前网络:外网");
+            }
+        });
+
+        neiBtn = (Button) findViewById(R.id.btn_nei);
+        neiBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                define.isWaiNet=false;
+                define.IP8341=define.IP798341;
+                define.IP8012=define.IP798012;
+                define.IP8020=define.IP798020;
+                define.IP8083=define.IP798083;
+                UpdataAPK();
+                netStatus.setText("当前网络:内网");
+            }
+        });
+        UpdataAPK();
+        version = (TextView) findViewById(R.id.version);
+        version.setText("当前版本:"+VersionService.getVersionName(act.getBaseContext()));
+
+    }
+
+
+    private void UpdataAPK(){
         //如果有网络的情况下，apk更新
         if (IsNeedCheckVersion && NetworkHelper.isNetworkAvailable(this)) {
-
             new Thread() {
                 @Override
                 public void run() {
-                    define.isWaiNet = !Utils.ping("192.168.99.79");
-                    Log.e("jindi", "isWaiNet:" + define.isWaiNet);
+                    Log.e("jindi","连接外网:"+define.isWaiNet);
                     CheckVersionTask myTask = new CheckVersionTask(act);
                     myTask.run();
                 }
             }.start();
         }
     }
-
     private void getControl(final String controlID) {
-        RequestParams params = new RequestParams(define.IsHaveControl);
+        RequestParams params = new RequestParams(define.IP8012 + define.IsHaveControl);
         params.addQueryStringParameter("OrganizeID", "1");
         params.addQueryStringParameter("empID", dataPref.getString(define.SharedEmpId, define.NONE));
         params.addQueryStringParameter("controlID", controlID);
@@ -277,7 +335,7 @@ public class ContentActivity extends AppCompatActivity {
                     if (controlID.equals("1050101")) {
                         Intent i = new Intent(mContext, com.goldemperor.CxStockIn.CxStockInActivity.class);
                         mContext.startActivity(i);
-                    }else if(controlID.equals("1050501")){
+                    } else if (controlID.equals("1050501")) {
                         Intent i = new Intent(mContext, com.goldemperor.ScReport.ScReportActivity.class);
                         mContext.startActivity(i);
                     }

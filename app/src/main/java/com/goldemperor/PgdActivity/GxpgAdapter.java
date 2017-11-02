@@ -200,7 +200,7 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
         }
 
         private void getUserInfo(String FNumber) {
-            RequestParams params = new RequestParams(define.GetEmpByFNumber);
+            RequestParams params = new RequestParams(define.IP8341+define.GetEmpByFNumber);
             params.addQueryStringParameter("FNumber", FNumber);
             x.http().get(params, new Callback.CommonCallback<String>() {
                 @Override

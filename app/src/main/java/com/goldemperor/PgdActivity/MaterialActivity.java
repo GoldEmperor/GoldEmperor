@@ -41,7 +41,7 @@ public class MaterialActivity extends AppCompatActivity {
     private SharedPreferences.Editor dataEditor;
     private SwipeMenuRecyclerView mMenuRecyclerView;
     private MaterialAdapter mMenuAdapter;
-    private int finterid;
+    private Long finterid;
     List<Sc_WorkPlanMaterial> sc_workPlanMaterialsList=new ArrayList<Sc_WorkPlanMaterial>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,9 @@ public class MaterialActivity extends AppCompatActivity {
         dataPref = this.getSharedPreferences(define.SharedName, 0);
         dataEditor = dataPref.edit();
 
-
+        Intent intent = getIntent();
+        finterid = intent.getLongExtra("finterid", 0);
+        Log.e("jindi","finterid:"+finterid);
         mMenuRecyclerView = (SwipeMenuRecyclerView) findViewById(R.id.recycler_view);
         mMenuRecyclerView.setLayoutManager(new LinearLayoutManager(this));// 布局管理器。
         mMenuRecyclerView.addItemDecoration(new ListViewDecoration(this));// 添加分割线。
@@ -72,9 +74,9 @@ public class MaterialActivity extends AppCompatActivity {
     }
     public void getData() {
 
-        RequestParams params = new RequestParams(define.GetWorkPlanMaterial);
+        RequestParams params = new RequestParams(define.IP8341+define.GetWorkPlanMaterial);
         params.setReadTimeout(60000);
-        params.addQueryStringParameter("FInterID", "13924");
+        params.addQueryStringParameter("FInterID", String.valueOf(finterid));
         Log.e("jindi",params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override

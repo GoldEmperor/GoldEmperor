@@ -164,6 +164,38 @@
 
 
         </activity>
+
+        <activity android:name="com.goldemperor.PzActivity.PgdActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="品质管理"
+            android:screenOrientation="landscape">
+
+
+        </activity>
+
+        <activity android:name="com.goldemperor.PzActivity.YCListActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="异常单号"
+            android:screenOrientation="landscape">
+
+
+        </activity>
+        <activity android:name="com.goldemperor.PzActivity.ZjActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="异常单号"
+            android:screenOrientation="landscape">
+
+
+        </activity>
+
+        <activity android:name="com.goldemperor.PzActivity.ReasonActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="不合格原因"
+            android:screenOrientation="landscape">
+
+
+        </activity>
+
         <activity android:name="com.goldemperor.StockCheck.WaitView.UpdataActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="上传照片"

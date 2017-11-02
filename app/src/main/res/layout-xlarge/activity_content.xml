@@ -73,7 +73,7 @@
                     />
 
                 <mehdi.sakout.fancybuttons.FancyButton
-                    android:id="@+id/btn_produce"
+                    android:id="@+id/btn_pzgl"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -85,7 +85,7 @@
                     fancy:fb_fontIconSize="25sp"
                     fancy:fb_iconPosition="top"
                     fancy:fb_radius="10dp"
-                    fancy:fb_text="工序任务"
+                    fancy:fb_text="品质管理"
                     fancy:fb_textColor="#FFFFFF" />
 
                 <mehdi.sakout.fancybuttons.FancyButton
@@ -122,11 +122,11 @@
                     />
 
                 <mehdi.sakout.fancybuttons.FancyButton
-                    android:id="@+id/btn_pgstockin"
+                    android:id="@+id/btn_supperinstock"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="5dp"
                     fancy:fb_borderColor="#FFFFFF"
                     fancy:fb_borderWidth="2dp"
                     fancy:fb_defaultColor="#ff8800"
@@ -134,9 +134,10 @@
                     fancy:fb_fontIconSize="25sp"
                     fancy:fb_iconPosition="top"
                     fancy:fb_radius="10dp"
-                    fancy:fb_text="派工单扫码入库"
+                    fancy:fb_text="供应商扫码入库"
                     fancy:fb_textColor="#FFFFFF"
-                     />
+                    />
+
 
             </LinearLayout>
 
@@ -146,11 +147,10 @@
                 android:layout_marginTop="10dp">
 
                 <mehdi.sakout.fancybuttons.FancyButton
-                    android:id="@+id/btn_cgstockin"
+                    android:id="@+id/btn_scstockin"
                     android:layout_width="120dp"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="5dp"
                     fancy:fb_borderColor="#FFFFFF"
                     fancy:fb_borderWidth="2dp"
                     fancy:fb_defaultColor="#3b5998"
@@ -158,8 +158,9 @@
                     fancy:fb_fontIconSize="25sp"
                     fancy:fb_iconPosition="top"
                     fancy:fb_radius="10dp"
-                    fancy:fb_text="采购订单扫码入库"
-                    fancy:fb_textColor="#FFFFFF" />
+                    fancy:fb_text="生产扫码入库"
+                    fancy:fb_textColor="#FFFFFF"
+                    />
 
                 <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/btn_cxscanbarcode"
@@ -205,7 +206,46 @@
                     fancy:fb_textColor="#FFFFFF"/>
             </LinearLayout>
         </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/stb"
+            android:layout_marginBottom="10dp">
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true">
+
+                <TextView
+                    android:id="@+id/netStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="当前网络:"
+                    android:layout_marginRight="20dp"
+                    android:textSize="21dp"/>
+                <Button
+                    android:id="@+id/btn_wai"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="切换外网"/>
+
+                <Button
+                    android:id="@+id/btn_nei"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="切换内网"/>
+
+                <TextView
+                    android:id="@+id/version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="当前版本:"
+                    android:textSize="21dp"/>
+            </LinearLayout>
+
+        </RelativeLayout>
         <com.goldemperor.Banner.SimpleTextBanner
             android:id="@+id/stb"
             android:layout_width="fill_parent"

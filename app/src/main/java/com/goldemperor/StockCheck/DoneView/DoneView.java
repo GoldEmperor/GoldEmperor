@@ -287,7 +287,7 @@ public class DoneView {
             //请求异常后的回调方法
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                Log.e("jindi", ex.toString());
+                Log.e("jindi", "doneView:"+ex.toString());
             }
 
             //主动调用取消请求的回调方法

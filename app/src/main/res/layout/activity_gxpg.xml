@@ -285,7 +285,21 @@
             fancy:fb_textColor="#FFFFFF"
             fancy:fb_textSize="20dp" />
 
-
+        <mehdi.sakout.fancybuttons.FancyButton
+            android:id="@+id/btn_again"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="20dp"
+            android:padding="10dp"
+            fancy:fb_borderColor="#FFFFFF"
+            fancy:fb_borderWidth="1dp"
+            fancy:fb_defaultColor="#00ac00"
+            fancy:fb_focusColor="#8cc9f8"
+            fancy:fb_radius="10dp"
+            fancy:fb_text="重新录入"
+            fancy:fb_textColor="#FFFFFF"
+            fancy:fb_textSize="20dp" />
     </LinearLayout>
     </HorizontalScrollView>
     <com.goldemperor.Widget.ScrollListenerHorizontalScrollView

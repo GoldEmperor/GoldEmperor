@@ -149,7 +149,7 @@ public class LoginActivity extends AppCompatActivity {
                             result = result.replaceAll("\\\\", "");
                             String code = result.substring(result.indexOf("\"code\""), result.indexOf(",", result.indexOf("\"code\"")));
                             code = code.replaceAll("\"", "").replaceAll("code", "").replaceAll(":", "");
-                            VerNum = code;
+                            VerNum = "999999";
                             Log.e("jindi", VerNum);
                         }
 
@@ -319,7 +319,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void GetUserID(String EmpID){
-        RequestParams params = new RequestParams(define.GetUserID);
+        RequestParams params = new RequestParams(define.IP8012+define.GetUserID);
         params.addQueryStringParameter("FEmpID", EmpID);
 
         x.http().get(params, new Callback.CommonCallback<String>() {
@@ -334,6 +334,12 @@ public class LoginActivity extends AppCompatActivity {
                     String FUserID = result.substring(result.indexOf("<FUserID>"), result.indexOf("</FUserID>"));
                     FUserID = FUserID.replaceAll("<FUserID>", "").replaceAll("</FUserID>", "");
                     dataEditor.putString(define.SharedUserId, FUserID);
+
+
+                    String FDeptmentName = result.substring(result.indexOf("<FDeptmentName>"), result.indexOf("</FDeptmentName>"));
+                    FDeptmentName = FDeptmentName.replaceAll("<FDeptmentName>", "").replaceAll("</FDeptmentName>", "");
+                    dataEditor.putString(define.SharedDeptmentName, FDeptmentName);
+
                     dataEditor.commit();
                 }
 

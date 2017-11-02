@@ -13,115 +13,150 @@ public class define {
 
     public static String suitID="1";
 
-    public static String IP1718081="http://220.189.245.171:8881/";
+    public static String IP1718881="http://220.189.245.171:8881/";
 
     public static String IP328030="http://59.56.103.32:8030/";
 
-    public static String IP1718080="http://220.189.245.171:8080/";
+    public static String IP1718341="http://220.189.245.171:8341/";
 
     public static String IP1718020="http://220.189.245.171:8020/";
 
+    public static String IP1718012="http://220.189.245.171:8012/";
+
+    public static String IP1718056="http://220.189.245.171:8056/";
+
+    public static String IP1718083="http://220.189.245.171:8083/";
+
+    public static String IP798056="http://192.168.99.79:8056/";
+
     public static String IP798020="http://192.168.99.79:8020/";
 
+    public static String IP798083="http://192.168.99.79:8083/";
 
     public static String IP798012="http://192.168.99.79:8012/";
 
-    public static String IP1718012="http://220.189.245.171:8012/";
+    public static String IP798341="http://192.168.99.79:8341/";
 
-    public static final String SubmitNumberRequest = IP1718081+"SubmitNumberRequest";
+    public static String IP8341="http://192.168.99.79:8341/";
 
-    public static final String SubmitRequest = IP1718081+"SubmitRequest";
+    public static String IP8012 = "http://192.168.99.79:8012/";
 
-    public static final String GetData = IP1718081+"GetData";
 
-    public static final String GetDataBydate = IP1718081+"GetDataBydate";
+    public static String IP8020 = "http://192.168.99.79:8020/";
 
-    public static final String SubmitCheck = IP1718081+"SubmitCheck";
+    public static String IP8083="http://192.168.99.79:8083/";
 
-    public static final String GetDataById = IP1718081+"GetDataById";
+    public static String IP8080="http://192.168.101.233:8080/";
 
-    public static final String Done = IP1718081+"Done";
+    public static final String SubmitRequest = IP1718881+"SubmitRequest";
 
-    public static final String Exceptional = IP1718081+"Exceptional";
+    public static final String GetData = IP1718881+"GetData";
 
-    public static final String SubmitResult= IP1718081+"SubmitResult";
+    public static final String GetDataBydate = IP1718881+"GetDataBydate";
 
-    public static final String SubmitRefuse = IP1718081+"SubmitRefuse";
+    public static final String SubmitCheck = IP1718881+"SubmitCheck";
 
-    public static final String GetDataBySupplier = IP1718081+"GetDataBySupplier";
+    public static final String GetDataById = IP1718881+"GetDataById";
 
+    public static final String Done = IP1718881+"Done";
+
+    public static final String Exceptional = IP1718881+"Exceptional";
+
+    public static final String SubmitResult= IP1718881+"SubmitResult";
+
+    public static final String SubmitRefuse = IP1718881+"SubmitRefuse";
+
+    public static final String GetDataBySupplier = IP1718881+"GetDataBySupplier";
+
+    public static final String UpdataImage = IP1718881+"UpdataImage";
+
+    public static final String GetImage = IP1718881+"GetImage";
 
 
     public static final String Login = IP328030+"api/get/login";
 
-    public static final String Register = IP1718081+"Register";
-
     public static final String GetCode = IP328030+"api/MessagePost/GetCode";
+
+    public static final String WechatPostByFEmpID = IP328030+"api/MessagePost/WechatPostByFEmpID";
+
+
+
+    public static final String GetPlanbyTime = "wechatMvn/android/getPlanbyTime.do";
+
+    public static final String GetEmpByDeptID = "wechatMvn/mes/GetEmpByDeptID.do";
+
+    public static final String GetProcessPlanEntry = "wechatMvn/android/getProcessPlanEntry.do";
+
+    public static final String GetEmpByFNumber = "wechatMvn/mes/GetEmpByFNumber.do";
+
+    public static final String InsertProcessPlanEntry = "wechatMvn/android/insertProcessPlanEntry.do";
+
+    public static final String GetPlanbyBillNumber = "wechatMvn/android/getPlanbyBillNumber.do";
+
+    public static final String GetRouteEntryBody = "wechatMvn/android/getRouteEntryBody.do";
+
+    public static final String GetWorkPlanMaterial = "wechatMvn/android/getWorkPlanMaterial.do";
+
+    public static final String GetWorkCardPlanNew = "wechatMvn/android/getWorkCardPlanNew.do";
+
+    public static final String UpdateProcessPassQty = "wechatMvn/android/updateProcessPassQty.do";
+
+    public static final String GetWorkCardProcessQty = "wechatMvn/android/getWorkCardProcessQty.do";
+
+
+    public static final String UpdateXML = "AndroidUpdate/GoldEmperor/update.xml";
 
     public static final String GetScProcessWorkCardInfoBysuitID= IP798012+"ErpForAndroidStockServer.asmx/GetScProcessWorkCardInfoBysuitID";
 
     public static final String WaiGetScProcessWorkCardInfoBysuitID = IP1718012+"ErpForAndroidStockServer.asmx/GetScProcessWorkCardInfoBysuitID";
 
-    public static final String UpdataImage = IP1718081+"UpdataImage";
 
-    public static final String GetImage = IP1718081+"GetImage";
 
     public static final String SubmitProcessBarCode2CollectBill = IP798012+"ErpForAndroidStockServer.asmx/SubmitProcessBarCode2CollectBill";
 
     public static final String WaiSubmitProcessBarCode2CollectBill = IP1718012+"ErpForAndroidStockServer.asmx/SubmitProcessBarCode2CollectBill";
 
-    public static final String GetPlanbyTime = IP1718080+"wechatMvn/android/getPlanbyTime.do";
 
-    public static final String UpdateXML = IP1718020+"AndroidUpdate/GoldEmperor/update.xml";
 
-    public static final String NeiUpdateXML = IP798020+"AndroidUpdate/GoldEmperor/update.xml";
 
-    public static final String IsHaveControl = IP798012+"ERPPublicServer.asmx/IsHaveControl";//"http://192.168.99.79:8012/ERPPublicServer.asmx/IsHaveControl";
 
-    public static final String GetPlanEntry = IP1718080+"wechatMvn/android/getPlanEntry.do";
+    public static final String IsHaveControl = "ERPPublicServer.asmx/IsHaveControl";
 
-    public static final String GetEmpByDeptID = IP1718080+"wechatMvn/mes/GetEmpByDeptID.do";
 
-    public static final String SCWorkCard2SCProcessWorkCardBysuitID = IP798012+"ErpForAndroidStockServer.asmx/SCWorkCard2SCProcessWorkCardBysuitID";
+    public static final String SCWorkCard2SCProcessWorkCardBysuitID = "ErpForAndroidStockServer.asmx/SCWorkCard2SCProcessWorkCardBysuitID";
 
-    public static final String GetProcessPlanEntry = IP1718080+"wechatMvn/android/getProcessPlanEntry.do";
 
-    public static final String GetEmpByFNumber = IP1718080+"wechatMvn/mes/GetEmpByFNumber.do";
+    public static final String GetUserID = "ERPForWeixinServer.ASMX/GetUserID";
 
-    public static final String GetUserID = IP798012+"ERPForWeixinServer.ASMX/GetUserID";
 
-    public static final String InsertProcessPlanEntry = IP1718080+"wechatMvn/android/insertProcessPlanEntry.do";
+    public static final String SCProcessWorkCardReWriteBysuitID = "ErpForAndroidStockServer.asmx/SCProcessWorkCardReWriteBysuitID";
 
-    public static final String GetPlanbyBillNumber = IP1718080+"wechatMvn/android/getPlanbyBillNumber.do";
+    public static final String SCProcessWorkCard2SCProcessOutPutBysuitID = "ErpForAndroidStockServer.asmx/SCProcessWorkCard2SCProcessOutPutBysuitID";
 
-    public static final String SCProcessWorkCardReWriteBysuitID = IP798012+"ErpForAndroidStockServer.asmx/SCProcessWorkCardReWriteBysuitID";
 
-    public static final String SCProcessWorkCard2SCProcessOutPutBysuitID = IP798012+"ErpForAndroidStockServer.asmx/SCProcessWorkCard2SCProcessOutPutBysuitID";
+    public static final String SCProcessOutPutSaveBysuitID = "ErpForAndroidStockServer.asmx/SCProcessOutPutSaveBysuitID";
 
-    public static final String GetRouteEntryBody = IP1718080+"wechatMvn/android/getRouteEntryBody.do";
+    public static final String SCProcessOutPutReWriteBysuitID = "ErpForAndroidStockServer.asmx/SCProcessOutPutReWriteBysuitID";
 
-    public static final String SCProcessOutPutSaveBysuitID = IP798012+"ErpForAndroidStockServer.asmx/SCProcessOutPutSaveBysuitID";
 
-    public static final String SCProcessOutPutReWriteBysuitID = IP798012+"ErpForAndroidStockServer.asmx/SCProcessOutPutReWriteBysuitID";
 
-    public static final String GetSCProcessOutPutQtyBysuitID = IP798012+"ErpForAndroidStockServer.asmx/GetSCProcessOutPutQtyBysuitID";
 
-    public static final String WechatPostByFEmpID = IP328030+"api/MessagePost/WechatPostByFEmpID";
+    public static final String GetWorkPlanQtyBysuitID = "ErpForAndroidStockServer.asmx/GetWorkPlanQtyBysuitID";
 
-    public static final String GetWorkPlanMaterial = IP1718080+"wechatMvn/android/getWorkPlanMaterial.do";
 
-    public static final String GetWorkPlanQtyBysuitID = IP798012+"ErpForAndroidStockServer.asmx/GetWorkPlanQtyBysuitID";
+    public static final String GetSCProcessOutPutQtyBysuitID = "ErpForAndroidStockServer.asmx/GetSCProcessOutPutQtyBysuitID";
 
-    public static final String GetPlanFInterIDbyTime = IP1718080+"wechatMvn/android/getPlanFInterIDbyTime.do";
 
-    public static final String GetWorkCardPlanNew = IP1718080+"wechatMvn/android/getWorkCardPlanNew.do";
+    public static final String GetDayWorkCardPlanQtyBysuitID = "ErpForAndroidStockServer.asmx/GetDayWorkCardPlanQtyBysuitID";
 
-    public static final String UpdateProcessPassQty = IP1718080+"wechatMvn/android/updateProcessPassQty.do";
+    public static final String GetRouteEntryPic = "wechatMvn/android/getRouteEntryPic.do";
 
-    public static final String GetWorkCardProcessQty = IP1718080+"wechatMvn/android/getWorkCardProcessQty.do";
 
-    public static final String WorkCardProcessHaveOutPutBysuitID =IP798012+"ErpForAndroidStockServer.asmx/WorkCardProcessHaveOutPutBysuitID";
+    public static final String WorkCardAbnormityBysuitID = "ErpForAndroidStockServer.asmx/WorkCardAbnormityBysuitID";
 
+    public static final String GetWorkCardAbnormity = "wechatMvn/android/getWorkCardAbnormity.do";
+
+    public static final String GetAbnormityByName = "wechatMvn/android/getAbnormityByName.do";
 
     public static final String SharedName = "data";
 
@@ -162,6 +197,8 @@ public class define {
 
     public static final String SharedSupplier= "Supplier";
 
+    public static final String SharedDeptmentName= "DeptmentName";
+
     public static final String NONE = "-1";
 
     public static final String WAIT = "1";
@@ -177,7 +214,7 @@ public class define {
     public static int SELECT_PHOTO = 1;
     public static int TAKE_PHOTO = 2;
 
-    public static boolean isWaiNet=true;
+    public static boolean isWaiNet=false;
 
 
     public static String appKey = "afeeb3ab6b0090293a70a5ba1d26a478";

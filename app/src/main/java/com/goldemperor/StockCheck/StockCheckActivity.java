@@ -11,6 +11,7 @@ import android.support.annotation.IdRes;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.goldemperor.R;
@@ -104,6 +105,7 @@ public class StockCheckActivity extends AppCompatActivity implements ViewPager.O
                 public void onSuccess(final String result) {
                     //解析result
                     //重新设置数据
+                    Log.e("jindi",result);
                     if (result.contains("成功")) {
 
                     } else {

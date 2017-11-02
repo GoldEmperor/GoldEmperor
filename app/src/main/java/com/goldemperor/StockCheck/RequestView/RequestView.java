@@ -1,6 +1,7 @@
 package com.goldemperor.StockCheck.RequestView;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -93,11 +94,13 @@ public class RequestView {
                     params.addQueryStringParameter("number", edit_number.getText().toString().trim());
                     params.addQueryStringParameter("proposer", edit_proposer.getText().toString().trim());
                     params.addQueryStringParameter("supplier", edit_supplier.getText().toString().trim());
+                    Log.e("jindi",params.toString());
                     x.http().get(params, new Callback.CommonCallback<String>() {
                         @Override
                         public void onSuccess(final String result) {
                             //解析result
                             //重新设置数据
+                            Log.e("jindi",result);
                             LemonHello.getSuccessHello(result, "")
                                     .addAction(new LemonHelloAction("确定", new LemonHelloActionDelegate() {
                                         @Override
