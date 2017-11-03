@@ -98,6 +98,7 @@ public class MainActivity extends FragmentActivity implements OnDeleteListioner,
     private Activity act;
     private boolean isUserCode;
     private TextView userScanText;
+    private TextView txtviewTitle;
     public static String userNumber;
 
     @Override
@@ -158,6 +159,8 @@ public class MainActivity extends FragmentActivity implements OnDeleteListioner,
         });
 
         txtcount = (TextView) this.findViewById(R.id.txtcount);
+        txtviewTitle= (TextView) this.findViewById(R.id.txtviewtitle);
+        txtviewTitle.setText("供应商扫码入库");
 
         stockin = (RadioButton) this.findViewById(R.id.stockin);
         stockout = (RadioButton) this.findViewById(R.id.stockout);
