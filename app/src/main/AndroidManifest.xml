@@ -262,10 +262,22 @@
             android:label="供应商入库单扫码"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name="com.goldemperor.SupperInstock.LoginActivity"
+            android:configChanges="orientation"
+            android:label="@string/supplystockin_form_name"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden">
+        </activity>
         <activity android:name="com.goldemperor.ScInstock.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="生产入库扫码"
             android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="com.goldemperor.ScInstock.LoginActivity"
+            android:configChanges="orientation"
+            android:label="@string/cxstockin_scstockin"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden">
         </activity>
         //注册广播BroadcastReceiver和Service
         //都是静态注册，因为要长期处在后台运行

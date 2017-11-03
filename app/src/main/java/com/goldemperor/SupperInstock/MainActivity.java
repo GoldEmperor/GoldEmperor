@@ -191,7 +191,14 @@ public class MainActivity extends FragmentActivity implements OnDeleteListioner,
 
     private void submit() {
 
-
+        ArrayList<BarCode> lists2 = BarCodeDBHelper.GetAllData();
+        if (lists2.size() == 0) {
+            Toast.makeText(getApplicationContext(), "没有数据,无须提交", Toast.LENGTH_SHORT).show();
+            btnsubmit.setEnabled(true);
+            return;
+        }
+        SubmitBarCode();
+        /*
         isUserCode = true;
         userNumber = null;
         AlertDialog.Builder normalDialog =
@@ -232,6 +239,7 @@ public class MainActivity extends FragmentActivity implements OnDeleteListioner,
                 });
 
         normalDialog.show();
+        */
     }
     //滑动删除
 

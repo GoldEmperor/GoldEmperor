@@ -60,8 +60,9 @@
     <string name="cxstockin_username">用户名：</string>
     <string name="cxstockin_phonenum">手机号：</string>
     <string name="cxstockin_title_activity_login">用户登录</string>
-
-
+    <!--供应商扫码入库-begin-->
+    <string name="supplystockin_form_name">供应商扫码入库</string>
+    <!--供应商扫码入库-end-->
     <!-- 生产汇报信息-->
     <string name="screport_barcode">派工单条形码</string>
     <string name="screport_form_name">生产汇报扫码</string>
