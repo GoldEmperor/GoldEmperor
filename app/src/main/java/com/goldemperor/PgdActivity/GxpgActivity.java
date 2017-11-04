@@ -15,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -121,6 +122,8 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
     private FancyButton btn_dispatchingnumberPublish;
 
     private FancyButton btn_reportPublish;
+
+    private FancyButton btn_reportCheck;
 
     private FancyButton btn_report;
 
@@ -418,6 +421,45 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 startActivityForResult(intent, 0);
             }
         });
+
+        btn_reportCheck = (FancyButton) findViewById(R.id.btn_reportCheck);
+        btn_reportCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String message = "";
+                for (int i = 0; i < gxpgActivity.sc_ProcessWorkCardEntryList.size(); i++) {
+                    float count = 0;
+                    for (int j = 0; j < gxpgActivity.sc_ProcessWorkCardEntryList.size(); j++) {
+                        if (gxpgActivity.processWorkCardPlanEntryList.get(i).getProcessname().equals(gxpgActivity.processWorkCardPlanEntryList.get(j).getProcessname())) {
+                            count += gxpgActivity.sc_ProcessWorkCardEntryList.get(j).getReportNumber();
+                        }
+                    }
+                    if (count > gxpgActivity.norecord && !message.contains(gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname())) {
+                        message += "【"+gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessnumber() + "】" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname() + ",超过汇报数:" + (gxpgActivity.norecord - count) + "\n";
+                    } else if (count < gxpgActivity.norecord && !message.contains(gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname())) {
+                        message += "【"+gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessnumber() + "】" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname() + ",少于汇报数:" + (gxpgActivity.norecord-count) + "\n";
+                    }
+                }
+
+
+                if (message.length() > 2) {
+                    new AlertDialog.Builder(act)
+                            .setTitle("计工数不符")
+                            .setMessage(message)
+                            .setPositiveButton("确定", null)
+                            .setNegativeButton("取消", null)
+                            .show();
+                }else{
+                    new AlertDialog.Builder(act)
+                            .setTitle("计工数正常")
+                            .setPositiveButton("确定", null)
+                            .setNegativeButton("取消", null)
+                            .show();
+                }
+            }
+        });
+
+
         btn_operation = (FancyButton) findViewById(R.id.btn_operation);
 
         btn_operation.setOnClickListener(new View.OnClickListener() {

@@ -208,23 +208,6 @@
             android:textSize="20dp" />
         </LinearLayout>
 
-
-        <mehdi.sakout.fancybuttons.FancyButton
-            android:id="@+id/btn_operation"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            fancy:fb_borderColor="#FFFFFF"
-            fancy:fb_borderWidth="1dp"
-            android:layout_marginLeft="20dp"
-            android:padding="10dp"
-            fancy:fb_defaultColor="#bb0000"
-            fancy:fb_focusColor="#9bd823"
-            fancy:fb_radius="10dp"
-            fancy:fb_text="运算"
-            fancy:fb_textColor="#FFFFFF"
-            fancy:fb_textSize="20dp" />
-
-
         <mehdi.sakout.fancybuttons.FancyButton
             android:id="@+id/btn_submit"
             android:layout_width="110dp"
@@ -256,6 +239,37 @@
             fancy:fb_textSize="20dp" />
 
         <mehdi.sakout.fancybuttons.FancyButton
+            android:id="@+id/btn_operation"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            fancy:fb_borderColor="#FFFFFF"
+            fancy:fb_borderWidth="1dp"
+            android:layout_marginLeft="20dp"
+            android:padding="10dp"
+            fancy:fb_defaultColor="#bb0000"
+            fancy:fb_focusColor="#9bd823"
+            fancy:fb_radius="10dp"
+            fancy:fb_text="运算"
+            fancy:fb_textColor="#FFFFFF"
+            fancy:fb_textSize="20dp" />
+
+        <mehdi.sakout.fancybuttons.FancyButton
+            android:id="@+id/btn_reportCheck"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:padding="10dp"
+            fancy:fb_borderColor="#FFFFFF"
+            fancy:fb_borderWidth="1dp"
+            fancy:fb_defaultColor="#feac00"
+            fancy:fb_focusColor="#8cc9f8"
+            fancy:fb_radius="10dp"
+            fancy:fb_text="计工检查"
+            fancy:fb_textColor="#FFFFFF"
+            fancy:fb_textSize="20dp" />
+
+
+        <mehdi.sakout.fancybuttons.FancyButton
             android:id="@+id/btn_report"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
@@ -269,6 +283,8 @@
             fancy:fb_text="工序计工"
             fancy:fb_textColor="#FFFFFF"
             fancy:fb_textSize="20dp" />
+
+
 
         <mehdi.sakout.fancybuttons.FancyButton
             android:id="@+id/btn_reportPublish"
@@ -348,13 +364,6 @@
                 android:textSize="20dp" />
 
             <TextView
-                android:id="@+id/tv_havedispatchingnumber"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:text="应派工数"
-                android:textSize="20dp" />
-
-            <TextView
                 android:id="@+id/tv_dispatchingnumber"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
@@ -366,6 +375,13 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="已汇报未计工数"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/tv_havedispatchingnumber"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="应派工数"
                 android:textSize="20dp" />
         </LinearLayout>
     </com.goldemperor.Widget.ScrollListenerHorizontalScrollView>
