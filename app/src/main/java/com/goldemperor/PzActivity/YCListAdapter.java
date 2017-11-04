@@ -35,6 +35,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.goldemperor.PzActivity.YCListActivity.abnormityModel;
+
 /**
  * Created by YOLANDA on 2016/7/22.
  */
@@ -136,6 +138,15 @@ public class YCListAdapter extends SwipeMenuAdapter<YCListAdapter.DefaultViewHol
             tv_opinion.setText(o.getFopinion());
             tv_processing.setText(o.getFprocessing());
             tv_acceptedOpinion.setText(o.getFacceptedOpinion());
+            for(int i=0;i<abnormityModel.size();i++){
+                if(o.getFexceptionID().equals(abnormityModel.get(i).getFitemID())){
+                    if(o.getFexceptionLevel()==0) {
+                        tv_exception.setText(abnormityModel.get(i).getFname() + "(轻微)");
+                    }else{
+                        tv_exception.setText(abnormityModel.get(i).getFname() + "(严重)");
+                    }
+                }
+            }
         }
 
         @Override
