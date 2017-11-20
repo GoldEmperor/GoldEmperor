@@ -100,9 +100,7 @@ public class YCListAdapter extends SwipeMenuAdapter<YCListAdapter.DefaultViewHol
         private TextView tv_exception;
         private TextView tv_qty;
 
-        private TextView tv_opinion;
-        private TextView tv_processing;
-        private TextView tv_acceptedOpinion;
+        private TextView tv_freCheck;
 
         public DefaultViewHolder(View itemView) {
             super(itemView);
@@ -121,9 +119,7 @@ public class YCListAdapter extends SwipeMenuAdapter<YCListAdapter.DefaultViewHol
             tv_exception = (TextView) itemView.findViewById(R.id.tv_exception);
             tv_qty = (TextView) itemView.findViewById(R.id.tv_qty);
 
-            tv_opinion = (TextView) itemView.findViewById(R.id.tv_opinion);
-            tv_processing = (TextView) itemView.findViewById(R.id.tv_processing);
-            tv_acceptedOpinion= (TextView) itemView.findViewById(R.id.tv_acceptedOpinion);
+            tv_freCheck = (TextView) itemView.findViewById(R.id.tv_recheck);
             //ScrollView.setOnScrollStateChangedListener(this);
             //ScrollView.setOnScrollChangeListener(this);
 
@@ -135,9 +131,8 @@ public class YCListAdapter extends SwipeMenuAdapter<YCListAdapter.DefaultViewHol
             tv_name.setText(o.getFname());
             tv_group.setText(o.getFdeptmentName());
             tv_qty.setText(String.valueOf(o.getFqty()));
-            tv_opinion.setText(o.getFopinion());
-            tv_processing.setText(o.getFprocessing());
-            tv_acceptedOpinion.setText(o.getFacceptedOpinion());
+            tv_freCheck.setText(o.getFreCheck());
+
             for(int i=0;i<abnormityModel.size();i++){
                 if(o.getFexceptionID().equals(abnormityModel.get(i).getFitemID())){
                     if(o.getFexceptionLevel()==0) {

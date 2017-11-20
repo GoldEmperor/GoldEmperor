@@ -146,7 +146,7 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
             nameDropDown = (BootstrapDropDown) itemView.findViewById(R.id.XLarge);
             edit_userNumber = (EditText) itemView.findViewById(R.id.edit_userNumber);
             edit_dispatchingnumber = (EditText) itemView.findViewById(R.id.edit_dispatchingnumber);
-
+            edit_dispatchingnumber.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             ScrollView = (ScrollListenerHorizontalScrollView) itemView.findViewById(R.id.ScrollView);
             ScrollView.setOnScrollListener(this);
 
@@ -200,7 +200,7 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
         }
 
         private void getUserInfo(String FNumber) {
-            RequestParams params = new RequestParams(define.IP8341+define.GetEmpByFNumber);
+            RequestParams params = new RequestParams(define.IP8341 + define.GetEmpByFNumber);
             params.addQueryStringParameter("FNumber", FNumber);
             x.http().get(params, new Callback.CommonCallback<String>() {
                 @Override
@@ -255,9 +255,9 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                 }
             });
      */
-            if(getAdapterPosition()<gxpgActivity.sc_ProcessWorkCardEntryList.size()) {
-                DecimalFormat df = new DecimalFormat("#.0");
-                tv_noReportednumber.setText(df.format(gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getReportNumber()));
+            if (getAdapterPosition() < gxpgActivity.sc_ProcessWorkCardEntryList.size()) {
+
+                tv_noReportednumber.setText(String.valueOf((int) gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getReportNumber()));
 
                 edit_dispatchingnumber.setText(String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFqty()));
 
@@ -285,8 +285,8 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
 
                             if (Float.valueOf(edit_dispatchingnumber.getText().toString().trim()) != 0) {
                                 //先不管超标设置总数
-                                if (Float.valueOf(edit_dispatchingnumber.getText().toString().trim()) > p.getHavedispatchingnumber().intValue()) {
-                                    edit_dispatchingnumber.setText(String.valueOf(p.getHavedispatchingnumber().intValue()));
+                                if (Float.valueOf(edit_dispatchingnumber.getText().toString().trim()) > p.getHavedispatchingnumber().floatValue()) {
+                                    edit_dispatchingnumber.setText(String.valueOf(p.getHavedispatchingnumber().floatValue()));
                                 }
                                 gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFqty(new BigDecimal(edit_dispatchingnumber.getText().toString().trim()));
                                 //设置后判断总数
@@ -341,8 +341,7 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                     edit_userNumber.setText(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getJobNumber());
                 }
 
-                tv_havedispatchingnumber.setText(String.valueOf(p.getHavedispatchingnumber().
-                        intValue()));
+                tv_havedispatchingnumber.setText(String.valueOf(p.getHavedispatchingnumber().floatValue()));
 
                 try {
                     GxpgPlan gxpgPlan = dbManager.selector(GxpgPlan.class).where("style", " = ", p.getPlantbody()).and("processname", "=", p.getProcessname()).and("username", "=", gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getName()).findFirst();
@@ -370,24 +369,21 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        if (Utils.isNumeric(editText.getText().toString())) {
-                                            gxpgActivity.sc_ProcessWorkCardEntryList.get(position).setReportNumber(Float.valueOf(editText.getText().toString()));
-                                            float count = 0;
-                                            for (int i = 0; i < gxpgActivity.sc_ProcessWorkCardEntryList.size(); i++) {
-                                                if (gxpgActivity.processWorkCardPlanEntryList.get(i).getProcessname().equals(gxpgActivity.processWorkCardPlanEntryList.get(position).getProcessname())) {
-                                                    count += gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getReportNumber();
-                                                }
+                                        gxpgActivity.sc_ProcessWorkCardEntryList.get(position).setReportNumber(Float.valueOf(editText.getText().toString()));
+                                        float count = 0;
+                                        for (int i = 0; i < gxpgActivity.sc_ProcessWorkCardEntryList.size(); i++) {
+                                            if (gxpgActivity.processWorkCardPlanEntryList.get(i).getProcessname().equals(gxpgActivity.processWorkCardPlanEntryList.get(position).getProcessname())) {
+                                                count += gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getReportNumber();
                                             }
-                                            if (count > gxpgActivity.norecord) {
-                                                Toast.makeText(gxpgActivity, "计工数超过汇报数", Toast.LENGTH_LONG).show();
-                                                gxpgActivity.sc_ProcessWorkCardEntryList.get(position).setReportNumber(0f);
-                                            } else if (count < gxpgActivity.norecord) {
-                                                Toast.makeText(gxpgActivity, "计工数少于汇报数", Toast.LENGTH_LONG).show();
-                                            }
-                                            gxpgActivity.mMenuAdapter.notifyDataSetChanged();
-                                        } else {
-                                            Toast.makeText(gxpgActivity, "请输入数字", Toast.LENGTH_LONG);
                                         }
+                                        if (count > gxpgActivity.norecord) {
+                                            Toast.makeText(gxpgActivity, "计工数超过汇报数", Toast.LENGTH_LONG).show();
+                                            gxpgActivity.sc_ProcessWorkCardEntryList.get(position).setReportNumber(0f);
+                                        } else if (count < gxpgActivity.norecord) {
+                                            Toast.makeText(gxpgActivity, "计工数少于汇报数", Toast.LENGTH_LONG).show();
+                                        }
+                                        gxpgActivity.mMenuAdapter.notifyDataSetChanged();
+
                                     }
                                 }).show();
                     }

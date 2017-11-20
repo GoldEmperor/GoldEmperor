@@ -118,6 +118,8 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
 
         TextView tv_reportednotInnumber;
 
+        TextView tv_mapnumber;
+
         public DefaultViewHolder(View itemView) {
             super(itemView);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.item);
@@ -158,6 +160,8 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
             tv_reportednotnumber = (TextView) itemView.findViewById(R.id.tv_reportednotnumber);
 
             tv_reportednotInnumber = (TextView) itemView.findViewById(R.id.tv_reportednotInnumber);
+
+            tv_mapnumber = (TextView) itemView.findViewById(R.id.tv_mapnumber);
         }
 
         public void setData(WorkCardPlan o) {
@@ -204,6 +208,8 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
                 count += Integer.valueOf(o.getSizeList().get(i)[0][1]);
             }
             tv_count.setText(String.valueOf(count));
+
+            tv_mapnumber.setText(o.getFmapnumber());
 
 
         }

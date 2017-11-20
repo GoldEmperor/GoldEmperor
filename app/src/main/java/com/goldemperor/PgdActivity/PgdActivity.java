@@ -89,9 +89,10 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
     private EditText searchEdit;
     private FancyButton btn_search;
     private FancyButton btn_today;
-    private FancyButton btn_yestoday;
     private FancyButton btn_week;
-    private FancyButton btn_twoDay;
+    private FancyButton btn_month;
+    private FancyButton btn_lastMonth;
+
     private FancyButton btn_calendar;
     private String StartTime;
     private String EndTime;
@@ -186,17 +187,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
             }
         });
 
-        btn_yestoday = (FancyButton) findViewById(R.id.btn_yestoday);
-        btn_yestoday.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tv_tip.setVisibility(View.VISIBLE);
-                StartTime = Utils.getDateStr(Utils.getCurrentTime(), 1, false);
-                EndTime = Utils.getDateStr(Utils.getCurrentTime(), 1, false);
-                getData(StartTime, EndTime);
-
-            }
-        });
 
         btn_week = (FancyButton) findViewById(R.id.btn_week);
         btn_week.setOnClickListener(new View.OnClickListener() {
@@ -210,12 +200,28 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
             }
         });
 
-        btn_twoDay = (FancyButton) findViewById(R.id.btn_twoDay);
-        btn_twoDay.setOnClickListener(new View.OnClickListener() {
+        btn_month = (FancyButton) findViewById(R.id.btn_month);
+        btn_month.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 tv_tip.setVisibility(View.VISIBLE);
-                StartTime = Utils.getDateStr(Utils.getCurrentTime(), 1, false);
+                StartTime = Utils.getCurrentYear() + "-" + Utils.getCurrentMonth() + "-" + "01";
+                ;
+                EndTime = Utils.getCurrentTime();
+                getData(StartTime, EndTime);
+
+            }
+        });
+
+        btn_lastMonth = (FancyButton) findViewById(R.id.btn_lastMonth);
+        btn_lastMonth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tv_tip.setVisibility(View.VISIBLE);
+                String month = String.valueOf(Integer.valueOf(Utils.getCurrentMonth()) - 1 <= 0 ? 12 : Integer.valueOf(Utils.getCurrentMonth()) - 1);
+                String year = String.valueOf(Integer.valueOf(Utils.getCurrentMonth()) - 1 <= 0 ? Integer.valueOf(Utils.getCurrentYear()) - 1 : Utils.getCurrentYear());
+                StartTime = year + "-" + month + "-" + "01";
+                ;
                 EndTime = Utils.getCurrentTime();
                 getData(StartTime, EndTime);
 
@@ -312,17 +318,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                         .setWidth(width)
                         .setHeight(height);
                 swipeLeftMenu.addMenuItem(addItem); // 添加一个按钮到右侧菜单。
-
-                SwipeMenuItem addItem2 = new SwipeMenuItem(mContext)
-                        .setBackgroundDrawable(R.drawable.selector_red)
-                        .setImage(R.mipmap.ic_action_module_black)
-                        .setText("品质异常")
-                        .setTextColor(Color.WHITE)
-                        .setWidth(width)
-                        .setHeight(height);
-                swipeLeftMenu.addMenuItem(addItem2); // 添加一个按钮到右侧菜单。
-
-
 
             }
 
@@ -965,7 +960,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                Log.e("jindi",result);
+                Log.e("jindi","SCWorkCard2SCProcessWorkCardBysuitID:"+result);
                 if (result.contains("success")) {
 
                     int finterid = Integer.valueOf(result.substring(result.indexOf("ReturnMsg"), result.indexOf(",")).replace("ReturnMsg\":", "").replace("\"", ""));

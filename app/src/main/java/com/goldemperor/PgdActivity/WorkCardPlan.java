@@ -136,12 +136,42 @@ public class WorkCardPlan {
 
     private BigDecimal  reportednotInnumber;//已汇报未入库数
 
+    private Integer fprocessflowid;
+
+    private String fprocessingmethod;
+
+    private String fmapnumber;
+
+    public String getFmapnumber() {
+        return fmapnumber;
+    }
+
+    public void setFmapnumber(String fmapnumber) {
+        this.fmapnumber = fmapnumber;
+    }
+
     public Integer getFdeptid() {
         return fdeptid;
     }
 
     public void setFdeptid(Integer fdeptid) {
         this.fdeptid = fdeptid;
+    }
+
+    public Integer getFprocessflowid() {
+        return fprocessflowid;
+    }
+
+    public void setFprocessflowid(Integer fprocessflowid) {
+        this.fprocessflowid = fprocessflowid;
+    }
+
+    public String getFprocessingmethod() {
+        return fprocessingmethod;
+    }
+
+    public void setFprocessingmethod(String fprocessingmethod) {
+        this.fprocessingmethod = fprocessingmethod;
     }
 
     public BigDecimal getReportednumber() {

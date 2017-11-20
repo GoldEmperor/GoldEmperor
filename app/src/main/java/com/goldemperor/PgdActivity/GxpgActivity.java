@@ -294,9 +294,9 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 try {
                     List<GxpgPlanStatus> gxpgPlanStatusesList = dbManager.selector(GxpgPlanStatus.class).where("planbill", " = ", selectWorkCardPlan.getPlanbill()).and("orderbill", "=", selectWorkCardPlan.getOrderbill()).findAll();
 
-                    if (gxpgPlanStatusesList == null && gxpgPlanStatusesList.size() < 1) {
-                        Toast.makeText(mContext, "请先保存预排", Toast.LENGTH_LONG).show();
-                    } else {
+                   // if (gxpgPlanStatusesList == null && gxpgPlanStatusesList.size() < 1) {
+                       // Toast.makeText(mContext, "请先保存预排", Toast.LENGTH_LONG).show();
+                   // } else {
                         final AlertDialog.Builder normalDialog =
                                 new AlertDialog.Builder(act);
                         normalDialog.setTitle("提示");
@@ -331,7 +331,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                                 });
 
                         normalDialog.show();
-                    }
+                   // }
                 } catch (DbException e) {
                     e.printStackTrace();
                 }
@@ -348,7 +348,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 final AlertDialog.Builder normalDialog =
                         new AlertDialog.Builder(act);
                 normalDialog.setTitle("提示");
-                normalDialog.setMessage("你确定要发布今日汇报信息?");
+                normalDialog.setMessage("你确定要发布员工校对信息?");
                 normalDialog.setPositiveButton("确定",
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -377,18 +377,39 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         btn_report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btn_report.setEnabled(false);
-                saveData();
+                final AlertDialog.Builder normalDialog =
+                        new AlertDialog.Builder(act);
+                normalDialog.setTitle("提示");
+                normalDialog.setMessage("你确定要对工序计工?");
+                normalDialog.setPositiveButton("确定",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                btn_report.setEnabled(false);
+                                //saveData();
+                                SCProcessWorkCard2SCProcessOutPutBysuitID();
+                            }
+                        });
+                normalDialog.setNegativeButton("取消",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                normalDialog.show();
+
+
             }
         });
 
         btn_again = (FancyButton) findViewById(R.id.btn_again);
 
-        btn_again.setEnabled(false);
         btn_again.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "工序汇报重新录入中...", Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, "工序汇报校正中...", Toast.LENGTH_LONG).show();
                 againSCProcessOutPutReWriteBysuitID();
             }
         });
@@ -469,14 +490,12 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                     List<GxpgPlanStatus> gxpgPlanStatusesList = dbManager.selector(GxpgPlanStatus.class).where("planbill", " = ", selectWorkCardPlan.getPlanbill()).and("orderbill", "=", selectWorkCardPlan.getOrderbill()).findAll();
                     if (norecord <= 0) {
                         Toast.makeText(mContext, "已汇报未计工数为零", Toast.LENGTH_LONG).show();
-                    } else if (gxpgPlanStatusesList == null || gxpgPlanStatusesList.size() < 1) {
-                        Toast.makeText(mContext, "工序尚未保存", Toast.LENGTH_LONG).show();
-                    } else {
+                    }  else {
                         for (int i = 0; i < sc_ProcessWorkCardEntryList.size(); i++) {
 
                             GxpgPlan gxpgPlan = dbManager.selector(GxpgPlan.class).where("style", " = ", selectWorkCardPlan.getPlantbody()).and("processname", "=", gxpgActivity.processWorkCardPlanEntryList.get(i).getProcessname()).and("username", "=", gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getName()).findFirst();
                             if (gxpgPlan != null) {
-                                sc_ProcessWorkCardEntryList.get(i).setReportNumber(norecord * gxpgPlan.getPer());
+                                sc_ProcessWorkCardEntryList.get(i).setReportNumber((float)Math.floor(norecord * gxpgPlan.getPer()));
                                 mMenuAdapter.notifyDataSetChanged();
                             }
 
@@ -513,12 +532,13 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         RequestParams params = new RequestParams(define.IP8341 + define.GetProcessPlanEntry);
         params.setReadTimeout(60000);
         params.addQueryStringParameter("FInterID", String.valueOf(finterid));
-        //Log.e("jindi", params.toString());
-        x.http().post(params, new Callback.CommonCallback<String>() {
+        Log.e("jindi", params.toString());
+        x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(final String result) {
                 Gson g = new Gson();
                 GxpgResult gxpgs = g.fromJson(result, GxpgResult.class);
+                Log.e("jindi",result);
                 if (gxpgs != null && gxpgs.getData() != null) {
 
                     tv_group.setText("组别:" + selectWorkCardPlan.getFgroup());
@@ -592,6 +612,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
             public void onSuccess(final String result) {
                 Gson g = new Gson();
                 GxpgResult gxpgs = g.fromJson(result, GxpgResult.class);
+                Log.e("jindi",result);
                 if (gxpgs != null && gxpgs.getData() != null) {
 
                     tv_group.setText("组别:" + selectWorkCardPlan.getFgroup());
@@ -716,6 +737,10 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         sc_processWorkCardEntry.setFroutingid(processWorkCardPlanEntry.getFroutingid());
         sc_processWorkCardEntry.setFqty(processWorkCardPlanEntry.getDispatchingnumber());
         sc_processWorkCardEntry.setHaveSave(true);
+
+        sc_processWorkCardEntry.setFprocessflowid(processWorkCardPlanEntry.getFprocessflowid());
+
+        sc_processWorkCardEntry.setFprocessingmethod(processWorkCardPlanEntry.getFprocessingmethod());
 
         try {
             List<GxpgPlanStatus> gxpgPlanStatusesList = dbManager.selector(GxpgPlanStatus.class).where("planbill", " = ", selectWorkCardPlan.getPlanbill()).and("orderbill", "=", selectWorkCardPlan.getOrderbill()).findAll();
@@ -986,6 +1011,9 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         Gson g = new Gson();
         RequestParams params = new RequestParams(define.IP8341 + define.InsertProcessPlanEntry);
         params.setAsJsonContent(true);
+        for(int i=0;i<sc_ProcessWorkCardEntryList.size();i++){
+            sc_ProcessWorkCardEntryList.get(i).setFentryid(i);
+        }
         params.setBodyContent(g.toJson(sc_ProcessWorkCardEntryList));
 
         x.http().post(params, new Callback.CommonCallback<String>() {
@@ -993,6 +1021,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
             public void onSuccess(String result) {
                 //解析result
                 //重新设置数据
+                Log.e("jindi",result);
                 if (result.contains("OK")) {
                     Alerter.create(act)
                             .setTitle("提示")
@@ -1315,6 +1344,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
                                 int gxCount = 0;
                                 for (int i = 0; i < processWorkCardPlanEntryList.size(); i++) {
                                     if (processWorkCardPlanEntryList.get(i).getProcesscode().equals(processWorkCardPlanEntryList.get(adapterPosition).getProcesscode())) {
@@ -1432,6 +1462,9 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                         processOutPut.getReturnMsg().get(i).setFdeptnumber(String.valueOf(sc_ProcessWorkCardEntryList.get(i).getFdeptmentid()));
                         processOutPut.getReturnMsg().get(i).setFNewWorkCardInterID(sc_ProcessWorkCardEntryList.get(i).getFsourceinterid());
                         processOutPut.getReturnMsg().get(i).setFNewWorkCardEntryID(sc_ProcessWorkCardEntryList.get(i).getFsourceentryid());
+
+                        processOutPut.getReturnMsg().get(i).setFprocessflowid(sc_ProcessWorkCardEntryList.get(i).getFprocessflowid());
+                        processOutPut.getReturnMsg().get(i).setFprocessingmethod(sc_ProcessWorkCardEntryList.get(i).getFprocessingmethod());
                     }
 
                     //TextView tv_processname = (TextView) layout.findViewById(R.id.tv_processname);
@@ -1522,6 +1555,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         Gson g = new Gson();
         RequestParams params = new RequestParams(define.IP8012 + define.SCProcessOutPutSaveBysuitID);
         params.addParameter("PushJsonCondition", g.toJson(processOutPut.getReturnMsg()));
+        params.addParameter("FDetpmentID", dataPref.getString(define.SharedFDeptmentid, "0"));
         params.addParameter("Type", "insert");
         params.addParameter("suitID", define.suitID);
         //String log=params.toString();
@@ -1540,7 +1574,8 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                     Toast.makeText(mContext, "工序汇报录入中...", Toast.LENGTH_LONG).show();
                     SCProcessOutPutReWriteBysuitID();
                 } else {
-                    Toast.makeText(mContext, "工序汇报超额", Toast.LENGTH_LONG).show();
+                    String ReturnMsg = result.substring(result.indexOf("ReturnMsg"), result.indexOf(",")).replace("ReturnMsg\":", "").replace("\"", "");
+                    Toast.makeText(mContext, ReturnMsg, Toast.LENGTH_LONG).show();
                     btn_report.setEnabled(true);
                 }
             }
@@ -1634,7 +1669,6 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                     //UpdateProcessPassQty();
                     Toast.makeText(mContext, "工序汇报录入成功", Toast.LENGTH_LONG).show();
                     GetWorkCardProcessQty();
-                    btn_again.setEnabled(false);
                 } else {
                     //失败后等待两秒重新反写
                     try {
@@ -1693,10 +1727,8 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                     //UpdateProcessPassQty();
                     Toast.makeText(mContext, "工序汇报录入成功", Toast.LENGTH_LONG).show();
                     GetWorkCardProcessQty();
-                    btn_again.setEnabled(false);
                 } else {
-                    Toast.makeText(mContext, "工序汇报录入失败,请按重新录入按钮录入。失败原因:" + result, Toast.LENGTH_LONG).show();
-                    btn_again.setEnabled(true);
+                    Toast.makeText(mContext, "工序汇报录入失败,请按校正按钮校正。失败原因:" + result, Toast.LENGTH_LONG).show();
                 }
                 btn_report.setEnabled(true);
             }
@@ -1720,21 +1752,14 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
     }
 
     private void againSCProcessOutPutReWriteBysuitID() {
-        List<PushJsonCondition> pushJsonConditionList = new ArrayList<PushJsonCondition>();
-        for (int i = 0; i < processOutPut.getReturnMsg().size(); i++) {
-            PushJsonCondition pushJsonCondition = new PushJsonCondition();
-            pushJsonCondition.setFEntryID(String.valueOf(sc_ProcessWorkCardEntryList.get(i).getFentryid()));
-            pushJsonCondition.setFInterID(String.valueOf(processOutPut.getReturnMsg().get(i).getFinterid()));
-            pushJsonCondition.setFSize(String.valueOf(processOutPut.getReturnMsg().get(i).getFsize()));
-            pushJsonConditionList.add(pushJsonCondition);
-        }
-        Gson g = new Gson();
-        RequestParams params = new RequestParams(define.IP8012 + define.SCProcessOutPutReWriteBysuitID);
-        params.addParameter("PushJsonCondition", g.toJson(pushJsonConditionList));
+        RequestParams params = new RequestParams(define.IP8012 + define.ResetWorkCardPushData);
+        params.addParameter("workcardID", selectWorkCardPlan.getFinterid());
         params.addParameter("suitID", define.suitID);
+        params.setConnectTimeout(120000);
+        params.setReadTimeout(120000);
         //Log.e("jindi", params.toString());
 
-        x.http().post(params, new Callback.CommonCallback<String>() {
+        x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 try {
@@ -1744,13 +1769,16 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 }
                 Log.e("jindi", result);
                 if (result.contains("success")) {
-                    //UpdateProcessPassQty();
-                    Toast.makeText(mContext, "工序汇报录入成功", Toast.LENGTH_LONG).show();
-                    GetWorkCardProcessQty();
-                    btn_again.setEnabled(false);
+                    Toast.makeText(mContext, "工序汇报校正成功", Toast.LENGTH_LONG).show();
+                    try {
+                        Thread.sleep(2000);
+                        GetWorkCardProcessQty();
+                    } catch (InterruptedException e) {
+                        return;
+                    }
+
                 } else {
-                    Toast.makeText(mContext, "工序汇报重录入失败,请按重新录入按钮录入。", Toast.LENGTH_LONG).show();
-                    btn_again.setEnabled(true);
+                    Toast.makeText(mContext, "工序汇报校正失败,请重新校正。", Toast.LENGTH_LONG).show();
                 }
                 btn_report.setEnabled(true);
             }
@@ -1932,7 +1960,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
 
 
         WechatPostByFEmpIDData wechatPostByFEmpIDData = new WechatPostByFEmpIDData();
-        wechatPostByFEmpIDData.setFirst("您有一条新的工单汇报信息");
+        wechatPostByFEmpIDData.setFirst("工单汇报校对");
         wechatPostByFEmpIDData.setKeyword1("工厂型体:" + processWorkCardPlanEntryList.get(position).getPlantbody() + " " + processWorkCardPlanEntryList.get(position).getProcessname());
         wechatPostByFEmpIDData.setKeyword2("汇报数量:" + sc_ProcessWorkCardEntryList.get(position).getReportNumber());
 

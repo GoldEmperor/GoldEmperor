@@ -149,7 +149,7 @@ public class LoginActivity extends AppCompatActivity {
                             result = result.replaceAll("\\\\", "");
                             String code = result.substring(result.indexOf("\"code\""), result.indexOf(",", result.indexOf("\"code\"")));
                             code = code.replaceAll("\"", "").replaceAll("code", "").replaceAll(":", "");
-                            VerNum = "999999";
+                            VerNum = code;
                             Log.e("jindi", VerNum);
                         }
 

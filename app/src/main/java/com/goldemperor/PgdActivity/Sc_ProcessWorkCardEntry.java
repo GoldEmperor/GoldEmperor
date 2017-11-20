@@ -89,6 +89,27 @@ public class Sc_ProcessWorkCardEntry implements Cloneable {
 
     public boolean haveSave;
 
+    private Integer fprocessflowid;
+
+    private String fprocessingmethod;
+
+    public Integer getFprocessflowid() {
+        return fprocessflowid;
+    }
+
+    public void setFprocessflowid(Integer fprocessflowid) {
+        this.fprocessflowid = fprocessflowid;
+    }
+
+    public String getFprocessingmethod() {
+        return fprocessingmethod;
+    }
+
+    public void setFprocessingmethod(String fprocessingmethod) {
+        this.fprocessingmethod = fprocessingmethod;
+    }
+
+
     public boolean getHaveSave() {
         return haveSave;
     }
