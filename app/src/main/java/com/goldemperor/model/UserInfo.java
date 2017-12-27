@@ -34,13 +34,14 @@ public class UserInfo {
         return this.OrganizationID;
     }
 
-    public String BillTypeID;//单据类型ID
+    public String BillTypeID="1";//单据类型ID
 
     public void setBillTypeID(String billTypeID) {
         this.BillTypeID = billTypeID;
     }
-
     public String getBillTypeID() {
+         if(this.BillTypeID=="")
+             return "1";
         return this.BillTypeID;
     }
 

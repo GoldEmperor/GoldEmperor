@@ -326,8 +326,8 @@ public class CxLoginActivity extends Activity {
             data_list = new ArrayList<String>();
             int RandID = 1;//设定控件ID
             data_list.add("入库单");
-            data_list.add("领料单");
-            data_list.add("暂收单");
+//            data_list.add("领料单");
+//            data_list.add("暂收单");
             //适配器
             arr_adapter = new ArrayAdapter<String>(myContext, android.R.layout.select_dialog_item, data_list);
             //设置下拉框样式

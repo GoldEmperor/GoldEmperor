@@ -105,6 +105,7 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
     private Activity act;
     private boolean isUserCode;
     private TextView userScanText;
+    private TextView txtviewTitle;
     private String userNumber;
 //    //条形码列表的适配器
 //    private ContactsCursorAdapter m_contactsAdapter;
@@ -172,7 +173,8 @@ public class CxStockInActivity extends FragmentActivity implements OnDeleteListi
             }
         });
         txtcount = (TextView) this.findViewById(R.id.txtcount);
-
+        txtviewTitle= (TextView) this.findViewById(R.id.txtviewtitle);
+        txtviewTitle.setText("成型后段扫码入库");
         stockin = (RadioButton) this.findViewById(R.id.stockin);
         stockout = (RadioButton) this.findViewById(R.id.stockout);
         stocktemp = (RadioButton) this.findViewById(R.id.stocktemp);

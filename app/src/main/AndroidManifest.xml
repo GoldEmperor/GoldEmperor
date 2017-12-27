@@ -103,21 +103,6 @@
 
         </activity>
 
-        <activity android:name="com.goldemperor.SupperInstock.MainActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label=""
-            android:screenOrientation="portrait">
-
-
-        </activity>
-
-        <activity android:name="com.goldemperor.ScInstock.MainActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label=""
-            android:screenOrientation="portrait">
-
-
-        </activity>
 
         <activity android:name="com.goldemperor.LoginActivity.LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -300,6 +285,28 @@
             android:name="com.goldemperor.ScReport.ScLoginActivity"
             android:configChanges="orientation"
             android:label="@string/screport_form_name"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden">
+        </activity>
+        <activity android:name="com.goldemperor.SupperInstock.MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="供应商入库单扫码"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="com.goldemperor.SupperInstock.LoginActivity"
+            android:configChanges="orientation"
+            android:label="@string/supplystockin_form_name"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden">
+        </activity>
+        <activity android:name="com.goldemperor.ScInstock.MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="生产入库扫码"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="com.goldemperor.ScInstock.LoginActivity"
+            android:configChanges="orientation"
+            android:label="@string/cxstockin_scstockin"
             android:windowSoftInputMode="adjustUnspecified|stateHidden">
         </activity>
         //注册广播BroadcastReceiver和Service

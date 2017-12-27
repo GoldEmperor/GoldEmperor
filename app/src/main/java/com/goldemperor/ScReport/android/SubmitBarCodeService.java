@@ -40,6 +40,7 @@ public class SubmitBarCodeService extends Thread {
     public void run() {
         // TODO Auto-generated method stub
         super.run();
+        String result="";
         try {
             if (myloginActivity_instance == null)
                 return;
@@ -52,7 +53,7 @@ public class SubmitBarCodeService extends Thread {
 //            myloginActivity_instance.userLoginInfo.userInfo.setDefaultStockID(DefaultStockID);
             params = GetBarCodeParams(myloginActivity_instance.userLoginInfo.userInfo);
             //设定账套下拉框 ,发送显示指令单命令 Looper.prepare();
-            String result = PublicService.GetWebServiceParamsComnon(myContext, StockBarCodeService.asmxURL, "SubmitWorkCardBarCode2CollectBill", params);
+            result = PublicService.GetWebServiceParamsComnon(myContext, StockBarCodeService.asmxURL, "SubmitWorkCardBarCode2CollectBill", params);
 
 
          //  String result="{'Result':'success','StockBillNO':''}";
@@ -83,7 +84,8 @@ public class SubmitBarCodeService extends Thread {
         }catch (Exception ex) {
             //Toast.makeText(myContext, ex.getMessage(), Toast.LENGTH_SHORT).show();
             Looper.prepare();
-            new Dialog(myContext).ShowAlertDialog("异常",ex.getMessage());
+            new Dialog(myContext).ShowAlertDialog("异常",result);
+//            new Dialog(myContext).ShowAlertDialog("异常",ex.getMessage());
             Looper.loop();
         }
     }
