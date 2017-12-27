@@ -91,7 +91,43 @@ public class Sc_ProcessWorkCardEntry implements Cloneable {
 
     private Integer fprocessflowid;
 
+    private Integer foperplanninginterid;
+
+    private Integer foperplanningentryid;
+
     private String fprocessingmethod;
+
+    private boolean isOpen;
+
+
+    public Sc_ProcessWorkCardEntry(){
+        reportNumber=0f;
+        isOpen=true;
+    }
+
+    public boolean getIsOpen() {
+        return isOpen;
+    }
+
+    public void setIsOpen(boolean isOpen) {
+        this.isOpen = isOpen;
+    }
+
+    public Integer getFoperplanninginterid() {
+        return foperplanninginterid;
+    }
+
+    public void setFoperplanninginterid(Integer foperplanninginterid) {
+        this.foperplanninginterid = foperplanninginterid;
+    }
+
+    public Integer getFoperplanningentryid() {
+        return foperplanningentryid;
+    }
+
+    public void setFoperplanningentryid(Integer foperplanningentryid) {
+        this.foperplanningentryid = foperplanningentryid;
+    }
 
     public Integer getFprocessflowid() {
         return fprocessflowid;
@@ -119,9 +155,6 @@ public class Sc_ProcessWorkCardEntry implements Cloneable {
     }
 
 
-    public Sc_ProcessWorkCardEntry(){
-        reportNumber=0f;
-    }
     public float getReportNumber() {
         return reportNumber;
     }

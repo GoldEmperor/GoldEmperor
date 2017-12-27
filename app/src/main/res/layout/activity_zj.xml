@@ -175,11 +175,12 @@
             android:orientation="horizontal"
             >
             <TextView
+                android:id="@+id/CountText"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
                 android:background="@drawable/textview_border"
-                android:text="当日质检总数"
-                android:textSize="21dp"
+                android:text="当日质检总数(双)"
+                android:textSize="19dp"
                 android:textColor="#FF000000"
                 android:gravity="center"
                 android:layout_alignParentTop="true"
@@ -204,10 +205,11 @@
             android:orientation="horizontal"
             >
             <TextView
+                android:id="@+id/qualifiedCountText"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
                 android:background="@drawable/textview_border"
-                android:text="合格总数"
+                android:text="合格总数(双)"
                 android:textSize="21dp"
                 android:textColor="#FF000000"
                 android:gravity="center"
@@ -233,10 +235,11 @@
             android:orientation="horizontal"
             >
             <TextView
+                android:id="@+id/unqualifiedCountText"
                 android:layout_width="150dp"
                 android:layout_height="50dp"
                 android:background="@drawable/textview_border"
-                android:text="不合格总数"
+                android:text="不合格总数(双)"
                 android:textSize="21dp"
                 android:textColor="#FF000000"
                 android:gravity="center"

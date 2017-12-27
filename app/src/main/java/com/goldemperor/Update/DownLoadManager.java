@@ -2,7 +2,12 @@ package com.goldemperor.Update;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
+import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -31,9 +36,13 @@ public class DownLoadManager {
         InputStream is = conn.getInputStream();
 
 
-
-
-        FileOutputStream fos = act.openFileOutput("updata.apk",act.MODE_WORLD_READABLE);
+        FileOutputStream fos=null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            fos = act.openFileOutput("updata.apk",act.MODE_PRIVATE);
+        } else {
+            //执行的数据类型
+            fos = act.openFileOutput("updata.apk",act.MODE_WORLD_READABLE);
+        }
         // File file = new File(Environment.getExternalStorageDirectory(), "updata.apk");
         //FileOutputStream fos = new FileOutputStream("updata.apk",act.MODE_WORLD_READABLE);
 
@@ -64,6 +73,7 @@ public class DownLoadManager {
         apkdir.mkdirs();
 
         File file=new File(apkdir, "updata.apk");
+        Log.e("jindi",file.getPath());
         return file;
     }
 }

@@ -8,9 +8,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -154,7 +156,6 @@ public class CheckVersionTask implements Runnable {
                         try {
                             String path = myinfo.getUrl();//getResources().getString(R.string.updateapkurl);
                             File file = DownLoadManager.getFileFromServer(path, pd, act);
-                            sleep(2000);
                             installApk(file);
                             act.runOnUiThread(new Runnable() {
                                 @Override
@@ -173,11 +174,16 @@ public class CheckVersionTask implements Runnable {
 
     //安装apk
     protected void installApk(File file) {
-        Intent intent = new Intent();
-        //执行动作
-        intent.setAction(Intent.ACTION_VIEW);
-        //执行的数据类型
-        intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+        Intent intent =new Intent(Intent.ACTION_VIEW);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            Uri contentUri = FileProvider.getUriForFile(act, "com.goldemperor.fileprovider",file);
+            intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
+        } else {
+            //执行的数据类型
+            intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+        }
+
         act.startActivity(intent);
     }
 }

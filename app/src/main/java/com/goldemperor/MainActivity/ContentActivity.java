@@ -4,7 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -66,9 +71,14 @@ public class ContentActivity extends AppCompatActivity {
 
     private FancyButton setBtn;
 
+
+    private FancyButton btn_xjdcheck;
+
     private Button waiBtn;
 
     private Button neiBtn;
+
+    private Button ceBtn;
 
     private TextView netStatus;
     private TextView version;
@@ -87,11 +97,15 @@ public class ContentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_content);
         //隐藏标题栏
         getSupportActionBar().hide();
+
+
         mContext = this;
         act = this;
         dataPref = this.getSharedPreferences(define.SharedName, 0);
         dataEditor = dataPref.edit();
 
+        LogToFile.init(this);
+        //LogToFile.e("test","写入成功");
         SimpleImageBanner sib = ViewFindUtils.find(getWindow().getDecorView(), R.id.sib);
         sib
                 .setSelectAnimClass(ZoomInEnter.class)
@@ -155,6 +169,9 @@ public class ContentActivity extends AppCompatActivity {
 
         btn_supperinstock = (FancyButton) findViewById(R.id.btn_supperinstock);
         btn_supperinstock.setIconResource(R.drawable.btn_set);
+
+        btn_xjdcheck= (FancyButton) findViewById(R.id.btn_xjdcheck);
+        btn_xjdcheck.setIconResource(R.drawable.btn_set);
 
         setBtn = (FancyButton) findViewById(R.id.btn_set);
 
@@ -268,6 +285,20 @@ public class ContentActivity extends AppCompatActivity {
 
             }
         });
+
+        btn_xjdcheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!dataPref.getString(define.SharedPassword, define.NONE).equals(define.NONE)) {
+                    Intent i = new Intent(mContext, com.goldemperor.XJChenk.XJListActivity.class);
+                    mContext.startActivity(i);
+                } else {
+                    Intent i = new Intent(mContext, LoginActivity.class);
+                    mContext.startActivity(i);
+                }
+
+            }
+        });
         netStatus= (TextView) findViewById(R.id.netStatus);
         netStatus.setText("当前网络:内网");
         waiBtn = (Button) findViewById(R.id.btn_wai);
@@ -275,8 +306,12 @@ public class ContentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 define.isWaiNet=true;
-                define.IP8012 = define.IP1718012;
                 define.IP8341=define.IP1718341;
+                define.IP8012 = define.IP1718012;
+
+                //define.IP8341="http://192.168.99.79:9999/";
+                //define.IP8012="http://192.168.99.79:8056/";
+
                 define.IP8020=define.IP1718020;
                 define.IP8083=define.IP1718083;
                 UpdataAPK();
@@ -291,17 +326,61 @@ public class ContentActivity extends AppCompatActivity {
                 define.isWaiNet=false;
                 define.IP8341=define.IP798341;
                 define.IP8012=define.IP798012;
+                //define.IP8341="http://192.168.99.79:9999/";
+                //define.IP8012="http://192.168.99.79:8056/";
+
                 define.IP8020=define.IP798020;
                 define.IP8083=define.IP798083;
                 UpdataAPK();
                 netStatus.setText("当前网络:内网");
             }
         });
+        ceBtn = (Button) findViewById(R.id.btn_ce);
+        ceBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                define.isWaiNet=false;
+                define.IP8341="http://192.168.99.79:9999/";
+                define.IP8012="http://192.168.99.79:8056/";
+
+                define.IP8020=define.IP798020;
+                define.IP8083=define.IP798083;
+                UpdataAPK();
+                netStatus.setText("当前网络:测试库");
+            }
+        });
+
         UpdataAPK();
         version = (TextView) findViewById(R.id.version);
         version.setText("当前版本:"+VersionService.getVersionName(act.getBaseContext()));
 
+
+        if (Environment.getExternalStorageState()
+                .equals(android.os.Environment.MEDIA_MOUNTED)) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                //申请WRITE_EXTERNAL_STORAGE权限
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        201);
+            }
+        }
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 201:
+                if (grantResults.length > 0) {
+                    //确认权限
+                    //处理自己的逻辑
+                    //取消处理自己的逻辑
+                } else {
+                    //取消权限
+                }
+                break;
+        }
+    }
+
+
 
 
     private void UpdataAPK(){

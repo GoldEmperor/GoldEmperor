@@ -115,6 +115,26 @@ public class Sc_ProcessOutPutEntry {
 
     private String fprocessingmethod;
 
+    private Integer foperplanninginterid;
+
+    private Integer foperplanningentryid;
+
+    public Integer getFoperplanninginterid() {
+        return foperplanninginterid;
+    }
+
+    public void setFoperplanninginterid(Integer foperplanninginterid) {
+        this.foperplanninginterid = foperplanninginterid;
+    }
+
+    public Integer getFoperplanningentryid() {
+        return foperplanningentryid;
+    }
+
+    public void setFoperplanningentryid(Integer foperplanningentryid) {
+        this.foperplanningentryid = foperplanningentryid;
+    }
+
     public Integer getFprocessflowid() {
         return fprocessflowid;
     }

@@ -179,4 +179,6 @@
     <color name="transparent">#00000000</color>
 
     <color name="colorAlert">#F99143</color>
+
+    <color name="popup">#F5DEB3</color>
 </resources>

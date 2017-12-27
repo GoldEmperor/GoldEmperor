@@ -142,6 +142,16 @@ public class WorkCardPlan {
 
     private String fmapnumber;
 
+    private boolean isWeiWai;
+
+    public boolean getIsWeiWai() {
+        return isWeiWai;
+    }
+
+    public void setIsWeiWai(boolean isWeiWai) {
+        this.isWeiWai = isWeiWai;
+    }
+
     public String getFmapnumber() {
         return fmapnumber;
     }
@@ -224,6 +234,7 @@ public class WorkCardPlan {
         alreadynumberCount=0;
         nonumberCount=0;
         planStatus="未排";
+        isWeiWai=false;
     }
     public void addSize(String[][] s) {
         this.sizeList.add(s);

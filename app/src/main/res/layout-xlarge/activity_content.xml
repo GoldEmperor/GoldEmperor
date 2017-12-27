@@ -150,7 +150,8 @@
                     android:id="@+id/btn_scstockin"
                     android:layout_width="120dp"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="5dp"
                     fancy:fb_borderColor="#FFFFFF"
                     fancy:fb_borderWidth="2dp"
                     fancy:fb_defaultColor="#3b5998"
@@ -190,6 +191,20 @@
                     fancy:fb_radius="10dp"
                     fancy:fb_text="生产汇报"
                     fancy:fb_textColor="#FFFFFF"/>
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/btn_xjdcheck"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    fancy:fb_borderColor="#FFFFFF"
+                    fancy:fb_borderWidth="2dp"
+                    fancy:fb_defaultColor="#cc0088"
+                    fancy:fb_focusColor="#8cc9f8"
+                    fancy:fb_fontIconSize="25sp"
+                    fancy:fb_iconPosition="top"
+                    fancy:fb_radius="10dp"
+                    fancy:fb_text="询价单审批"
+                    fancy:fb_textColor="#FFFFFF" />
                 <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/btn_set"
                     android:layout_width="120dp"
@@ -235,6 +250,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="切换内网"/>
+
+                <Button
+                    android:id="@+id/btn_ce"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="测试库"/>
 
                 <TextView
                     android:id="@+id/version"

@@ -47,8 +47,14 @@ public class ZjActivity extends AppCompatActivity {
     private TextView PaiNumber;
     private TextView PaiCount;
     private TextView Line;
+
+    private TextView CountText;
     private TextView Count;
+
+    private TextView qualifiedCountText;
     private TextView qualifiedCount;
+
+    private TextView unqualifiedCountText;
     private TextView unqualifiedCount;
     private int unqualifiedCountint;
     private FancyButton btn_unqualified;
@@ -58,7 +64,7 @@ public class ZjActivity extends AppCompatActivity {
 
 
     private TextView tv_reason;
-
+    private int base=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,8 +86,13 @@ public class ZjActivity extends AppCompatActivity {
         PaiNumber = (TextView) findViewById(R.id.PaiNumber);
         PaiCount = (TextView) findViewById(R.id.PaiCount);
         Line = (TextView) findViewById(R.id.Line);
+        CountText = (TextView) findViewById(R.id.CountText);
         Count = (TextView) findViewById(R.id.Count);
+
+        qualifiedCountText = (TextView) findViewById(R.id.qualifiedCountText);
         qualifiedCount = (TextView) findViewById(R.id.qualifiedCount);
+
+        unqualifiedCountText= (TextView) findViewById(R.id.unqualifiedCountText);
         unqualifiedCount = (TextView) findViewById(R.id.unqualifiedCount);
         btn_unqualified = (FancyButton) findViewById(R.id.btn_unqualified);
         tv_reason = (TextView) findViewById(R.id.tv_reason);
@@ -92,9 +103,16 @@ public class ZjActivity extends AppCompatActivity {
         PaiNumber.setText(selectWorkCardPlan.getOrderbill());
         PaiCount.setText(String.valueOf(PgdActivity.PaiCount));
         Line.setText(selectWorkCardPlan.getFgroup());
-        qualifiedCount.setText(String.valueOf(selectWorkCardPlan.getReportednumber().intValue()));
+
+        if(selectWorkCardPlan.getFgroup().contains("针车")){
+            CountText.setText("当日质检总数(只)");
+            qualifiedCountText.setText("合格总数(只)");
+            unqualifiedCountText.setText("不合格总数(只)");
+            base=2;
+        }
+        qualifiedCount.setText(String.valueOf(selectWorkCardPlan.getReportednumber().intValue()*base));
         unqualifiedCount.setText(String.valueOf(unqualifiedCountint));
-        Count.setText(String.valueOf(unqualifiedCountint + selectWorkCardPlan.getReportednumber().intValue()));
+        Count.setText(String.valueOf(unqualifiedCountint + selectWorkCardPlan.getReportednumber().intValue()*base));
 
         btn_unqualified.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +122,7 @@ public class ZjActivity extends AppCompatActivity {
                 } else {
                     unqualifiedCountint++;
                     unqualifiedCount.setText(String.valueOf(unqualifiedCountint));
-                    Count.setText(String.valueOf(unqualifiedCountint + selectWorkCardPlan.getReportednumber().intValue()));
+                    Count.setText(String.valueOf(unqualifiedCountint + selectWorkCardPlan.getReportednumber().intValue()*base));
                     submitException();
                 }
             }

@@ -16,6 +16,7 @@
 package com.goldemperor.PgdActivity;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -123,7 +124,7 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
         holder.setData(ls.get(position), position);
     }
 
-    static class DefaultViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, ScrollListenerHorizontalScrollView.OnScrollListener {
+    static class DefaultViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         OnItemClickListener mOnItemClickListener;
         //CheckBox checkBox;
@@ -134,7 +135,8 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
 
         TextView tv_processcode;
         TextView tv_processname;
-        TextView tv_havedispatchingnumber;
+        //TextView tv_havedispatchingnumber;
+        TextView tv_readyRecordCount;
         TextView tv_noReportednumber;
 
         String[][] nameList;
@@ -148,12 +150,12 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
             edit_dispatchingnumber = (EditText) itemView.findViewById(R.id.edit_dispatchingnumber);
             edit_dispatchingnumber.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             ScrollView = (ScrollListenerHorizontalScrollView) itemView.findViewById(R.id.ScrollView);
-            ScrollView.setOnScrollListener(this);
+
 
             tv_processcode = (TextView) itemView.findViewById(R.id.tv_processcode);
             tv_processname = (TextView) itemView.findViewById(R.id.tv_processname);
-            tv_havedispatchingnumber = (TextView) itemView.findViewById(R.id.tv_havedispatchingnumber);
-
+            //tv_havedispatchingnumber = (TextView) itemView.findViewById(R.id.tv_havedispatchingnumber);
+            tv_readyRecordCount = (TextView) itemView.findViewById(R.id.tv_readyRecordCount);
             tv_noReportednumber = (TextView) itemView.findViewById(R.id.tv_noReportednumber);
 
             this.nameList = nameList;
@@ -255,6 +257,13 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                 }
             });
      */
+            if (gxpgActivity.readyRecordCount.get(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFprocessnumber() + String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFempid()))!=null) {
+                tv_readyRecordCount.setText(String.valueOf(gxpgActivity.readyRecordCount.get(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFprocessnumber() + String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFempid())).intValue()));
+                Log.e("jindi",""+ gxpgActivity.readyRecordCount.get(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFprocessnumber() + String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFempid())));
+            }
+            else{
+                tv_readyRecordCount.setText("0");
+            }
             if (getAdapterPosition() < gxpgActivity.sc_ProcessWorkCardEntryList.size()) {
 
                 tv_noReportednumber.setText(String.valueOf((int) gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getReportNumber()));
@@ -341,7 +350,7 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                     edit_userNumber.setText(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getJobNumber());
                 }
 
-                tv_havedispatchingnumber.setText(String.valueOf(p.getHavedispatchingnumber().floatValue()));
+                //tv_havedispatchingnumber.setText(String.valueOf(p.getHavedispatchingnumber().floatValue()));
 
                 try {
                     GxpgPlan gxpgPlan = dbManager.selector(GxpgPlan.class).where("style", " = ", p.getPlantbody()).and("processname", "=", p.getProcessname()).and("username", "=", gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getName()).findFirst();
@@ -369,20 +378,27 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        gxpgActivity.sc_ProcessWorkCardEntryList.get(position).setReportNumber(Float.valueOf(editText.getText().toString()));
+                                        Float inputNumber = 0f;
+                                        if (editText.getText().toString() != null && !editText.getText().toString().trim().isEmpty()) {
+                                            inputNumber = Float.valueOf(editText.getText().toString());
+                                        }
+                                        gxpgActivity.sc_ProcessWorkCardEntryList.get(position).setReportNumber(inputNumber);
                                         float count = 0;
                                         for (int i = 0; i < gxpgActivity.sc_ProcessWorkCardEntryList.size(); i++) {
                                             if (gxpgActivity.processWorkCardPlanEntryList.get(i).getProcessname().equals(gxpgActivity.processWorkCardPlanEntryList.get(position).getProcessname())) {
                                                 count += gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getReportNumber();
                                             }
                                         }
-                                        if (count > gxpgActivity.norecord) {
-                                            Toast.makeText(gxpgActivity, "计工数超过汇报数", Toast.LENGTH_LONG).show();
-                                            gxpgActivity.sc_ProcessWorkCardEntryList.get(position).setReportNumber(0f);
-                                        } else if (count < gxpgActivity.norecord) {
-                                            Toast.makeText(gxpgActivity, "计工数少于汇报数", Toast.LENGTH_LONG).show();
+                                        if(!selectWorkCardPlan.getIsWeiWai()) {
+                                            if (count > gxpgActivity.norecord) {
+                                                Toast.makeText(gxpgActivity, "计工数超过汇报数", Toast.LENGTH_LONG).show();
+                                                gxpgActivity.sc_ProcessWorkCardEntryList.get(position).setReportNumber(0f);
+                                            } else if (count < gxpgActivity.norecord) {
+                                                Toast.makeText(gxpgActivity, "计工数少于汇报数", Toast.LENGTH_LONG).show();
+                                            }
                                         }
                                         gxpgActivity.mMenuAdapter.notifyDataSetChanged();
+
 
                                     }
                                 }).show();
@@ -390,6 +406,12 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                 });
                 int alreadyNoreportedNumberCount = PgdActivity.selectWorkCardPlan.getAlreadynumberCount() - p.getReportednumber().intValue();
             }
+            if (!gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getIsOpen()) {
+                ScrollView.setBackgroundColor(Color.parseColor("#C0C0C0"));
+            } else {
+                ScrollView.setBackgroundColor(Color.parseColor("#ffffff"));
+            }
+            ScrollView.scrollTo(GxpgActivity.mScrollX, ScrollView.getScrollY());
         }
 
         @Override
@@ -400,6 +422,7 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
 
         }
 
+        /*
         @Override
         public void onScroll(int scrollX) {
             for (int i = 0; i < ScrollViewList.size(); i++) {
@@ -408,6 +431,7 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
             gxpgActivity.ScrollView.scrollTo(scrollX, ScrollView.getScrollY());
 
         }
+        */
     }
 
 }

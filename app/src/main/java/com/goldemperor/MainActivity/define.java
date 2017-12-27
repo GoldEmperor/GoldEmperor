@@ -36,7 +36,8 @@ public class define {
     public static String IP798012="http://192.168.99.79:8012/";
 
     public static String IP798341="http://192.168.99.79:8341/";
-    
+
+    public static String IP798881="http://192.168.99.79:8881/";
 
     public static String IP8341="http://192.168.99.79:8341/";
 
@@ -72,6 +73,18 @@ public class define {
     public static final String UpdataImage = IP1718881+"UpdataImage";
 
     public static final String GetImage = IP1718881+"GetImage";
+
+    public static final String GetXJD ="getXJD";
+
+    public static final String GetXJDPriceEntry ="getXJDPriceEntry";
+
+    public static final String GetXJDReadyCheck ="getXJDReadyCheck";
+
+    public static final String GetCjProcessOutputEntry ="getCjProcessOutputEntry";
+
+    public static final String GetWorkcardFinteridByFcanreportbynostockin= "getWorkcardFinteridByFcanreportbynostockin";
+
+    public static final String SetCheckerId ="setCheckerId";
 
 
     public static final String Login = IP328030+"api/get/login";
@@ -120,8 +133,9 @@ public class define {
 
 
 
-
     public static final String IsHaveControl = "ERPPublicServer.asmx/IsHaveControl";
+
+    public static final String DeleteScProcessWorkCard = "ErpForAndroidStockServer.asmx/DeleteScProcessWorkCard";
 
 
     public static final String SCWorkCard2SCProcessWorkCardBysuitID = "ErpForAndroidStockServer.asmx/SCWorkCard2SCProcessWorkCardBysuitID";
