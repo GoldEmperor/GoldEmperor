@@ -387,7 +387,7 @@ public final class Utils {
     }
 
     public static boolean isNumeric(String str) {
-        String reg = "^[0-9]+(.[0-9]+)?$";
+        String reg = "([1-9]\\d*\\.?\\d*)|(0\\.\\d*[1-9])";
         return str.matches(reg);
     }
 }

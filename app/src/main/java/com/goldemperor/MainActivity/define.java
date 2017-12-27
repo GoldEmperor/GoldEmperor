@@ -36,6 +36,7 @@ public class define {
     public static String IP798012="http://192.168.99.79:8012/";
 
     public static String IP798341="http://192.168.99.79:8341/";
+    
 
     public static String IP8341="http://192.168.99.79:8341/";
 
@@ -157,6 +158,16 @@ public class define {
     public static final String GetWorkCardAbnormity = "wechatMvn/android/getWorkCardAbnormity.do";
 
     public static final String GetAbnormityByName = "wechatMvn/android/getAbnormityByName.do";
+
+    public static final String GetAbnormityByID = "wechatMvn/android/getAbnormityByID.do";
+
+    public static final String GetDeptAll = "wechatMvn/mes/GetDeptAll.do";
+
+    public static final String DeleteByFInterID = "wechatMvn/android/deleteByFInterID.do";
+
+    public static final String ReCheckAbnormity = "wechatMvn/android/ReCheckAbnormity.do";
+
+    public static final String ResetWorkCardPushData = "ErpForAndroidStockServer.asmx/ResetWorkCardPushData";
 
     public static final String SharedName = "data";
 

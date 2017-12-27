@@ -64,7 +64,7 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
 
     @Override
     public View onCreateContentView(ViewGroup parent, int viewType) {
-        return LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_pgd_item1, parent, false);
+        return LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_zj_pgd_item, parent, false);
     }
 
     @Override
@@ -109,15 +109,11 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
 
         TextView tv_planendtime;
 
-        TextView tv_status;
-
         TextView tv_orderCount;
 
         TextView tv_reportednumber;
 
-        TextView tv_reportednotnumber;
 
-        TextView tv_reportednotInnumber;
 
         public DefaultViewHolder(View itemView) {
             super(itemView);
@@ -149,16 +145,11 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
             tv_batch = (TextView) itemView.findViewById(R.id.tv_batch);
             tv_planstarttime = (TextView) itemView.findViewById(R.id.tv_planstarttime);
             tv_planendtime = (TextView) itemView.findViewById(R.id.tv_planendtime);
-            tv_status= (TextView) itemView.findViewById(R.id.tv_status);
 
             tv_count = (TextView) itemView.findViewById(R.id.tv_count);
 
 
             tv_reportednumber = (TextView) itemView.findViewById(R.id.tv_reportednumber);
-
-            tv_reportednotnumber = (TextView) itemView.findViewById(R.id.tv_reportednotnumber);
-
-            tv_reportednotInnumber = (TextView) itemView.findViewById(R.id.tv_reportednotInnumber);
         }
 
         public void setData(WorkCardPlan o) {
@@ -183,21 +174,13 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
 
             tv_alreadynumber.setText(String.valueOf(o.getAlreadynumberCount()));
             tv_nonumber.setText(String.valueOf(o.getNonumberCount()));
-            tv_status.setText(o.getPlanStatus());
-            if(o.getPlanStatus().equals("未排")){
-                tv_status.setTextColor(Color.rgb(255, 0, 0));
-            }else{
-                tv_status.setTextColor(Color.rgb(0, 0, 0));
-            }
+
             int count = 0;
             sizeItemLinearLayout.removeAllViews();
             sizeNumItemLinearLayout.removeAllViews();
 
             tv_reportednumber.setText(String.valueOf(o.getReportednumber().intValue()));
 
-            tv_reportednotnumber.setText(String.valueOf(o.getReportednotnumber().intValue()));
-
-            tv_reportednotInnumber.setText(String.valueOf((o.getReportednotInnumber()==null?0:o.getReportednotInnumber()).intValue()));
 
             for (int i = 0; i < o.getSizeList().size(); i++) {
                 sizeItemLinearLayout.addView(addSizeView(o.getSizeList().get(i)[0][0]));

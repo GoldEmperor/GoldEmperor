@@ -35,6 +35,16 @@ public class Sc_WorkCardAbnormity {
 
     private Integer fworkCardEntryID;
 
+    private String freCheck;
+
+    public String getFreCheck() {
+        return freCheck;
+    }
+
+    public void setFreCheck(String freCheck) {
+        this.freCheck = freCheck;
+    }
+
     public Integer getFinterID() {
         return finterID;
     }
