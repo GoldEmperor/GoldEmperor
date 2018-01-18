@@ -257,7 +257,7 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                 }
             });
      */
-            if (gxpgActivity.readyRecordCount.get(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFprocessnumber() + String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFempid()))!=null) {
+            if (gxpgActivity.readyRecordCount!=null&&gxpgActivity.readyRecordCount.get(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFprocessnumber() + String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFempid()))!=null) {
                 tv_readyRecordCount.setText(String.valueOf(gxpgActivity.readyRecordCount.get(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFprocessnumber() + String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFempid())).intValue()));
                 Log.e("jindi",""+ gxpgActivity.readyRecordCount.get(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFprocessnumber() + String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFempid())));
             }

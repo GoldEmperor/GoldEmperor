@@ -80,6 +80,8 @@ public class define {
 
     public static final String GetXJDReadyCheck ="getXJDReadyCheck";
 
+    public static final String GetFACardByEmpNumber ="getFACardByEmpNumber";
+
     public static final String GetCjProcessOutputEntry ="getCjProcessOutputEntry";
 
     public static final String GetWorkcardFinteridByFcanreportbynostockin= "getWorkcardFinteridByFcanreportbynostockin";
@@ -241,6 +243,7 @@ public class define {
 
     public static boolean isWaiNet=false;
 
+    public static boolean isCeNet=false;
 
     public static String appKey = "afeeb3ab6b0090293a70a5ba1d26a478";
     public static String appSecret = "e3c0d24ddd06";

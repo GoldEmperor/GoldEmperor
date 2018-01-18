@@ -633,11 +633,13 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                                 if (WorkcardFinteridByFCanReportByNoStockInList.contains(String.valueOf(pgds.getData().get(i).getFinterid()))) {
                                     pgds.getData().get(i).setIsWeiWai(true);
                                     pgdWorkCardPlan.add(pgds.getData().get(i));
+                                } else if (define.isCeNet) {
+                                    pgds.getData().get(i).setIsWeiWai(true);
+                                    pgdWorkCardPlan.add(pgds.getData().get(i));
                                 }
                             } else {
                                 pgdWorkCardPlan.add(pgds.getData().get(i));
                             }
-
 
                         }
                     }
@@ -733,6 +735,9 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                             pgds.getData().get(i).setNonumberCount(noNumberCount);
                             if (isWeiWai) {
                                 if (WorkcardFinteridByFCanReportByNoStockInList.contains(String.valueOf(pgds.getData().get(i).getFinterid()))) {
+                                    pgds.getData().get(i).setIsWeiWai(true);
+                                    pgdWorkCardPlan.add(pgds.getData().get(i));
+                                } else if (define.isCeNet) {
                                     pgds.getData().get(i).setIsWeiWai(true);
                                     pgdWorkCardPlan.add(pgds.getData().get(i));
                                 }
@@ -832,11 +837,13 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                                 if (WorkcardFinteridByFCanReportByNoStockInList.contains(String.valueOf(pgds.getData().get(i).getFinterid()))) {
                                     pgds.getData().get(i).setIsWeiWai(true);
                                     pgdWorkCardPlan.add(pgds.getData().get(i));
+                                } else if (define.isCeNet) {
+                                    pgds.getData().get(i).setIsWeiWai(true);
+                                    pgdWorkCardPlan.add(pgds.getData().get(i));
                                 }
                             } else {
                                 pgdWorkCardPlan.add(pgds.getData().get(i));
                             }
-
 
                         }
                     }
