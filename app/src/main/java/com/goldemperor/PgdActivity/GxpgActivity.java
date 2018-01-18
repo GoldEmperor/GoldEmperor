@@ -157,6 +157,8 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
 
     private int recordCount = 0;//计工数
 
+    private int thisRecordCount = 0;//本次计工数
+
     private int reportCount = 0;//汇报数
 
     private int Havedispatchingnumber = 0;
@@ -217,7 +219,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
             tv_weiwai.setText("是否委外:是");
             top_record.setVisibility(View.GONE);
             top_norecord.setVisibility(View.GONE);
-        }else{
+        } else {
             tv_weiwai.setVisibility(View.GONE);
         }
 
@@ -479,26 +481,28 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                             count += gxpgActivity.sc_ProcessWorkCardEntryList.get(j).getReportNumber();
                         }
                     }
+
+                    int OutputCount = 0;
+                    if (OutputList != null) {
+                        for (int j = 0; j < OutputList.size(); j++) {
+                            if (gxpgActivity.processWorkCardPlanEntryList.get(i).getProcesscode().equals(OutputList.get(j).getFprocessnumber())) {
+                                OutputCount += OutputList.get(j).getFqty().intValue();
+                            }
+                        }
+                    }
+
                     if (!selectWorkCardPlan.getIsWeiWai()) {
                         if (count > gxpgActivity.norecord && !message.contains(gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname())) {
                             message += "【" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessnumber() + "】" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname() + ",超过汇报数:" + (gxpgActivity.norecord - count) + "\n";
                         } else if (count < gxpgActivity.norecord && !message.contains(gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname())) {
                             message += "【" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessnumber() + "】" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname() + ",少于汇报数:" + (gxpgActivity.norecord - count) + "\n";
+                        } else if (count + OutputCount > Havedispatchingnumber && !message.contains(gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname())) {
+                            message += "【" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessnumber() + "】" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname() + ",超过总数:" + (Havedispatchingnumber - count - OutputCount) + "\n";
                         }
                     } else {
-
-                        int OutputCount = 0;
-                        if (OutputList != null) {
-                            for (int j = 0; j < OutputList.size(); j++) {
-                                if (gxpgActivity.processWorkCardPlanEntryList.get(i).getProcesscode().equals(OutputList.get(j).getFprocessnumber())) {
-                                    OutputCount += OutputList.get(j).getFqty().intValue();
-                                }
-                            }
-                        }
                         if (count + OutputCount > Havedispatchingnumber && !message.contains(gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname())) {
                             message += "【" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessnumber() + "】" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname() + ",超过总数:" + (Havedispatchingnumber - count - OutputCount) + "\n";
                         }
-
                     }
                 }
 
@@ -706,7 +710,10 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                     tv_planbill.setText("计划跟踪号:" + gxpgs.getData().get(0).getPlanbill());
                     tv_style.setText("工厂型体:" + gxpgs.getData().get(0).getPlantbody());
                     top_havedispatchingnumber.setText("应派工数:" + (gxpgs.getData().get(0).getHavedispatchingnumber().intValue()));
+
+
                     Havedispatchingnumber = gxpgs.getData().get(0).getHavedispatchingnumber().intValue();
+
                     for (int i = 0; i < gxpgs.getData().size(); i++) {
                         processWorkCardPlanEntryList.add(gxpgs.getData().get(i));
                         addSc_ProcessWorkCardEntry(gxpgs.getData().get(i));
@@ -1657,6 +1664,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                     //tv_famount.setText("总价:" + processOutPut.getReturnMsg().get(0).getFamount());
 
                     float maxCount = 0;
+                    boolean surpass = false;
                     for (int i = 0; i < processOutPut.getReturnMsg().size(); i++) {
                         //float per = sc_ProcessWorkCardEntryList.get(i).getFqty().floatValue() / processWorkCardPlanEntryList.get(i).getHavedispatchingnumber().floatValue();
 
@@ -1668,11 +1676,25 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                             }
                         }
 
+                        int OutputCount = 0;
+                        if (OutputList != null) {
+                            for (int j = 0; j < OutputList.size(); j++) {
+                                if (gxpgActivity.processWorkCardPlanEntryList.get(i).getProcesscode().equals(OutputList.get(j).getFprocessnumber())) {
+                                    OutputCount += OutputList.get(j).getFqty().intValue();
+                                }
+                            }
+                        }
+
+
                         if (!selectWorkCardPlan.getIsWeiWai()) {
                             if (count > maxCount) {
                                 maxCount = count;
                             }
                             if (maxCount > Float.valueOf(norecord) + 0.01f) {
+                                break;
+                            } else if (count + OutputCount > Havedispatchingnumber) {
+                                Toast.makeText(mContext, "【" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessnumber() + "】" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname() + ",超过总数:" + (Havedispatchingnumber - count - OutputCount), Toast.LENGTH_LONG).show();
+                                surpass = true;
                                 break;
                             } else {
                                 float qty = sc_ProcessWorkCardEntryList.get(i).getReportNumber();
@@ -1688,6 +1710,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                         }
                         Log.e("jindi", "maxCount：" + maxCount);
                     }
+                    thisRecordCount=(int)maxCount;
                     Log.e("jindi", "norecord:" + norecord);
                     if (!selectWorkCardPlan.getIsWeiWai()) {
                         if (maxCount > Float.valueOf(norecord) + 0.01f) {
@@ -1696,13 +1719,12 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                         } else if (maxCount <= 0) {
                             Toast.makeText(mContext, "计工数不能小于零", Toast.LENGTH_LONG).show();
                             btn_report.setEnabled(true);
-                        } else {
-                            recordCount = (int) maxCount;
+                        } else if (!surpass) {
+                            //recordCount = (int) maxCount;
                             Log.e("jindi", "reportCount:" + recordCount);
                             submitProcessOutPut();
                         }
                     } else {
-
                         String message = "";
                         for (int i = 0; i < gxpgActivity.sc_ProcessWorkCardEntryList.size(); i++) {
                             float count = 0;
@@ -1734,9 +1756,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
 
                     }
 
-                } else
-
-                {
+                } else{
                     btn_report.setEnabled(true);
                     Alerter.create(act)
                             .setTitle("提示")
@@ -1784,8 +1804,8 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         params.addParameter("FDetpmentID", dataPref.getString(define.SharedFDeptmentid, "0"));
         params.addParameter("Type", "insert");
         params.addParameter("suitID", define.suitID);
-        //String log=params.toString();
-        //Utils.e("jindi",log);
+        //String logs=params.toString();
+        //Utils.e("jindi",logs);
         //Log.e("jindi", params.toString());
         //Log.e("jindi", params.toString());
         x.http().post(params, new Callback.CommonCallback<String>() {
@@ -1895,8 +1915,12 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 if (result.contains("success")) {
                     //UpdateProcessPassQty();
                     Toast.makeText(mContext, "工序汇报录入成功", Toast.LENGTH_LONG).show();
-                    GetWorkCardProcessQty();
+                    //GetWorkCardProcessQty();
+                    recordCount+=thisRecordCount;
+                    refreshData();
                 } else {
+                    Toast.makeText(mContext, "工序汇报录入失败,请按校正按钮", Toast.LENGTH_LONG).show();
+                    /*
                     //失败后等待两秒重新反写
                     try {
                         Thread.sleep(2000);
@@ -1904,8 +1928,9 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                     } catch (InterruptedException e) {
                         return;
                     }
+                    */
                 }
-                btn_report.setEnabled(true);
+                //btn_report.setEnabled(true);
             }
 
             //请求异常后的回调方法
@@ -1953,11 +1978,13 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 if (result.contains("success")) {
                     //UpdateProcessPassQty();
                     Toast.makeText(mContext, "工序汇报录入成功", Toast.LENGTH_LONG).show();
-                    GetWorkCardProcessQty();
+                    recordCount+=thisRecordCount;
+                    refreshData();
+                    //GetWorkCardProcessQty();
                 } else {
                     Toast.makeText(mContext, "工序汇报录入失败,请按校正按钮校正。失败原因:" + result, Toast.LENGTH_LONG).show();
                 }
-                btn_report.setEnabled(true);
+                //btn_report.setEnabled(true);
             }
 
             //请求异常后的回调方法

@@ -205,6 +205,22 @@
                     fancy:fb_radius="10dp"
                     fancy:fb_text="询价单审批"
                     fancy:fb_textColor="#FFFFFF" />
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/btn_cc"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    fancy:fb_borderColor="#FFFFFF"
+                    fancy:fb_borderWidth="2dp"
+                    fancy:fb_defaultColor="#cc00bb"
+                    fancy:fb_focusColor="#8cc9f8"
+                    fancy:fb_fontIconSize="25sp"
+                    fancy:fb_iconPosition="top"
+                    fancy:fb_radius="10dp"
+                    fancy:fb_text="财产条码打印"
+                    fancy:fb_textColor="#FFFFFF" />
+
                 <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/btn_set"
                     android:layout_width="120dp"

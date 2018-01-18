@@ -275,6 +275,35 @@
         </activity>
 
         <activity
+            android:name="com.goldemperor.CCActivity.CCListActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="财产条码打印"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name="com.goldemperor.CCActivity.CCPrintActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="财产条码打印"
+            android:screenOrientation="portrait">
+        </activity>
+
+
+        <activity
+            android:name="com.goldemperor.CCActivity.CCDListActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="财产确认"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name="com.goldemperor.CCActivity.NewCCDActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="财产新建"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
             android:name="com.goldemperor.CxStockIn.CxLoginActivity"
             android:configChanges="orientation"
             android:label="@string/cxstockin_form_name"

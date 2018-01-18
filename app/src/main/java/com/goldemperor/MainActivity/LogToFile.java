@@ -37,7 +37,7 @@ public class LogToFile {
      * @param context
      */
     public static void init(Context context) {
-        logPath = getFilePath(context) + "/Logs";//获得文件储存路径,在后面加"/Logs"建立子文件夹
+        logPath = getFilePath(context) + "/MESLogs";//获得文件储存路径,在后面加"/Logs"建立子文件夹
     }
 
     /**
@@ -48,8 +48,10 @@ public class LogToFile {
     private static String getFilePath(Context context) {
 
         if (Environment.MEDIA_MOUNTED.equals(Environment.MEDIA_MOUNTED) || !Environment.isExternalStorageRemovable()) {//如果外部储存可用
+
             return Environment.getExternalStorageDirectory().getPath();//获得外部存储路径,默认路径为 /storage/emulated/0/Android/data/com.waka.workspace.logtofile/files/Logs/log_2016-03-14_16-15-09.log
         } else {
+
             return context.getFilesDir().getPath();//直接存在/data/data里，非root手机是看不到的
         }
     }
@@ -98,13 +100,16 @@ public class LogToFile {
             return;
         }
 
-        String fileName = logPath + "/" + WordCardId + dateFormat.format(new Date()) + ".txt";//log日志名，使用时间命名，保证不重复
+        String fileName = logPath + "/" + WordCardId + ".txt";//log日志名，使用时间命名，保证不重复
+
         //String log = dateFormat.format(date) + " " + type + " " + tag + " " + msg + "\n";//log日志内容，可以自行定制
 
         String log = dateFormat.format(date) + " " + msg+ "\n";;//log日志内容，可以自行定制
 
         //如果父路径不存在
         File file = new File(logPath);
+        Log.e("jindi","LogPath:"+logPath);
+        Log.e("jindi","fileName:"+fileName);
         if (!file.exists()) {
             file.mkdirs();//创建父路径
         }

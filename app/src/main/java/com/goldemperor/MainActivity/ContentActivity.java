@@ -23,6 +23,7 @@ import com.goldemperor.Banner.DataProvider;
 import com.goldemperor.Banner.SimpleImageBanner;
 import com.goldemperor.Banner.SimpleTextBanner;
 import com.goldemperor.Banner.ViewFindUtils;
+import com.goldemperor.CCActivity.CCListActivity;
 import com.goldemperor.CxStockIn.android.NetworkHelper;
 import com.goldemperor.GxReport.GxReport;
 import com.goldemperor.LoginActivity.LoginActivity;
@@ -68,6 +69,8 @@ public class ContentActivity extends AppCompatActivity {
     private FancyButton btn_cxscanbarcode;
 
     private FancyButton btn_supperinstock;
+
+    private FancyButton btn_cc;
 
     private FancyButton setBtn;
 
@@ -170,12 +173,26 @@ public class ContentActivity extends AppCompatActivity {
         btn_supperinstock = (FancyButton) findViewById(R.id.btn_supperinstock);
         btn_supperinstock.setIconResource(R.drawable.btn_set);
 
-        btn_xjdcheck= (FancyButton) findViewById(R.id.btn_xjdcheck);
+        btn_xjdcheck = (FancyButton) findViewById(R.id.btn_xjdcheck);
         btn_xjdcheck.setIconResource(R.drawable.btn_set);
+
+        btn_cc = (FancyButton) findViewById(R.id.btn_cc);
+        btn_cc.setIconResource(R.drawable.btn_set);
 
         setBtn = (FancyButton) findViewById(R.id.btn_set);
 
         setBtn.setIconResource(R.drawable.btn_set);
+
+
+        btn_cc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mContext, CCListActivity.class);
+                mContext.startActivity(i);
+
+            }
+        });
+
         processBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -280,7 +297,7 @@ public class ContentActivity extends AppCompatActivity {
                     mContext.startActivity(i);
                 } else {
                     Intent i = new Intent(mContext, LoginActivity.class);
-                   mContext.startActivity(i);
+                    mContext.startActivity(i);
                 }
 
             }
@@ -299,21 +316,30 @@ public class ContentActivity extends AppCompatActivity {
 
             }
         });
-        netStatus= (TextView) findViewById(R.id.netStatus);
+        netStatus = (TextView) findViewById(R.id.netStatus);
         netStatus.setText("当前网络:内网");
+        define.isWaiNet = false;
+        define.IP8341 = define.IP798341;
+        define.IP8012 = define.IP798012;
+        //define.IP8341="http://192.168.99.79:9999/";
+        //define.IP8012="http://192.168.99.79:8056/";
+
+        define.IP8020 = define.IP798020;
+        define.IP8083 = define.IP798083;
+
         waiBtn = (Button) findViewById(R.id.btn_wai);
         waiBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                define.isWaiNet=true;
-                define.IP8341=define.IP1718341;
+                define.isWaiNet = true;
+                define.IP8341 = define.IP1718341;
                 define.IP8012 = define.IP1718012;
 
                 //define.IP8341="http://192.168.99.79:9999/";
                 //define.IP8012="http://192.168.99.79:8056/";
 
-                define.IP8020=define.IP1718020;
-                define.IP8083=define.IP1718083;
+                define.IP8020 = define.IP1718020;
+                define.IP8083 = define.IP1718083;
                 UpdataAPK();
                 netStatus.setText("当前网络:外网");
             }
@@ -323,14 +349,14 @@ public class ContentActivity extends AppCompatActivity {
         neiBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                define.isWaiNet=false;
-                define.IP8341=define.IP798341;
-                define.IP8012=define.IP798012;
+                define.isWaiNet = false;
+                define.IP8341 = define.IP798341;
+                define.IP8012 = define.IP798012;
                 //define.IP8341="http://192.168.99.79:9999/";
                 //define.IP8012="http://192.168.99.79:8056/";
 
-                define.IP8020=define.IP798020;
-                define.IP8083=define.IP798083;
+                define.IP8020 = define.IP798020;
+                define.IP8083 = define.IP798083;
                 UpdataAPK();
                 netStatus.setText("当前网络:内网");
             }
@@ -339,12 +365,14 @@ public class ContentActivity extends AppCompatActivity {
         ceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                define.isWaiNet=false;
-                define.IP8341="http://192.168.99.79:9999/";
-                define.IP8012="http://192.168.99.79:8056/";
+                define.isWaiNet = false;
+                define.IP8341 = "http://192.168.99.79:9999/";
+                define.IP8012 = "http://192.168.99.79:8056/";
 
-                define.IP8020=define.IP798020;
-                define.IP8083=define.IP798083;
+                define.IP8020 = define.IP798020;
+                define.IP8083 = define.IP798083;
+                define.isCeNet = true;
+
                 UpdataAPK();
                 netStatus.setText("当前网络:测试库");
             }
@@ -352,7 +380,7 @@ public class ContentActivity extends AppCompatActivity {
 
         UpdataAPK();
         version = (TextView) findViewById(R.id.version);
-        version.setText("当前版本:"+VersionService.getVersionName(act.getBaseContext()));
+        version.setText("当前版本:" + VersionService.getVersionName(act.getBaseContext()));
 
 
         if (Environment.getExternalStorageState()
@@ -365,6 +393,7 @@ public class ContentActivity extends AppCompatActivity {
             }
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
@@ -381,21 +410,20 @@ public class ContentActivity extends AppCompatActivity {
     }
 
 
-
-
-    private void UpdataAPK(){
+    private void UpdataAPK() {
         //如果有网络的情况下，apk更新
         if (IsNeedCheckVersion && NetworkHelper.isNetworkAvailable(this)) {
             new Thread() {
                 @Override
                 public void run() {
-                    Log.e("jindi","连接外网:"+define.isWaiNet);
+                    Log.e("jindi", "连接外网:" + define.isWaiNet);
                     CheckVersionTask myTask = new CheckVersionTask(act);
                     myTask.run();
                 }
             }.start();
         }
     }
+
     private void getControl(final String controlID) {
         RequestParams params = new RequestParams(define.IP8012 + define.IsHaveControl);
         params.addQueryStringParameter("OrganizeID", "1");
