@@ -138,6 +138,8 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
     private FancyButton btn_operation;
 
     private FancyButton btn_PlanMaterial;
+
+    public FancyButton btn_saveOperation;
     //private FancyButton btn_useGxpgPlan;
     //存储获取过来的工序
     List<ProcessWorkCardPlanEntry> processWorkCardPlanEntryList;
@@ -165,6 +167,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
     private List<Float> reportNumberList = new ArrayList<Float>();
 
     public static int mScrollX = 0;
+
 
     //已汇报数
     public static HashMap<String, Float> readyRecordCount = new HashMap<>();
@@ -554,7 +557,14 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
 
             }
         });
+        btn_saveOperation = (FancyButton) findViewById(R.id.btn_saveOperation);
 
+        btn_saveOperation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveGxpgPlanReportNumber();
+            }
+        });
         /*
         btn_useGxpgPlan = (FancyButton) findViewById(R.id.btn_useGxpgPlan);
 
@@ -566,7 +576,6 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         });
         */
         GetDayWorkCardPlanQtyBysuitID();
-
         Log.e("jindi", selectWorkCardPlan.getFinterid().toString());
     }
 
@@ -653,6 +662,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                         } else {
                             Log.e("jindi", "工序已提交过");
                         }
+                        useGxpgPlanReportNumberSave();
                     } catch (DbException e) {
                         e.printStackTrace();
                     }
@@ -949,7 +959,23 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
             Log.e("jindi", e.toString());
         }
     }
+    public void useGxpgPlanReportNumberSave() {
+        for(int i=0;i<sc_ProcessWorkCardEntryList.size();i++){
+            try {
+                GxpgPlanReportNumberSave gxpgPlanReportNumberSave = dbManager.selector(GxpgPlanReportNumberSave.class).where("planbill", " = ", selectWorkCardPlan.getPlanbill()).and("orderbill", "=", selectWorkCardPlan.getOrderbill()).and("usernumber", "=", sc_ProcessWorkCardEntryList.get(i).getJobNumber()).and("processname", "=", sc_ProcessWorkCardEntryList.get(i).getFprocessname()).findFirst();
+                if(gxpgPlanReportNumberSave!=null){
+                    sc_ProcessWorkCardEntryList.get(i).setReportNumber(gxpgPlanReportNumberSave.getRecordcount());
+                }else{
+                    Log.e("jindi","Recordcount:null");
+                }
+            } catch (DbException e) {
+                e.printStackTrace();
+                Log.e("jindi",e.toString());
+            }
 
+        }
+        mMenuAdapter.notifyDataSetChanged();
+    }
     public void GetInstructor() {
         RequestParams params = new RequestParams(define.IP8341 + define.GetRouteEntryPic);
         params.addQueryStringParameter("FInterID", String.valueOf(selectWorkCardPlan.getFroutingid()));
@@ -1359,6 +1385,8 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
             gxpgPlan.setEmpid(sc_ProcessWorkCardEntryList.get(i).getFempid());
             //gxpgPlan.setPer(1.0f);
             gxpgPlan.setPer(sc_ProcessWorkCardEntryList.get(i).getFqty().floatValue() / (processWorkCardPlanEntryList.get(i).getHavedispatchingnumber().floatValue()));
+
+
             //Log.e("jindi", String.valueOf(processWorkCardPlanEntryList.get(i).getHavedispatchingnumber().floatValue() - selectWorkCardPlan.getReportednumber().floatValue()));
             //Log.e("jindi", "getFqty:"+sc_ProcessWorkCardEntryList.get(i).getFqty().floatValue()+" getHavedispatchingnumber()"+processWorkCardPlanEntryList.get(i).getHavedispatchingnumber().floatValue());
 
@@ -1371,9 +1399,52 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
             dbManager.save(gxpgPlanStatus);
         } catch (DbException e) {
             e.printStackTrace();
+            Log.e("jindi",e.toString());
         }
     }
 
+
+    //暂存运算计工数
+    public void saveGxpgPlanReportNumber() {
+
+        //存储工序计划
+        ArrayList<GxpgPlanReportNumberSave> GxpgPlanReportNumberSaveList = new ArrayList<>();
+        for (int i = 0; i < sc_ProcessWorkCardEntryList.size(); i++) {
+            //先删除原先保留的工序计划
+            try {
+                WhereBuilder b = WhereBuilder.b();
+                b.and("planbill", " = ", selectWorkCardPlan.getPlanbill());
+                b.and("orderbill", "=", selectWorkCardPlan.getOrderbill());
+                b.and("processname", "=", sc_ProcessWorkCardEntryList.get(i).getFprocessname());
+                b.and("usernumber", "=", sc_ProcessWorkCardEntryList.get(i).getJobNumber());
+                dbManager.delete(GxpgPlanReportNumberSave.class, b);
+            } catch (DbException e) {
+                e.printStackTrace();
+            }
+                GxpgPlanReportNumberSave gxpgPlanReportNumberSave = new GxpgPlanReportNumberSave();
+                gxpgPlanReportNumberSave.setOrderbill(selectWorkCardPlan.getOrderbill());
+                gxpgPlanReportNumberSave.setPlanbill(selectWorkCardPlan.getPlanbill());
+                gxpgPlanReportNumberSave.setProcessname(sc_ProcessWorkCardEntryList.get(i).getFprocessname());
+                gxpgPlanReportNumberSave.setUsername(sc_ProcessWorkCardEntryList.get(i).getName());
+                gxpgPlanReportNumberSave.setUsernumber(sc_ProcessWorkCardEntryList.get(i).getJobNumber());
+                gxpgPlanReportNumberSave.setRecordcount(sc_ProcessWorkCardEntryList.get(i).getReportNumber());
+                Log.e("jindi",selectWorkCardPlan.getOrderbill()+","+selectWorkCardPlan.getPlanbill()+","+sc_ProcessWorkCardEntryList.get(i).getFprocessname()+","+sc_ProcessWorkCardEntryList.get(i).getJobNumber());
+                //Log.e("jindi", String.valueOf(processWorkCardPlanEntryList.get(i).getHavedispatchingnumber().floatValue() - selectWorkCardPlan.getReportednumber().floatValue()));
+                //Log.e("jindi", "getFqty:"+sc_ProcessWorkCardEntryList.get(i).getFqty().floatValue()+" getHavedispatchingnumber()"+processWorkCardPlanEntryList.get(i).getHavedispatchingnumber().floatValue());
+
+                //Log.e("jindi", "stype:" + processWorkCardPlanEntryList.get(i).getPlantbody() + "processname:" + sc_ProcessWorkCardEntryList.get(i).getFprocessname() + ",processname:" + sc_ProcessWorkCardEntryList.get(i).getName() +
+                // ",Qty:" + sc_ProcessWorkCardEntryList.get(i).getFqty());
+                GxpgPlanReportNumberSaveList.add(gxpgPlanReportNumberSave);
+            }
+            try {
+                dbManager.save(GxpgPlanReportNumberSaveList);
+                Toast.makeText(mContext, "计工暂存成功", Toast.LENGTH_LONG).show();
+            } catch (DbException e) {
+                e.printStackTrace();
+                Log.e("jindi", e.toString());
+            }
+
+    }
     /**
      * 菜单创建器。在Item要创建菜单的时候调用。
      */
@@ -1901,7 +1972,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         RequestParams params = new RequestParams(define.IP8012 + define.SCProcessOutPutReWriteBysuitID);
         params.addParameter("PushJsonCondition", g.toJson(pushJsonConditionList));
         params.addParameter("suitID", define.suitID);
-        //Log.e("jindi", params.toString());
+        Log.e("jindi", params.toString());
 
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
@@ -1930,7 +2001,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                     }
                     */
                 }
-                //btn_report.setEnabled(true);
+                btn_report.setEnabled(true);
             }
 
             //请求异常后的回调方法

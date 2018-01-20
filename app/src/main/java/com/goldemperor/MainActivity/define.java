@@ -82,6 +82,14 @@ public class define {
 
     public static final String GetFACardByEmpNumber ="getFACardByEmpNumber";
 
+    public static final String GetFempByFnumber ="getFempByFnumber";
+
+    public static final String GetCompany="getCompany";
+
+    public static final String GetDepartmentOneByFjspaygroupingnumber="getDepartmentOneByFjspaygroupingnumber";
+
+    public static final String GetDepartmentTwoByFnumber="getDepartmentTwoByFnumber";
+
     public static final String GetCjProcessOutputEntry ="getCjProcessOutputEntry";
 
     public static final String GetWorkcardFinteridByFcanreportbynostockin= "getWorkcardFinteridByFcanreportbynostockin";

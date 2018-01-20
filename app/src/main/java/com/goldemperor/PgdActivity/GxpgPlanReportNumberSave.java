@@ -7,13 +7,16 @@ import org.xutils.db.annotation.Table;
  * Created by Nova on 2017/9/9.
  */
 
-@Table(name = "gxpgplan")
-public class GxpgPlan {
+@Table(name = "gxpgplanreportNumber")
+public class GxpgPlanReportNumberSave {
     @Column(name = "id",isId = true,autoGen = true,property = "NOT NULL")
     private int id;
 
-    @Column(name = "style")
-    private String style;
+    @Column(name = "planbill")
+    private String planbill;
+
+    @Column(name = "orderbill")
+    private String orderbill;
 
     @Column(name = "processname")
     private String processname;
@@ -24,14 +27,10 @@ public class GxpgPlan {
     @Column(name = "username")
     private String username;
 
-    @Column(name = "empid")
-    private int empid;
+    @Column(name = "recordcount")
+    private float recordcount;
 
-    @Column(name = "per")
-    private float per;
-
-
-    public GxpgPlan() {
+    public GxpgPlanReportNumberSave() {
     }
     public int getId() {
         return id;
@@ -40,11 +39,27 @@ public class GxpgPlan {
         this.id = id;
     }
 
-    public String getStyle() {
-        return style;
+    public String getPlanbill() {
+        return planbill;
     }
-    public void setStyle(String style) {
-        this.style = style;
+    public void setPlanbill(String planbill) {
+        this.planbill = planbill;
+    }
+
+    public String getOrderbill() {
+        return orderbill;
+    }
+    public void setOrderbill(String orderbill) {
+        this.orderbill = orderbill;
+    }
+
+    public float getRecordcount() {
+        return recordcount;
+    }
+
+
+    public void setRecordcount(float recordcount) {
+        this.recordcount = recordcount;
     }
 
     public String getProcessname() {
@@ -54,6 +69,7 @@ public class GxpgPlan {
         this.processname = processname;
     }
 
+
     public void setUsernumber(String usernumber) {
         this.usernumber = usernumber;
     }
@@ -62,34 +78,11 @@ public class GxpgPlan {
         return usernumber;
     }
 
-
     public void setUsername(String username) {
         this.username = username;
     }
 
-
     public String getUsername() {
         return username;
-    }
-
-    public int getEmpid() {
-        return empid;
-    }
-
-
-    public void setEmpid(int empid) {
-        this.empid = empid;
-    }
-
-
-
-
-
-    public float getPer() {
-        return per;
-    }
-
-    public void setPer(float per) {
-        this.per = per;
     }
 }

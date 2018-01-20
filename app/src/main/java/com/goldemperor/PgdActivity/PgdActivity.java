@@ -685,7 +685,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         params.addQueryStringParameter("FStartTime", StartTime);
         params.addQueryStringParameter("EndTime", EndTime);
         params.addQueryStringParameter("FDeptID", dataPref.getString(define.SharedFDeptmentid, "none"));
-        Log.e("jindi", params.toString());
+        Log.e("jindi","GetPlanbyTime:" +params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(final String result) {
@@ -786,7 +786,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         RequestParams params = new RequestParams(define.IP8341 + define.GetWorkCardPlanNew);
         params.setReadTimeout(60000);
         params.addQueryStringParameter("paramString", finters);
-        Log.e("jindi", params.toString());
+        Log.e("jindi","GetWorkCardPlanNew:"+ params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(final String result) {
