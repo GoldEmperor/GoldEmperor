@@ -149,7 +149,8 @@ public class LoginActivity extends AppCompatActivity {
                             result = result.replaceAll("\\\\", "");
                             String code = result.substring(result.indexOf("\"code\""), result.indexOf(",", result.indexOf("\"code\"")));
                             code = code.replaceAll("\"", "").replaceAll("code", "").replaceAll(":", "");
-                            VerNum = code;
+                            //获得系统短信回执 此次调试可设置999999
+                            VerNum = "999999";//code;
                             Log.e("jindi", VerNum);
                         }
 
