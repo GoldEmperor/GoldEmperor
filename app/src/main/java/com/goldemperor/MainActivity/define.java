@@ -110,6 +110,7 @@ public class define {
     public static final String InsertProcessWorkCardEntry = "ErpForAndroidStockServer.asmx/InsertProcessWorkCardEntry";
 
 
+
     public static final String GetEmpByDeptID = "wechatMvn/mes/GetEmpByDeptID.do";
 
     public static final String GetEmpByFNumber = "wechatMvn/mes/GetEmpByFNumber.do";
