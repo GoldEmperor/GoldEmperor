@@ -132,6 +132,58 @@ public class ProcessWorkCardPlanEntry implements Cloneable{
 
     private String fprocessingmethod;
 
+    private Integer  fsourceentryfid;//源单分录自增长FID
+
+    private Integer  frouteentryfid;//工艺路线分录自增长FID
+
+    private Integer  foperplanningentryfid;//工序计划分录自增长FID
+
+    private Integer  foperplanninginterid;//工序计划主键ID
+
+    private Integer  foperplanningentryid;//工序计划分路ID
+
+    public Integer getFsourceentryfid() {
+        return fsourceentryfid;
+    }
+
+    public void setFsourceentryfid(Integer fsourceentryfid) {
+        this.fsourceentryfid = fsourceentryfid;
+    }
+
+    public Integer getFrouteentryfid() {
+        return frouteentryfid;
+    }
+
+    public void setFrouteentryfid(Integer frouteentryfid) {
+        this.frouteentryfid = frouteentryfid;
+    }
+
+    public Integer getFoperplanningentryfid() {
+        return foperplanningentryfid;
+    }
+
+    public void setFoperplanningentryfid(Integer foperplanningentryfid) {
+        this.foperplanningentryfid = foperplanningentryfid;
+    }
+
+
+    public Integer getFoperplanninginterid() {
+        return foperplanninginterid;
+    }
+
+    public void setFoperplanninginterid(Integer foperplanninginterid) {
+        this.foperplanninginterid = foperplanninginterid;
+    }
+
+
+    public Integer getFoperplanningentryid() {
+        return foperplanningentryid;
+    }
+
+    public void setFoperplanningentryid(Integer foperplanningentryid) {
+        this.foperplanningentryid = foperplanningentryid;
+    }
+
     public Integer getFprocessflowid() {
         return fprocessflowid;
     }
@@ -390,7 +442,7 @@ public class ProcessWorkCardPlanEntry implements Cloneable{
     }
 
     public String getProductionbill() {
-        return productionbill;
+        return productionbill.toUpperCase();
     }
 
     public void setProductionbill(String productionbill) {
@@ -398,7 +450,7 @@ public class ProcessWorkCardPlanEntry implements Cloneable{
     }
 
     public String getProcessplanbill() {
-        return processplanbill;
+        return processplanbill.toUpperCase();
     }
 
     public void setProcessplanbill(String processplanbill) {
@@ -406,7 +458,7 @@ public class ProcessWorkCardPlanEntry implements Cloneable{
     }
 
     public String getOrderbill() {
-        return orderbill;
+        return orderbill.toUpperCase();
     }
 
     public void setOrderbill(String orderbill) {
@@ -422,7 +474,7 @@ public class ProcessWorkCardPlanEntry implements Cloneable{
     }
 
     public String getPlantbody() {
-        return plantbody;
+        return plantbody.toUpperCase();
     }
 
     public void setPlantbody(String plantbody) {
@@ -430,7 +482,7 @@ public class ProcessWorkCardPlanEntry implements Cloneable{
     }
 
     public String getProductname() {
-        return productname;
+        return productname.toUpperCase();
     }
 
     public void setProductname(String productname) {
@@ -438,7 +490,7 @@ public class ProcessWorkCardPlanEntry implements Cloneable{
     }
 
     public String getProductcode() {
-        return productcode;
+        return productcode.toUpperCase();
     }
 
     public void setProductcode(String productcode) {
@@ -446,7 +498,7 @@ public class ProcessWorkCardPlanEntry implements Cloneable{
     }
 
     public String getMaterialcode() {
-        return materialcode;
+        return materialcode.toUpperCase();
     }
 
     public void setMaterialcode(String materialcode) {
@@ -454,7 +506,7 @@ public class ProcessWorkCardPlanEntry implements Cloneable{
     }
 
     public String getMaterialname() {
-        return materialname;
+        return materialname.toUpperCase();
     }
 
     public void setMaterialname(String materialname) {
@@ -478,7 +530,7 @@ public class ProcessWorkCardPlanEntry implements Cloneable{
     }
 
     public String getProcessname() {
-        return processname;
+        return processname.toUpperCase();
     }
 
     public void setProcessname(String processname) {

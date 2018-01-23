@@ -91,13 +91,43 @@ public class Sc_ProcessWorkCardEntry implements Cloneable {
 
     private Integer fprocessflowid;
 
-    private Integer foperplanninginterid;
-
-    private Integer foperplanningentryid;
-
     private String fprocessingmethod;
 
     private boolean isOpen;
+
+    private Integer  fsourceentryfid;//源单分录自增长FID
+
+    private Integer  frouteentryfid;//工艺路线分录自增长FID
+
+    private Integer  foperplanningentryfid;//工序计划分录自增长FID
+
+    private Integer  foperplanninginterid;//工序计划主键ID
+
+    private Integer  foperplanningentryid;//工序计划分路ID
+
+    public Integer getFsourceentryfid() {
+        return fsourceentryfid;
+    }
+
+    public void setFsourceentryfid(Integer fsourceentryfid) {
+        this.fsourceentryfid = fsourceentryfid;
+    }
+
+    public Integer getFrouteentryfid() {
+        return frouteentryfid;
+    }
+
+    public void setFrouteentryfid(Integer frouteentryfid) {
+        this.frouteentryfid = frouteentryfid;
+    }
+
+    public Integer getFoperplanningentryfid() {
+        return foperplanningentryfid;
+    }
+
+    public void setFoperplanningentryfid(Integer foperplanningentryfid) {
+        this.foperplanningentryfid = foperplanningentryfid;
+    }
 
 
     public Sc_ProcessWorkCardEntry(){

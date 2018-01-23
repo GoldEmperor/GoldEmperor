@@ -259,7 +259,7 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
      */
             if (gxpgActivity.readyRecordCount!=null&&gxpgActivity.readyRecordCount.get(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFprocessnumber() + String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFempid()))!=null) {
                 tv_readyRecordCount.setText(String.valueOf(gxpgActivity.readyRecordCount.get(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFprocessnumber() + String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFempid())).intValue()));
-                Log.e("jindi",""+ gxpgActivity.readyRecordCount.get(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFprocessnumber() + String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFempid())));
+                //Log.e("jindi",""+ gxpgActivity.readyRecordCount.get(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFprocessnumber() + String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFempid())));
             }
             else{
                 tv_readyRecordCount.setText("0");
@@ -303,14 +303,14 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                                 for (int i = 0; i < gxpgActivity.sc_ProcessWorkCardEntryList.size(); i++) {
                                     if (gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname().equals(gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getFprocessname())) {
                                         count += gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFqty().floatValue();
-                                        Log.e("jindi", "qty:" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFqty().floatValue());
+                                        //Log.e("jindi", "qty:" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFqty().floatValue());
                                     }
 
                                 }
 
                                 //超标就将数量设为0
                                 if (count > p.getHavedispatchingnumber().floatValue()) {
-                                    Log.e("jindi", "afterTextChanged:" + getAdapterPosition());
+                                    //Log.e("jindi", "afterTextChanged:" + getAdapterPosition());
                                     edit_dispatchingnumber.setText("0");
                                     gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFqty(new BigDecimal(0));
                                     Toast.makeText(gxpgActivity, "无法派工,派工总数超标", Toast.LENGTH_LONG).show();
@@ -350,19 +350,6 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                     edit_userNumber.setText(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getJobNumber());
                 }
 
-                //tv_havedispatchingnumber.setText(String.valueOf(p.getHavedispatchingnumber().floatValue()));
-
-                try {
-                    GxpgPlan gxpgPlan = dbManager.selector(GxpgPlan.class).where("style", " = ", p.getPlantbody()).and("processname", "=", p.getProcessname()).and("username", "=", gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getName()).findFirst();
-
-                    if (gxpgPlan != null) {
-                        // tv_noReportednumber.setText(df.format(gxpgActivity.norecord*gxpgPlan.getPer()));
-                        Log.e("jindi", "per:" + gxpgPlan.getPer());
-                    }
-
-                } catch (DbException e) {
-                    e.printStackTrace();
-                }
 
                 tv_noReportednumber.setOnClickListener(new View.OnClickListener() {
 
@@ -389,7 +376,7 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                                                 count += gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getReportNumber();
                                             }
                                         }
-                                        if(!selectWorkCardPlan.getIsWeiWai()) {
+                                        if(!selectWorkCardPlan.getFcanreportbynostockin()) {
                                             if (count > gxpgActivity.norecord) {
                                                 Toast.makeText(gxpgActivity, "计工数超过汇报数", Toast.LENGTH_LONG).show();
                                                 gxpgActivity.sc_ProcessWorkCardEntryList.get(position).setReportNumber(0f);

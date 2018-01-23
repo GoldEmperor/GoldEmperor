@@ -170,7 +170,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         showWorkCardPlan = new ArrayList<WorkCardPlan>();
 
         defaultGetData(StartTime, EndTime);
-        getWorkcardFinteridByFcanreportbynostockin();
 
         mMenuRecyclerView = (SwipeMenuRecyclerView) findViewById(R.id.recycler_view);
         mMenuRecyclerView.setLayoutManager(new LinearLayoutManager(this));// 布局管理器。
@@ -215,7 +214,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 EndTime = Utils.getCurrentTime();
                 tv_tip.setVisibility(View.VISIBLE);
                 defaultGetData(StartTime, EndTime);
-                getWorkcardFinteridByFcanreportbynostockin();
 
             }
         });
@@ -228,7 +226,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 StartTime = Utils.getCurrentTime();
                 EndTime = Utils.getCurrentTime();
                 getData(StartTime, EndTime);
-                getWorkcardFinteridByFcanreportbynostockin();
 
             }
         });
@@ -242,7 +239,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 StartTime = Utils.getBeginDayOfWeek().toString();
                 EndTime = Utils.getCurrentTime();
                 getData(StartTime, EndTime);
-                getWorkcardFinteridByFcanreportbynostockin();
             }
         });
 
@@ -254,8 +250,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 StartTime = Utils.getCurrentYear() + "-" + Utils.getCurrentMonth() + "-" + "01";
                 EndTime = Utils.getCurrentTime();
                 getData(StartTime, EndTime);
-                getWorkcardFinteridByFcanreportbynostockin();
-
             }
         });
 
@@ -269,7 +263,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 StartTime = year + "-" + month + "-" + "01";
                 EndTime = Utils.getCurrentTime();
                 getData(StartTime, EndTime);
-                getWorkcardFinteridByFcanreportbynostockin();
             }
         });
 
@@ -527,57 +520,11 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         // If 'displayOptions' is zero, the chosen options are not valid
         return new Pair<>(displayOptions != 0 ? Boolean.TRUE : Boolean.FALSE, options);
     }
-    /*
-    public void getData(final String StartTime, final String EndTime) {
-        tv_tip.setText("数据载入中...");
-        tv_showDate.setText("显示日期:" + StartTime + "到" + EndTime);
-        RequestParams params = new RequestParams(define.GetPlanbyTime);
-        params.setReadTimeout(60000);
-        params.addQueryStringParameter("FStartTime", StartTime);
-        params.addQueryStringParameter("EndTime", EndTime);
-        Log.e("jindi",params.toString());
-        x.http().get(params, new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(final String result) {
-                Log.e("jindi",result);
-                Gson g = new Gson();
-                ScResult sc = g.fromJson(result, ScResult.class);
-                if(sc.getData()!=null&&sc.getData().size()!=0) {
-                    String finters = "";
-                    for (int i = 0; i < sc.getData().size(); i++) {
-                        finters += sc.getData().get(i).getFinterid() + ",";
-                    }
-                    getData(finters);
-                }else{
-                    tv_tip.setText("暂无数据");
-                }
-            }
-
-            //请求异常后的回调方法
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                Log.e("jindi", ex.toString());
-                tv_tip.setVisibility(View.VISIBLE);
-                tv_tip.setText("数据载入失败,请检查网络:" + ex.toString());
-            }
-
-            //主动调用取消请求的回调方法
-            @Override
-            public void onCancelled(CancelledException cex) {
-            }
-
-            @Override
-            public void onFinished() {
-            }
-        });
-
-    }
-    */
 
     public void getData(final String StartTime, final String EndTime) {
         tv_tip.setText("数据载入中...");
         tv_showDate.setText("显示日期:" + StartTime + "到" + EndTime);
-        RequestParams params = new RequestParams(define.IP8341 + define.GetPlanbyTime);
+        RequestParams params = new RequestParams(define.IP798056 + define.GetWorkCardInfo);
         params.setReadTimeout(60000);
         params.setConnectTimeout(60000);
         params.addQueryStringParameter("FStartTime", StartTime);
@@ -586,8 +533,15 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         Log.e("jindi", params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
-            public void onSuccess(final String result) {
-                Log.e("jindi", result);
+            public void onSuccess(String result) {
+                try {
+                    result = URLDecoder.decode(result, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                result = "{\"data\":" + result.substring(result.indexOf("[{"), result.indexOf("}]")) + "}]}";
+                Utils.e("jindi", result);
+
                 pgdWorkCardPlan.clear();
                 showWorkCardPlan.clear();
                 currentPosition = 0;
@@ -597,7 +551,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 PgdResult pgds = g.fromJson(result, PgdResult.class);
                 if (pgds.getData() != null) {
                     for (int i = 0; i < pgds.getData().size(); i++) {
-                        //Log.e("jindi","deptid:"+pgds.getData().get(i).getFdeptid()+" Deptmentid:"+dataPref.getString(define.SharedFDeptmentid,"none"));
                         if ((!filter.contains(pgds.getData().get(i).getPlanbill()) || !filter.contains(pgds.getData().get(i).getOrderbill()) && pgds.getData().get(i).getOrderbill().indexOf("J") != 0) && String.valueOf(pgds.getData().get(i).getFdeptid()).equals(dataPref.getString(define.SharedFDeptmentid, "none"))) {
                             filter.add(pgds.getData().get(i).getPlanbill());
                             filter.add(pgds.getData().get(i).getOrderbill());
@@ -630,11 +583,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                             pgds.getData().get(i).setAlreadynumberCount(alreadyNumberCount);
                             pgds.getData().get(i).setNonumberCount(noNumberCount);
                             if (isWeiWai) {
-                                if (WorkcardFinteridByFCanReportByNoStockInList.contains(String.valueOf(pgds.getData().get(i).getFinterid()))) {
-                                    pgds.getData().get(i).setIsWeiWai(true);
-                                    pgdWorkCardPlan.add(pgds.getData().get(i));
-                                } else if (define.isCeNet) {
-                                    pgds.getData().get(i).setIsWeiWai(true);
+                                if (pgds.getData().get(i).getFcanreportbynostockin()) {
                                     pgdWorkCardPlan.add(pgds.getData().get(i));
                                 }
                             } else {
@@ -679,17 +628,26 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
     public void defaultGetData(final String StartTime, final String EndTime) {
         tv_tip.setText("数据载入中...");
         tv_showDate.setText("显示日期:" + StartTime + "到" + EndTime);
-        RequestParams params = new RequestParams(define.IP8341 + define.GetPlanbyTime);
+        //RequestParams params = new RequestParams(define.IP798341 + define.GetPlanbyTime);
+        RequestParams params = new RequestParams(define.IP798056 + define.GetWorkCardInfo);
         params.setReadTimeout(60000);
         params.setConnectTimeout(60000);
         params.addQueryStringParameter("FStartTime", StartTime);
         params.addQueryStringParameter("EndTime", EndTime);
         params.addQueryStringParameter("FDeptID", dataPref.getString(define.SharedFDeptmentid, "none"));
-        Log.e("jindi","GetPlanbyTime:" +params.toString());
+        Log.e("jindi", "GetPlanbyTime:" + params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
-            public void onSuccess(final String result) {
-                Log.e("jindi", result);
+            public void onSuccess(String result) {
+                try {
+                    result = URLDecoder.decode(result, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                result = "{\"data\":" + result.substring(result.indexOf("[{"), result.indexOf("}]")) + "}]}";
+                Utils.e("jindi", result);
+
+                //Log.e("jindi", result);
                 pgdWorkCardPlan.clear();
                 showWorkCardPlan.clear();
                 currentPosition = 0;
@@ -701,8 +659,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                     for (int i = 0; i < pgds.getData().size(); i++) {
                         //Log.e("jindi","deptid:"+pgds.getData().get(i).getFdeptid()+" Deptmentid:"+dataPref.getString(define.SharedFDeptmentid,"none"));
                         if ((!filter.contains(pgds.getData().get(i).getPlanbill()) || !filter.contains(pgds.getData().get(i).getOrderbill()) && pgds.getData().get(i).getOrderbill().indexOf("J") != 0) && String.valueOf(pgds.getData().get(i).getFdeptid()).equals(dataPref.getString(define.SharedFDeptmentid, "none")) && (pgds.getData().get(i).getReportednotnumber().intValue() > 0 || pgds.getData().get(i).getNotreportnumber().intValue() > 0)) {
-
-                            Log.e("jindi", "getReportednotnumber():" + pgds.getData().get(i).getReportednotnumber().intValue() + ",getNotreportnumber():" + pgds.getData().get(i).getNotreportnumber());
                             filter.add(pgds.getData().get(i).getPlanbill());
                             filter.add(pgds.getData().get(i).getOrderbill());
                             //重新遍历,设置尺码,和已入未入库数
@@ -710,8 +666,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                             int noNumberCount = 0;
                             for (int j = 0; j < pgds.getData().size(); j++) {
                                 if (pgds.getData().get(j).getPlanbill().equals(pgds.getData().get(i).getPlanbill()) && pgds.getData().get(j).getOrderbill().equals(pgds.getData().get(i).getOrderbill())) {
-
-
                                     String[][] s = new String[1][2];
                                     s[0][0] = pgds.getData().get(j).getFsize();
                                     s[0][1] = String.valueOf(pgds.getData().get(j).getDispatchingnumber().intValue());
@@ -734,11 +688,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                             pgds.getData().get(i).setAlreadynumberCount(alreadyNumberCount);
                             pgds.getData().get(i).setNonumberCount(noNumberCount);
                             if (isWeiWai) {
-                                if (WorkcardFinteridByFCanReportByNoStockInList.contains(String.valueOf(pgds.getData().get(i).getFinterid()))) {
-                                    pgds.getData().get(i).setIsWeiWai(true);
-                                    pgdWorkCardPlan.add(pgds.getData().get(i));
-                                } else if (define.isCeNet) {
-                                    pgds.getData().get(i).setIsWeiWai(true);
+                                if (pgds.getData().get(i).getFcanreportbynostockin()) {
                                     pgdWorkCardPlan.add(pgds.getData().get(i));
                                 }
                             } else {
@@ -781,139 +731,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
 
     }
 
-
-    public void getData(final String finters) {
-        RequestParams params = new RequestParams(define.IP8341 + define.GetWorkCardPlanNew);
-        params.setReadTimeout(60000);
-        params.addQueryStringParameter("paramString", finters);
-        Log.e("jindi","GetWorkCardPlanNew:"+ params.toString());
-        x.http().get(params, new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(final String result) {
-
-                Log.e("jindi", result);
-                pgdWorkCardPlan.clear();
-                showWorkCardPlan.clear();
-                currentPosition = 0;
-                refreshLayout.setEnableLoadmore(true);
-                List<String> filter = new ArrayList<String>();
-                Gson g = new Gson();
-                PgdResult pgds = g.fromJson(result, PgdResult.class);
-                if (pgds.getData() != null) {
-                    for (int i = 0; i < pgds.getData().size(); i++) {
-                        //Log.e("jindi","deptid:"+pgds.getData().get(i).getFdeptid()+" Deptmentid:"+dataPref.getString(define.SharedFDeptmentid,"none"));
-                        if ((!filter.contains(pgds.getData().get(i).getPlanbill()) || !filter.contains(pgds.getData().get(i).getOrderbill()) && pgds.getData().get(i).getOrderbill().indexOf("J") != 0) && String.valueOf(pgds.getData().get(i).getFdeptid()).equals(dataPref.getString(define.SharedFDeptmentid, "none"))) {
-                            filter.add(pgds.getData().get(i).getPlanbill());
-                            filter.add(pgds.getData().get(i).getOrderbill());
-                            //重新遍历,设置尺码,和已入未入库数
-                            int alreadyNumberCount = 0;
-                            int noNumberCount = 0;
-                            for (int j = 0; j < pgds.getData().size(); j++) {
-                                if (pgds.getData().get(j).getPlanbill().equals(pgds.getData().get(i).getPlanbill()) && pgds.getData().get(j).getOrderbill().equals(pgds.getData().get(i).getOrderbill())) {
-
-
-                                    String[][] s = new String[1][2];
-                                    s[0][0] = pgds.getData().get(j).getFsize();
-                                    s[0][1] = String.valueOf(pgds.getData().get(j).getDispatchingnumber().intValue());
-                                    pgds.getData().get(i).addSize(s);
-                                    alreadyNumberCount += (pgds.getData().get(j).getAlreadynumber() == null ? 0 : pgds.getData().get(j).getAlreadynumber()).intValue();
-
-                                    noNumberCount += (pgds.getData().get(j).getNonumber() == null ? 0 : pgds.getData().get(j).getNonumber()).intValue();
-                                    try {
-                                        List<GxpgPlanStatus> gxpgPlanStatusesList = dbManager.selector(GxpgPlanStatus.class).where("planbill", " = ", pgds.getData().get(i).getPlanbill()).and("orderbill", "=", pgds.getData().get(i).getOrderbill()).findAll();
-                                        if (gxpgPlanStatusesList != null && gxpgPlanStatusesList.size() >= 1) {
-                                            pgds.getData().get(i).setPlanStatus("已排");
-                                        } else {
-                                            pgds.getData().get(i).setPlanStatus("未排");
-                                        }
-                                    } catch (DbException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                            pgds.getData().get(i).setAlreadynumberCount(alreadyNumberCount);
-                            pgds.getData().get(i).setNonumberCount(noNumberCount);
-                            if (isWeiWai) {
-                                if (WorkcardFinteridByFCanReportByNoStockInList.contains(String.valueOf(pgds.getData().get(i).getFinterid()))) {
-                                    pgds.getData().get(i).setIsWeiWai(true);
-                                    pgdWorkCardPlan.add(pgds.getData().get(i));
-                                } else if (define.isCeNet) {
-                                    pgds.getData().get(i).setIsWeiWai(true);
-                                    pgdWorkCardPlan.add(pgds.getData().get(i));
-                                }
-                            } else {
-                                pgdWorkCardPlan.add(pgds.getData().get(i));
-                            }
-
-                        }
-                    }
-                    if (pgdWorkCardPlan.size() == 0) {
-                        tv_tip.setText("暂无数据");
-                    } else {
-                        tv_tip.setVisibility(View.GONE);
-                    }
-                } else {
-                    tv_tip.setText("暂无数据");
-                }
-                LoadMore();
-                mMenuAdapter.notifyDataSetChanged();
-                refreshLayout.finishRefreshing();
-            }
-
-            //请求异常后的回调方法
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                Log.e("jindi", ex.toString());
-                tv_tip.setVisibility(View.VISIBLE);
-                tv_tip.setText("数据载入失败,请检查网络:" + ex.toString());
-            }
-
-            //主动调用取消请求的回调方法
-            @Override
-            public void onCancelled(CancelledException cex) {
-            }
-
-            @Override
-            public void onFinished() {
-            }
-        });
-    }
-
-
-    public void getWorkcardFinteridByFcanreportbynostockin() {
-        WorkcardFinteridByFCanReportByNoStockInList = "";
-        RequestParams params = new RequestParams(define.IP798881 + define.GetWorkcardFinteridByFcanreportbynostockin);
-        params.setReadTimeout(60000);
-        params.addQueryStringParameter("FCanReportByNoStockIn", "1");
-        params.addQueryStringParameter("StartDate", StartTime);
-        params.addQueryStringParameter("EndDate", EndTime);
-        Log.e("jindi", params.toString());
-        x.http().get(params, new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(final String result) {
-                Log.e("jindi", result);
-                if (result != null) {
-                    WorkcardFinteridByFCanReportByNoStockInList = result;
-                }
-            }
-
-            //请求异常后的回调方法
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                Log.e("jindi", ex.toString());
-                WorkcardFinteridByFCanReportByNoStockInList = "";
-            }
-
-            //主动调用取消请求的回调方法
-            @Override
-            public void onCancelled(CancelledException cex) {
-            }
-
-            @Override
-            public void onFinished() {
-            }
-        });
-    }
 
     public void getSearchData(final String searchText) {
         tv_tip.setText("数据载入中...");
@@ -946,9 +763,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                                     s[0][1] = String.valueOf(pgds.getData().get(j).getDispatchingnumber().intValue());
                                     pgds.getData().get(i).addSize(s);
                                 }
-                            }
-                            if (WorkcardFinteridByFCanReportByNoStockInList.contains(String.valueOf(pgds.getData().get(i).getFinterid()))) {
-                                pgds.getData().get(i).setIsWeiWai(true);
                             }
                             pgdWorkCardPlan.add(pgds.getData().get(i));
                         }
@@ -992,40 +806,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
             refreshLayout.setEnableLoadmore(false);
         }
         refreshLayout.finishLoadmore();
-    }
-
-    private void GetWorkPlanQtyBysuitID() {
-        RequestParams params = new RequestParams(define.IP8012 + define.GetWorkPlanQtyBysuitID);
-        params.addQueryStringParameter("FSourceInterId", dataPref.getString(define.SharedFDeptmentid, ""));
-        params.addQueryStringParameter("FSourceEntryId", dataPref.getString(define.SharedFDeptmentid, ""));
-        params.addQueryStringParameter("suitID", define.suitID);
-        x.http().get(params, new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                try {
-                    result = URLDecoder.decode(result, "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                Gson g = new Gson();
-
-            }
-
-            //请求异常后的回调方法
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                Log.e("jindi", ex.toString());
-            }
-
-            //主动调用取消请求的回调方法
-            @Override
-            public void onCancelled(CancelledException cex) {
-            }
-
-            @Override
-            public void onFinished() {
-            }
-        });
     }
 
     /**
@@ -1117,7 +897,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
 
     public void SCWorkCard2SCProcessWorkCard(int position) {
         selectWorkCardPlan = showWorkCardPlan.get(position);
-        Log.e("jindi", "position:" + position + " Cumulativenumber" + showWorkCardPlan.get(position).getCumulativenumber());
         Gson g = new Gson();
         List<PushJsonCondition> pushJsonConditionList = new ArrayList<PushJsonCondition>();
         for (int i = 0; i < showWorkCardPlan.get(position).getSizeList().size(); i++) {

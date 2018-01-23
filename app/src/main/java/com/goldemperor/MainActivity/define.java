@@ -92,7 +92,6 @@ public class define {
 
     public static final String GetCjProcessOutputEntry ="getCjProcessOutputEntry";
 
-    public static final String GetWorkcardFinteridByFcanreportbynostockin= "getWorkcardFinteridByFcanreportbynostockin";
 
     public static final String SetCheckerId ="setCheckerId";
 
@@ -104,12 +103,14 @@ public class define {
     public static final String WechatPostByFEmpID = IP328030+"api/MessagePost/WechatPostByFEmpID";
 
 
+    public static final String GetWorkCardInfo = "ErpForAndroidStockServer.asmx/GetWorkCardInfo";
 
-    public static final String GetPlanbyTime = "wechatMvn/android/getPlanbyTime.do";
+    public static final String GetProcessWorkCardInfo = "ErpForAndroidStockServer.asmx/GetProcessWorkCardInfo";
+
+    public static final String InsertProcessWorkCardEntry = "ErpForAndroidStockServer.asmx/InsertProcessWorkCardEntry";
+
 
     public static final String GetEmpByDeptID = "wechatMvn/mes/GetEmpByDeptID.do";
-
-    public static final String GetProcessPlanEntry = "wechatMvn/android/getProcessPlanEntry.do";
 
     public static final String GetEmpByFNumber = "wechatMvn/mes/GetEmpByFNumber.do";
 
@@ -122,8 +123,6 @@ public class define {
     public static final String GetWorkPlanMaterial = "wechatMvn/android/getWorkPlanMaterial.do";
 
     public static final String GetWorkCardPlanNew = "wechatMvn/android/getWorkCardPlanNew.do";
-
-    public static final String UpdateProcessPassQty = "wechatMvn/android/updateProcessPassQty.do";
 
     public static final String GetWorkCardProcessQty = "wechatMvn/android/getWorkCardProcessQty.do";
 
