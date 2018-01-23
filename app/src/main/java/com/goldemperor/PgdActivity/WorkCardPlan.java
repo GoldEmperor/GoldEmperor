@@ -54,10 +54,6 @@ public class WorkCardPlan {
 
     private BigDecimal dispatchingnumber;
 
-    private BigDecimal assignednumber;
-
-    private BigDecimal undistributednumber;
-
     private BigDecimal alreadynumber;
 
     private BigDecimal nonumber;
@@ -142,14 +138,16 @@ public class WorkCardPlan {
 
     private String fmapnumber;
 
-    private boolean isWeiWai;
+    private boolean fcanreportbynostockin;
 
-    public boolean getIsWeiWai() {
-        return isWeiWai;
+
+
+    public boolean getFcanreportbynostockin() {
+        return fcanreportbynostockin;
     }
 
-    public void setIsWeiWai(boolean isWeiWai) {
-        this.isWeiWai = isWeiWai;
+    public void setFcanreportbynostockin(boolean fcanreportbynostockin) {
+        this.fcanreportbynostockin = fcanreportbynostockin;
     }
 
     public String getFmapnumber() {
@@ -234,7 +232,6 @@ public class WorkCardPlan {
         alreadynumberCount=0;
         nonumberCount=0;
         planStatus="未排";
-        isWeiWai=false;
     }
     public void addSize(String[][] s) {
         this.sizeList.add(s);
@@ -286,23 +283,23 @@ public class WorkCardPlan {
     }
 
     public void setBilltype(String billtype) {
-        this.billtype = billtype == null ? null : billtype.trim();
+        this.billtype = billtype == null ? null : billtype.trim().toUpperCase();
     }
 
     public String getPlanbill() {
-        return planbill;
+        return planbill.toUpperCase();
     }
 
     public void setPlanbill(String planbill) {
-        this.planbill = planbill == null ? null : planbill.trim();
+        this.planbill = planbill == null ? null : planbill.trim().toUpperCase();
     }
 
     public String getOrderbill() {
-        return orderbill;
+        return orderbill.toUpperCase();
     }
 
     public void setOrderbill(String orderbill) {
-        this.orderbill = orderbill == null ? null : orderbill.trim();
+        this.orderbill = orderbill == null ? null : orderbill.trim().toUpperCase();
     }
 
     public String getOrderdate() {
@@ -362,7 +359,7 @@ public class WorkCardPlan {
     }
 
     public String getPlantbody() {
-        return plantbody;
+        return plantbody.toUpperCase();
     }
 
     public void setPlantbody(String plantbody) {
@@ -370,7 +367,7 @@ public class WorkCardPlan {
     }
 
     public String getCodeformat() {
-        return codeformat;
+        return codeformat.toUpperCase();
     }
 
     public void setCodeformat(String codeformat) {
@@ -378,7 +375,7 @@ public class WorkCardPlan {
     }
 
     public String getMaterialcode() {
-        return materialcode;
+        return materialcode.toUpperCase();
     }
 
     public void setMaterialcode(String materialcode) {
@@ -386,7 +383,7 @@ public class WorkCardPlan {
     }
 
     public String getMaterialname() {
-        return materialname;
+        return materialname.toUpperCase();
     }
 
     public void setMaterialname(String materialname) {
@@ -439,22 +436,6 @@ public class WorkCardPlan {
 
     public void setDispatchingnumber(BigDecimal dispatchingnumber) {
         this.dispatchingnumber = dispatchingnumber;
-    }
-
-    public BigDecimal getAssignednumber() {
-        return assignednumber;
-    }
-
-    public void setAssignednumber(BigDecimal assignednumber) {
-        this.assignednumber = assignednumber;
-    }
-
-    public BigDecimal getUndistributednumber() {
-        return undistributednumber;
-    }
-
-    public void setUndistributednumber(BigDecimal undistributednumber) {
-        this.undistributednumber = undistributednumber;
     }
 
     public BigDecimal getAlreadynumber() {

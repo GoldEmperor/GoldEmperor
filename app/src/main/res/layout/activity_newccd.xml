@@ -23,6 +23,14 @@
             android:layout_marginTop="10dp"
             android:text="申购单号"
             android:textSize="20dp" />
+        <EditText
+            android:id="@+id/edit_fsno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint=""
+            android:layout_toRightOf="@+id/tv_fsno"
+            android:textSize="20sp"
+            />
 
 
         <TextView
@@ -34,7 +42,15 @@
             android:layout_marginTop="10dp"
             android:text="财产名称"
             android:textSize="20dp" />
-
+        <EditText
+            android:id="@+id/edit_fname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint=""
+            android:layout_toRightOf="@+id/tv_fname"
+            android:layout_below="@+id/tv_fsno"
+            android:textSize="20sp"
+            />
         <TextView
             android:id="@+id/tv_fmodel"
             android:layout_width="wrap_content"
@@ -45,6 +61,16 @@
             android:text="规格型号"
             android:textSize="20dp" />
 
+        <EditText
+            android:id="@+id/edit_fmodel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint=""
+            android:layout_toRightOf="@+id/tv_fmodel"
+            android:layout_below="@+id/tv_fname"
+            android:textSize="20sp"
+            />
+
         <TextView
             android:id="@+id/tv_suppliername"
             android:layout_width="wrap_content"
@@ -52,9 +78,18 @@
             android:layout_below="@+id/tv_fmodel"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-            android:text="供应商:"
+            android:text="供 应 商"
             android:textSize="20dp" />
-
+        <EditText
+            android:id="@+id/edit_suppliername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint=""
+            android:layout_toRightOf="@+id/tv_suppliername"
+            android:layout_alignLeft="@+id/edit_fmodel"
+            android:layout_below="@+id/tv_fmodel"
+            android:textSize="20sp"
+            />
         <TextView
             android:id="@+id/tv_fprice"
             android:layout_width="wrap_content"
@@ -64,7 +99,15 @@
             android:layout_marginTop="10dp"
             android:text="财产单价"
             android:textSize="20dp" />
-
+        <EditText
+            android:id="@+id/edit_fprice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint=""
+            android:layout_toRightOf="@+id/tv_fprice"
+            android:layout_below="@+id/tv_suppliername"
+            android:textSize="20sp"
+            />
         <TextView
             android:id="@+id/tv_fempname"
             android:layout_width="wrap_content"
@@ -84,7 +127,15 @@
             android:layout_marginTop="10dp"
             android:text="员工工号"
             android:textSize="20dp" />
-
+        <EditText
+            android:id="@+id/edit_fempnumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint=""
+            android:layout_toRightOf="@+id/tv_fempnumber"
+            android:layout_below="@+id/tv_fempname"
+            android:textSize="20sp"
+            />
         <TextView
             android:id="@+id/tv_fdeptname"
             android:layout_width="wrap_content"
@@ -95,16 +146,52 @@
             android:text="保管部门"
             android:textSize="20dp" />
 
+        <Spinner
+            android:id = "@+id/spinner_company"
+            android:layout_width = "wrap_content"
+            android:layout_height ="wrap_content"
+            android:layout_toRightOf="@+id/tv_fnumber"
+            android:textSize="20dp"
+            android:layout_alignBottom="@+id/tv_fdeptname">
+        </Spinner >
+
+        <Spinner
+            android:id = "@+id/spinner_departOne"
+            android:layout_width = "wrap_content"
+            android:layout_height ="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/tv_fnumber"
+            android:layout_below="@+id/spinner_company"
+            android:textSize="20dp">
+        </Spinner >
+
+        <Spinner
+            android:id = "@+id/spinner_departTwo"
+            android:layout_width = "wrap_content"
+            android:layout_height ="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/tv_fnumber"
+            android:layout_below="@+id/spinner_departOne"
+            android:textSize="20dp">
+        </Spinner >
         <TextView
             android:id="@+id/tv_faddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_fdeptname"
+            android:layout_below="@+id/spinner_departTwo"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:text="保管地点"
             android:textSize="20dp" />
-
+        <EditText
+            android:id="@+id/edit_faddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint=""
+            android:layout_toRightOf="@+id/tv_fempnumber"
+            android:layout_below="@+id/spinner_departTwo"
+            android:textSize="20sp"
+            />
         <TextView
             android:id="@+id/tv_fimage"
             android:layout_width="wrap_content"
@@ -124,6 +211,15 @@
             android:layout_marginTop="10dp"
             android:text="财产编号"
             android:textSize="20dp" />
+        <EditText
+            android:id="@+id/edit_fnumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint=""
+            android:layout_toRightOf="@+id/tv_fnumber"
+            android:layout_below="@+id/tv_fimage"
+            android:textSize="20sp"
+            />
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/bottom"

@@ -271,7 +271,20 @@
                 fancy:fb_text="运算"
                 fancy:fb_textColor="#FFFFFF"
                 fancy:fb_textSize="20dp" />
-
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/btn_saveOperation"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:padding="10dp"
+                fancy:fb_borderColor="#FFFFFF"
+                fancy:fb_borderWidth="1dp"
+                fancy:fb_defaultColor="#bb00cc"
+                fancy:fb_focusColor="#9bd823"
+                fancy:fb_radius="10dp"
+                fancy:fb_text="暂存"
+                fancy:fb_textColor="#FFFFFF"
+                fancy:fb_textSize="20dp" />
             <mehdi.sakout.fancybuttons.FancyButton
                 android:id="@+id/btn_reportCheck"
                 android:layout_width="150dp"
