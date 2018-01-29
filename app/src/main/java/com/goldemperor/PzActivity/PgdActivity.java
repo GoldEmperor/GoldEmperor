@@ -536,7 +536,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
     public void getData(final String StartTime, final String EndTime) {
         tv_tip.setText("数据载入中...");
         tv_showDate.setText("显示日期:" + StartTime + "到" + EndTime);
-        RequestParams params = new RequestParams(define.IP8341 + define.GetWorkCardInfo);
+        RequestParams params = new RequestParams(define.Net1 + define.GetWorkCardInfo);
         params.setReadTimeout(60000);
         params.setConnectTimeout(60000);
         params.addQueryStringParameter("FStartTime", StartTime);
@@ -624,7 +624,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
 
 
     public void getData(final String finters) {
-        RequestParams params = new RequestParams(define.IP8341 + define.GetWorkCardPlanNew);
+        RequestParams params = new RequestParams(define.Net1 + define.GetWorkCardPlanNew);
         params.setReadTimeout(60000);
         params.addQueryStringParameter("paramString", finters);
         Log.e("jindi", params.toString());
@@ -710,9 +710,9 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
     public void getSearchData(final String searchText) {
         tv_tip.setText("数据载入中...");
         tv_showDate.setText("显示日期:" + StartTime + "到" + EndTime);
-        RequestParams params = new RequestParams(define.IP8341 + define.GetPlanbyBillNumber);
+        RequestParams params = new RequestParams(define.Net2 + define.GetWorkCardInfoByMoNo);
         params.setReadTimeout(60000);
-        params.addQueryStringParameter("FPlanBill", searchText);
+        params.addQueryStringParameter("MoNo", searchText);
         params.addQueryStringParameter("suitID", define.suitID);
         //Log.e("jindi",params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
@@ -805,7 +805,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
     }
 
     public void getFDeptmentData() {
-        RequestParams params = new RequestParams(define.IP8341 + define.GetEmpByDeptID);
+        RequestParams params = new RequestParams(define.Net1 + define.GetEmpByDeptID);
         params.addQueryStringParameter("FDeptmentID", dataPref.getString(define.SharedFDeptmentid, ""));
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
@@ -834,7 +834,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
     }
 
     public void getDeptAll() {
-        RequestParams params = new RequestParams(define.IP8341 + define.GetDeptAll);
+        RequestParams params = new RequestParams(define.Net1 + define.GetDeptAll);
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(final String result) {

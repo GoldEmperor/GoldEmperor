@@ -406,6 +406,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="已汇报未计工数"
+                android:gravity="center"
                 android:textSize="20dp" />
 
             <TextView
@@ -413,6 +414,7 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="已计工数"
+                android:gravity="center"
                 android:textSize="20dp" />
         </LinearLayout>
     </com.goldemperor.Widget.ScrollListenerHorizontalScrollView>

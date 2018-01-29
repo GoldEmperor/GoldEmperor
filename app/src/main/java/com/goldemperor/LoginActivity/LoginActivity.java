@@ -320,7 +320,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void GetUserID(String EmpID){
-        RequestParams params = new RequestParams(define.IP8012+define.GetUserID);
+        RequestParams params = new RequestParams(define.Net2+define.GetUserID);
         params.addQueryStringParameter("FEmpID", EmpID);
 
         x.http().get(params, new Callback.CommonCallback<String>() {

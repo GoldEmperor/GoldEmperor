@@ -74,7 +74,7 @@ public class MaterialActivity extends AppCompatActivity {
     }
     public void getData() {
 
-        RequestParams params = new RequestParams(define.IP8341+define.GetWorkPlanMaterial);
+        RequestParams params = new RequestParams(define.Net1+define.GetWorkPlanMaterial);
         params.setReadTimeout(60000);
         params.addQueryStringParameter("FInterID", String.valueOf(finterid));
         Log.e("jindi",params.toString());

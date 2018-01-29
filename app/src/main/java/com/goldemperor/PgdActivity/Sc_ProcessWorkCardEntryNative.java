@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 
-public class Sc_ProcessWorkCardEntry implements Cloneable {
+public class Sc_ProcessWorkCardEntryNative implements Cloneable {
     private String fmtono;
 
     private Integer fpartsid;
@@ -81,19 +81,9 @@ public class Sc_ProcessWorkCardEntry implements Cloneable {
 
     private Integer fentryid;
 
-    private String jobNumber;
-
-    private String name;
-
-    public float reportNumber;
-
-    public boolean haveSave;
-
     private Integer fprocessflowid;
 
     private String fprocessingmethod;
-
-    private boolean isOpen;
 
     private Integer  fsourceentryfid;//源单分录自增长FID
 
@@ -105,7 +95,6 @@ public class Sc_ProcessWorkCardEntry implements Cloneable {
 
     private Integer  foperplanningentryid;//工序计划分路ID
 
-    private float  reportedqty;//工序计划分路ID
 
     private Long fid;
 
@@ -118,13 +107,6 @@ public class Sc_ProcessWorkCardEntry implements Cloneable {
         this.fid = fid;
     }
 
-    public void setReportedqty(float reportedqty) {
-        this.reportedqty = reportedqty;
-    }
-
-    public float getReportedqty() {
-        return reportedqty;
-    }
     public Integer getFsourceentryfid() {
         return fsourceentryfid;
     }
@@ -150,18 +132,9 @@ public class Sc_ProcessWorkCardEntry implements Cloneable {
     }
 
 
-    public Sc_ProcessWorkCardEntry(){
-        reportNumber=0f;
-        isOpen=true;
+    public Sc_ProcessWorkCardEntryNative(){
     }
 
-    public boolean getIsOpen() {
-        return isOpen;
-    }
-
-    public void setIsOpen(boolean isOpen) {
-        this.isOpen = isOpen;
-    }
 
     public Integer getFoperplanninginterid() {
         return foperplanninginterid;
@@ -193,42 +166,6 @@ public class Sc_ProcessWorkCardEntry implements Cloneable {
 
     public void setFprocessingmethod(String fprocessingmethod) {
         this.fprocessingmethod = fprocessingmethod;
-    }
-
-
-    public boolean getHaveSave() {
-        return haveSave;
-    }
-
-    public void setHaveSave(boolean haveSave) {
-        this.haveSave = haveSave;
-    }
-
-
-    public float getReportNumber() {
-        return reportNumber;
-    }
-
-    public void setReportNumber(float reportNumber) {
-        this.reportNumber = reportNumber;
-    }
-
-    public String getJobNumber() {
-        return jobNumber;
-    }
-
-    public void setJobNumber(String jobNumber) {
-        this.jobNumber = jobNumber;
-    }
-
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Long getFinterid() {
@@ -536,9 +473,9 @@ public class Sc_ProcessWorkCardEntry implements Cloneable {
     }
 
     public Object clone() {
-        Sc_ProcessWorkCardEntry o = null;
+        Sc_ProcessWorkCardEntryNative o = null;
         try {
-            o = (Sc_ProcessWorkCardEntry) super.clone();
+            o = (Sc_ProcessWorkCardEntryNative) super.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }

@@ -51,7 +51,7 @@ public class CheckVersionTask implements Runnable {
                 @Override
                 public void run() {
                     //从资源文件获取服务器update.xml地址
-                    String path = define.IP8020+define.UpdateXML;
+                    String path = define.Net3+define.UpdateXML;
                     //包装成url的对象
                     InputStream stream = HttpUtilHelper.GetInputStreamFromURL(path);
 //            StringBuilder sb= new StringBuilder("");

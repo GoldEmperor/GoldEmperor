@@ -13,6 +13,14 @@ public class define {
 
     public static String suitID="1";
 
+    public static String Net1=define.IP798341;
+
+    public static String Net2=define.IP798012;
+
+    public static String Net3=define.IP798020;
+
+    public static String Net4=define.IP798083;
+
     public static String IP1718881="http://220.189.245.171:8881/";
 
     public static String IP328030="http://59.56.103.32:8030/";
@@ -28,6 +36,9 @@ public class define {
     public static String IP1718083="http://220.189.245.171:8083/";
 
     public static String IP798056="http://192.168.99.79:8056/";
+
+    public static String IP799999="http://192.168.99.79:9999/";
+
 
     public static String IP798020="http://192.168.99.79:8020/";
 
@@ -90,7 +101,7 @@ public class define {
 
     public static final String GetDepartmentTwoByFnumber="getDepartmentTwoByFnumber";
 
-    public static final String GetCjProcessOutputEntry ="getCjProcessOutputEntry";
+    //public static final String GetCjProcessOutputEntry ="getCjProcessOutputEntry";
 
 
     public static final String SetCheckerId ="setCheckerId";
@@ -107,26 +118,29 @@ public class define {
 
     public static final String GetProcessWorkCardInfo = "ErpForAndroidStockServer.asmx/GetProcessWorkCardInfo";
 
+    public static final String GetWorkCardInfoByMoNo= "ErpForAndroidStockServer.asmx/GetWorkCardInfoByMoNo";
+
     public static final String InsertProcessWorkCardEntry = "ErpForAndroidStockServer.asmx/InsertProcessWorkCardEntry";
 
-
+    //public static final String InsertProcessWorkCardEntry ="wechatMvn/android/insertProcessPlanEntry.do";
 
     public static final String GetEmpByDeptID = "wechatMvn/mes/GetEmpByDeptID.do";
 
     public static final String GetEmpByFNumber = "wechatMvn/mes/GetEmpByFNumber.do";
 
-    public static final String InsertProcessPlanEntry = "wechatMvn/android/insertProcessPlanEntry.do";
+    //public static final String InsertProcessPlanEntry = "wechatMvn/android/insertProcessPlanEntry.do";
 
-    public static final String GetPlanbyBillNumber = "wechatMvn/android/getPlanbyBillNumber.do";
+    //public static final String GetPlanbyBillNumber = "wechatMvn/android/getPlanbyBillNumber.do";
 
     public static final String GetRouteEntryBody = "wechatMvn/android/getRouteEntryBody.do";
 
     public static final String GetWorkPlanMaterial = "wechatMvn/android/getWorkPlanMaterial.do";
 
-    public static final String GetWorkCardPlanNew = "wechatMvn/android/getWorkCardPlanNew.do";
-
     public static final String GetWorkCardProcessQty = "wechatMvn/android/getWorkCardProcessQty.do";
 
+    public static final String GetWorkCardPlanNew = "wechatMvn/android/getWorkCardPlanNew.do";
+
+    public static final String GetRouteEntryPic = "wechatMvn/android/getRouteEntryPic.do";
 
     public static final String UpdateXML = "AndroidUpdate/GoldEmperor/update.xml";
 
@@ -174,7 +188,6 @@ public class define {
 
     public static final String GetDayWorkCardPlanQtyBysuitID = "ErpForAndroidStockServer.asmx/GetDayWorkCardPlanQtyBysuitID";
 
-    public static final String GetRouteEntryPic = "wechatMvn/android/getRouteEntryPic.do";
 
 
     public static final String WorkCardAbnormityBysuitID = "ErpForAndroidStockServer.asmx/WorkCardAbnormityBysuitID";

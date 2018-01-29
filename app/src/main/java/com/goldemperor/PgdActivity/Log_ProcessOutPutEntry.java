@@ -16,6 +16,16 @@ public class Log_ProcessOutPutEntry {
 
     private BigDecimal fqty;//汇报数量
 
+    private boolean isOpen;
+
+    public boolean getIsOpen() {
+        return isOpen;
+    }
+
+    public void setIsOpen(boolean isOpen) {
+        this.isOpen = isOpen;
+    }
+
     public String getOutputdate() {
         return outputdate;
     }

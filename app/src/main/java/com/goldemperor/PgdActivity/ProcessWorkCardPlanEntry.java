@@ -142,6 +142,27 @@ public class ProcessWorkCardPlanEntry implements Cloneable{
 
     private Integer  foperplanningentryid;//工序计划分路ID
 
+    private float  reportedqty;//工序计划分路ID
+
+    private Long fid;
+
+
+    public Long getFid() {
+        return fid;
+    }
+
+    public void setFid(Long fid) {
+        this.fid = fid;
+    }
+
+    public void setReportedqty(float reportedqty) {
+        this.reportedqty = reportedqty;
+    }
+
+    public float getReportedqty() {
+        return reportedqty;
+    }
+
     public Integer getFsourceentryfid() {
         return fsourceentryfid;
     }

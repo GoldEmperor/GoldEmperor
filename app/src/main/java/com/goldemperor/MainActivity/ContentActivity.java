@@ -319,27 +319,22 @@ public class ContentActivity extends AppCompatActivity {
         netStatus = (TextView) findViewById(R.id.netStatus);
         netStatus.setText("当前网络:内网");
         define.isWaiNet = false;
-        define.IP8341 = define.IP798341;
-        define.IP8012 = define.IP798012;
-        //define.IP8341="http://192.168.99.79:9999/";
-        //define.IP8012="http://192.168.99.79:8056/";
+        define.Net1= define.IP798341;
+        define.Net2 = define.IP798012;
 
-        define.IP8020 = define.IP798020;
-        define.IP8083 = define.IP798083;
+        define.Net3 = define.IP798020;
+        define.Net4 = define.IP798083;
 
         waiBtn = (Button) findViewById(R.id.btn_wai);
         waiBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 define.isWaiNet = true;
-                define.IP8341 = define.IP1718341;
-                define.IP8012 = define.IP1718012;
+                define.Net1 = define.IP1718341;
+                define.Net2 = define.IP1718012;
 
-                //define.IP8341="http://192.168.99.79:9999/";
-                //define.IP8012="http://192.168.99.79:8056/";
-
-                define.IP8020 = define.IP1718020;
-                define.IP8083 = define.IP1718083;
+                define.Net3 = define.IP1718020;
+                define.Net4 = define.IP1718083;
                 UpdataAPK();
                 netStatus.setText("当前网络:外网");
             }
@@ -350,13 +345,11 @@ public class ContentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 define.isWaiNet = false;
-                define.IP8341 = define.IP798341;
-                define.IP8012 = define.IP798012;
-                //define.IP8341="http://192.168.99.79:9999/";
-                //define.IP8012="http://192.168.99.79:8056/";
+                define.Net1= define.IP798341;
+                define.Net2 = define.IP798012;
 
-                define.IP8020 = define.IP798020;
-                define.IP8083 = define.IP798083;
+                define.Net3 = define.IP798020;
+                define.Net4 = define.IP798083;
                 UpdataAPK();
                 netStatus.setText("当前网络:内网");
             }
@@ -366,11 +359,13 @@ public class ContentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 define.isWaiNet = false;
-                define.IP8341 = "http://192.168.99.79:9999/";
-                define.IP8012 = "http://192.168.99.79:8056/";
 
-                define.IP8020 = define.IP798020;
-                define.IP8083 = define.IP798083;
+                define.Net1= define.IP799999;
+                define.Net2=define.IP798056;
+
+                define.Net3 = define.IP798020;
+                define.Net4 = define.IP798083;
+
                 define.isCeNet = true;
 
                 UpdataAPK();
@@ -425,7 +420,7 @@ public class ContentActivity extends AppCompatActivity {
     }
 
     private void getControl(final String controlID) {
-        RequestParams params = new RequestParams(define.IP8012 + define.IsHaveControl);
+        RequestParams params = new RequestParams(define.Net2 + define.IsHaveControl);
         params.addQueryStringParameter("OrganizeID", "1");
         params.addQueryStringParameter("empID", dataPref.getString(define.SharedEmpId, define.NONE));
         params.addQueryStringParameter("controlID", controlID);

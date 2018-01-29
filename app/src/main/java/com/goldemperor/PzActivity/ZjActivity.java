@@ -163,7 +163,7 @@ public class ZjActivity extends AppCompatActivity {
         model.setEntry(entryModelList);
 
         Gson g = new Gson();
-        RequestParams params = new RequestParams(define.IP8012 + define.WorkCardAbnormityBysuitID);
+        RequestParams params = new RequestParams(define.Net2 + define.WorkCardAbnormityBysuitID);
         params.addQueryStringParameter("json", g.toJson(model, WorkCardAbnormityModel.class));
         params.addQueryStringParameter("suitID", define.suitID);
         Log.e("jindi", params.toString());

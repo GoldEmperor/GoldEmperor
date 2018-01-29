@@ -107,9 +107,9 @@ public class Sc_ProcessOutPutEntry {
 
     private Integer froutingid;//路线ID
 
-    public int FNewWorkCardInterID;
+    public int fnewworkcardinterid;
 
-    public int FNewWorkCardEntryID;
+    public int fnewworkcardentryid;
 
     private Integer fprocessflowid;
 
@@ -124,6 +124,9 @@ public class Sc_ProcessOutPutEntry {
     private Integer  frouteentryfid;//工艺路线分录自增长FID
 
     private Integer  foperplanningentryfid;//工序计划分录自增长FID
+
+    private Integer  fnewworkcardentryfid;//工序计划分录自增长FID
+
 
     public Integer getFsourceentryfid() {
         return fsourceentryfid;
@@ -181,20 +184,28 @@ public class Sc_ProcessOutPutEntry {
         this.fprocessingmethod = fprocessingmethod;
     }
 
-    public int getFNewWorkCardInterID() {
-        return FNewWorkCardInterID;
+    public int getFnewworkcardinterid() {
+        return fnewworkcardinterid;
     }
 
-    public void setFNewWorkCardInterID(Integer FNewWorkCardInterID) {
-        this.FNewWorkCardInterID = FNewWorkCardInterID;
+    public void setFnewworkcardinterid(Integer fnewworkcardInterid) {
+        this.fnewworkcardinterid = fnewworkcardInterid;
     }
 
-    public int getFNewWorkCardEntryID() {
-        return FNewWorkCardEntryID;
+    public int getFnewworkcardentryid() {
+        return fnewworkcardentryid;
     }
 
-    public void setFNewWorkCardEntryID(int FNewWorkCardEntryID) {
-        this.FNewWorkCardEntryID = FNewWorkCardEntryID;
+    public void setFnewworkcardentryid(int fnewworkcardentryid) {
+        this.fnewworkcardentryid = fnewworkcardentryid;
+    }
+
+    public int getFnewworkcardentryfid() {
+        return fnewworkcardentryfid;
+    }
+
+    public void setFnewworkcardentryfid(int fnewworkcardentryfid) {
+        this.fnewworkcardentryfid = fnewworkcardentryfid;
     }
 
     public Integer getFinterid() {

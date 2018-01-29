@@ -238,7 +238,7 @@ public class YCListActivity extends AppCompatActivity implements ScrollListenerH
     };
 
     public void ReCheckAbnormity(String finterid,String textString) {
-        RequestParams params = new RequestParams(define.IP8341 + define.ReCheckAbnormity);
+        RequestParams params = new RequestParams(define.Net1 + define.ReCheckAbnormity);
         params.addQueryStringParameter("FInterID", finterid);
         params.addQueryStringParameter("textString", textString);
         Log.e("jindi",params.toString());
@@ -273,7 +273,7 @@ public class YCListActivity extends AppCompatActivity implements ScrollListenerH
     }
 
     public void DeleteByFInterID(String finterid) {
-        RequestParams params = new RequestParams(define.IP8341 + define.DeleteByFInterID);
+        RequestParams params = new RequestParams(define.Net1 + define.DeleteByFInterID);
         params.addQueryStringParameter("FInterID", finterid);
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
@@ -323,7 +323,7 @@ public class YCListActivity extends AppCompatActivity implements ScrollListenerH
         tv_tip.setVisibility(View.VISIBLE);
         Sc_WorkCardAbnormityList.clear();
         nameList.clear();
-        RequestParams params = new RequestParams(define.IP8341 + define.GetWorkCardAbnormity);
+        RequestParams params = new RequestParams(define.Net1 + define.GetWorkCardAbnormity);
         params.addQueryStringParameter("FInterID", String.valueOf(selectWorkCardPlan.getFinterid()));
         Log.e("jindi", params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
@@ -406,7 +406,7 @@ public class YCListActivity extends AppCompatActivity implements ScrollListenerH
     }
 
     public void GetUserID(final int position) {
-        RequestParams params = new RequestParams(define.IP8012 + define.GetUserID);
+        RequestParams params = new RequestParams(define.Net2 + define.GetUserID);
         params.addQueryStringParameter("FEmpID", String.valueOf(Sc_WorkCardAbnormityList.get(position).getFempID()));
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
@@ -458,10 +458,10 @@ public class YCListActivity extends AppCompatActivity implements ScrollListenerH
 
         RequestParams params;
         if (selectWorkCardPlan.getFgroup().contains("针车")) {
-            params = new RequestParams(define.IP8341 + define.GetAbnormityByName);
+            params = new RequestParams(define.Net1 + define.GetAbnormityByName);
             params.addQueryStringParameter("FName", "针车");
         } else {
-            params = new RequestParams(define.IP8341 + define.GetAbnormityByID);
+            params = new RequestParams(define.Net1 + define.GetAbnormityByID);
             params.addQueryStringParameter("paramString", "39,40,41,42,43");
         }
         x.http().get(params, new Callback.CommonCallback<String>() {

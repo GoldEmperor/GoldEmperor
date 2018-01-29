@@ -202,7 +202,7 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
         }
 
         private void getUserInfo(String FNumber) {
-            RequestParams params = new RequestParams(define.IP8341 + define.GetEmpByFNumber);
+            RequestParams params = new RequestParams(define.Net1 + define.GetEmpByFNumber);
             params.addQueryStringParameter("FNumber", FNumber);
             x.http().get(params, new Callback.CommonCallback<String>() {
                 @Override
@@ -257,13 +257,14 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                 }
             });
      */
-            if (gxpgActivity.readyRecordCount!=null&&gxpgActivity.readyRecordCount.get(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFprocessnumber() + String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFempid()))!=null) {
-                tv_readyRecordCount.setText(String.valueOf(gxpgActivity.readyRecordCount.get(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFprocessnumber() + String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFempid())).intValue()));
+            //if (gxpgActivity.readyRecordCount!=null&&gxpgActivity.readyRecordCount.get(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFprocessnumber() + String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFempid()))!=null) {
+                //tv_readyRecordCount.setText(String.valueOf(gxpgActivity.readyRecordCount.get(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFprocessnumber() + String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFempid())).intValue()));
                 //Log.e("jindi",""+ gxpgActivity.readyRecordCount.get(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFprocessnumber() + String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFempid())));
-            }
-            else{
-                tv_readyRecordCount.setText("0");
-            }
+            //}
+            //else{
+              //  tv_readyRecordCount.setText("0");
+            //}
+            tv_readyRecordCount.setText(String.valueOf((int)gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getReportedqty()));
             if (getAdapterPosition() < gxpgActivity.sc_ProcessWorkCardEntryList.size()) {
 
                 tv_noReportednumber.setText(String.valueOf((int) gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getReportNumber()));
@@ -395,8 +396,10 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
             }
             if (!gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getIsOpen()) {
                 ScrollView.setBackgroundColor(Color.parseColor("#C0C0C0"));
+                tv_noReportednumber.setBackgroundColor(Color.parseColor("#C0C0C0"));
             } else {
                 ScrollView.setBackgroundColor(Color.parseColor("#ffffff"));
+                tv_noReportednumber.setBackgroundColor(Color.parseColor("#FFF68F"));
             }
             ScrollView.scrollTo(GxpgActivity.mScrollX, ScrollView.getScrollY());
         }

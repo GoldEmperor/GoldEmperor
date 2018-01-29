@@ -190,7 +190,7 @@ public class SPListActivity extends AppCompatActivity {
     }
 
     public void GetUserID(final long finterid) {
-        RequestParams params = new RequestParams(define.IP8012 + define.GetUserID);
+        RequestParams params = new RequestParams(define.Net2 + define.GetUserID);
         params.addQueryStringParameter("FEmpID", dataPref.getString(define.SharedEmpId, "0"));
         params.setConnectTimeout(6000);
         params.setReadTimeout(6000);

@@ -53,6 +53,7 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import org.xutils.DbManager;
 import org.xutils.common.Callback;
 import org.xutils.common.util.LogUtil;
+import org.xutils.db.sqlite.WhereBuilder;
 import org.xutils.db.table.TableEntity;
 import org.xutils.ex.DbException;
 import org.xutils.http.RequestParams;
@@ -169,7 +170,8 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         pgdWorkCardPlan = new ArrayList<WorkCardPlan>();
         showWorkCardPlan = new ArrayList<WorkCardPlan>();
 
-        defaultGetData(StartTime, EndTime);
+        getFDeptmentData();
+
 
         mMenuRecyclerView = (SwipeMenuRecyclerView) findViewById(R.id.recycler_view);
         mMenuRecyclerView.setLayoutManager(new LinearLayoutManager(this));// 布局管理器。
@@ -331,7 +333,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
             }
         });
 
-        getFDeptmentData();
+
 
     }
 
@@ -394,7 +396,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                DeleteScProcessWorkCard(showWorkCardPlan.get(adapterPosition).getFinterid());
+                                DeleteScProcessWorkCard(showWorkCardPlan.get(adapterPosition));
                             }
                         });
                 normalDialog.setNegativeButton("取消",
@@ -415,9 +417,9 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
     };
 
 
-    public void DeleteScProcessWorkCard(final long FWorkCardID) {
-        RequestParams params = new RequestParams(define.IP8012 + define.DeleteScProcessWorkCard);
-        params.addQueryStringParameter("FWorkCardID", String.valueOf(FWorkCardID));
+    public void DeleteScProcessWorkCard(final WorkCardPlan wp) {
+        RequestParams params = new RequestParams(define.Net2 + define.DeleteScProcessWorkCard);
+        params.addQueryStringParameter("FWorkCardID", String.valueOf(wp.getFinterid()));
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -428,7 +430,16 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 }
                 Log.e("jindi", result);
                 if (result.contains("删除成功")) {
-                    Toast.makeText(mContext, "删除下游工序成功", Toast.LENGTH_LONG).show();
+                    try {
+                        WhereBuilder b = WhereBuilder.b();
+                        b.and("orderbill", "=", wp.getOrderbill());
+                        b.and("planbill", " = ", wp.getPlanbill());
+                        dbManager.delete(GxpgPlanStatus.class, b);
+                        Toast.makeText(mContext, "删除下游工序成功", Toast.LENGTH_LONG).show();
+                    } catch (DbException e) {
+                        e.printStackTrace();
+                    }
+
                 } else {
                     Toast.makeText(mContext, "删除下游工序失败，下游的工序派工单已有对应的工序汇报单", Toast.LENGTH_LONG).show();
                 }
@@ -521,16 +532,18 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         return new Pair<>(displayOptions != 0 ? Boolean.TRUE : Boolean.FALSE, options);
     }
 
+    //根据时间按钮显示，会显示全部包括已经汇报完成的单子
     public void getData(final String StartTime, final String EndTime) {
         tv_tip.setText("数据载入中...");
         tv_showDate.setText("显示日期:" + StartTime + "到" + EndTime);
-        RequestParams params = new RequestParams(define.IP798056 + define.GetWorkCardInfo);
+        //RequestParams params = new RequestParams(define.IP798341 + define.GetPlanbyTime);
+        RequestParams params = new RequestParams(define.Net2 + define.GetWorkCardInfo);
         params.setReadTimeout(60000);
         params.setConnectTimeout(60000);
         params.addQueryStringParameter("FStartTime", StartTime);
         params.addQueryStringParameter("EndTime", EndTime);
         params.addQueryStringParameter("FDeptID", dataPref.getString(define.SharedFDeptmentid, "none"));
-        Log.e("jindi", params.toString());
+        Log.e("jindi", "GetPlanbyTime:" + params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -539,9 +552,11 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
+                //Utils.e("jindi", result);
                 result = "{\"data\":" + result.substring(result.indexOf("[{"), result.indexOf("}]")) + "}]}";
                 Utils.e("jindi", result);
 
+                //Log.e("jindi", result);
                 pgdWorkCardPlan.clear();
                 showWorkCardPlan.clear();
                 currentPosition = 0;
@@ -551,6 +566,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 PgdResult pgds = g.fromJson(result, PgdResult.class);
                 if (pgds.getData() != null) {
                     for (int i = 0; i < pgds.getData().size(); i++) {
+                        //Log.e("jindi","deptid:"+pgds.getData().get(i).getFdeptid()+" Deptmentid:"+dataPref.getString(define.SharedFDeptmentid,"none"));
                         if ((!filter.contains(pgds.getData().get(i).getPlanbill()) || !filter.contains(pgds.getData().get(i).getOrderbill()) && pgds.getData().get(i).getOrderbill().indexOf("J") != 0) && String.valueOf(pgds.getData().get(i).getFdeptid()).equals(dataPref.getString(define.SharedFDeptmentid, "none"))) {
                             filter.add(pgds.getData().get(i).getPlanbill());
                             filter.add(pgds.getData().get(i).getOrderbill());
@@ -559,8 +575,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                             int noNumberCount = 0;
                             for (int j = 0; j < pgds.getData().size(); j++) {
                                 if (pgds.getData().get(j).getPlanbill().equals(pgds.getData().get(i).getPlanbill()) && pgds.getData().get(j).getOrderbill().equals(pgds.getData().get(i).getOrderbill())) {
-
-
                                     String[][] s = new String[1][2];
                                     s[0][0] = pgds.getData().get(j).getFsize();
                                     s[0][1] = String.valueOf(pgds.getData().get(j).getDispatchingnumber().intValue());
@@ -590,6 +604,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                                 pgdWorkCardPlan.add(pgds.getData().get(i));
                             }
 
+
                         }
                     }
                     if (pgdWorkCardPlan.size() == 0) {
@@ -610,7 +625,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
             public void onError(Throwable ex, boolean isOnCallback) {
                 Log.e("jindi", ex.toString());
                 tv_tip.setVisibility(View.VISIBLE);
-                tv_tip.setText("数据载入失败,请检查网络:" + ex.toString());
+                tv_tip.setText("数据载入失败,请检查网络");
             }
 
             //主动调用取消请求的回调方法
@@ -624,12 +639,12 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         });
 
     }
-
+    //默认显示，不显示全部，排除已经汇报完成的单子
     public void defaultGetData(final String StartTime, final String EndTime) {
         tv_tip.setText("数据载入中...");
         tv_showDate.setText("显示日期:" + StartTime + "到" + EndTime);
         //RequestParams params = new RequestParams(define.IP798341 + define.GetPlanbyTime);
-        RequestParams params = new RequestParams(define.IP798056 + define.GetWorkCardInfo);
+        RequestParams params = new RequestParams(define.Net2 + define.GetWorkCardInfo);
         params.setReadTimeout(60000);
         params.setConnectTimeout(60000);
         params.addQueryStringParameter("FStartTime", StartTime);
@@ -644,6 +659,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
+                //Utils.e("jindi", result);
                 result = "{\"data\":" + result.substring(result.indexOf("[{"), result.indexOf("}]")) + "}]}";
                 Utils.e("jindi", result);
 
@@ -716,7 +732,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
             public void onError(Throwable ex, boolean isOnCallback) {
                 Log.e("jindi", ex.toString());
                 tv_tip.setVisibility(View.VISIBLE);
-                tv_tip.setText("数据载入失败,请检查网络:" + ex.toString());
+                tv_tip.setText("数据载入失败,请检查网络");
             }
 
             //主动调用取消请求的回调方法
@@ -735,14 +751,23 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
     public void getSearchData(final String searchText) {
         tv_tip.setText("数据载入中...");
         tv_showDate.setText("显示日期:" + StartTime + "到" + EndTime);
-        RequestParams params = new RequestParams(define.IP8341 + define.GetPlanbyBillNumber);
+        RequestParams params = new RequestParams(define.Net2 + define.GetWorkCardInfoByMoNo);
         params.setReadTimeout(60000);
-        params.addQueryStringParameter("FPlanBill", searchText);
+        params.addQueryStringParameter("MoNo", searchText.toUpperCase());
         params.addQueryStringParameter("suitID", define.suitID);
-        //Log.e("jindi",params.toString());
+        Log.e("jindi", params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
-            public void onSuccess(final String result) {
+            public void onSuccess(String result) {
+                try {
+                    result = URLDecoder.decode(result, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                //Utils.e("jindi", result);
+                result = "{\"data\":" + result.substring(result.indexOf("[{"), result.indexOf("}]")) + "}]}";
+                Utils.e("jindi", result);
+
                 pgdWorkCardPlan.clear();
                 showWorkCardPlan.clear();
                 currentPosition = 0;
@@ -781,7 +806,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
             public void onError(Throwable ex, boolean isOnCallback) {
                 Log.e("jindi", ex.toString());
                 tv_tip.setVisibility(View.VISIBLE);
-                tv_tip.setText("数据载入失败,请检查网络:" + ex.toString());
+                tv_tip.setText("数据载入失败,请检查网络");
             }
 
             //主动调用取消请求的回调方法
@@ -826,13 +851,16 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
     }
 
     public void getFDeptmentData() {
-        RequestParams params = new RequestParams(define.IP8341 + define.GetEmpByDeptID);
+        RequestParams params = new RequestParams(define.Net1 + define.GetEmpByDeptID);
         params.addQueryStringParameter("FDeptmentID", dataPref.getString(define.SharedFDeptmentid, ""));
-        x.http().post(params, new Callback.CommonCallback<String>() {
+        Log.e("jindi",params.toString());
+        x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(final String result) {
+                Log.e("jindi", "getFDeptmentData:"+result);
                 Gson g = new Gson();
                 nameListResult = g.fromJson(result, NameListResult.class);
+                defaultGetData(StartTime, EndTime);
             }
 
             //请求异常后的回调方法
@@ -840,7 +868,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
             public void onError(Throwable ex, boolean isOnCallback) {
                 Log.e("jindi", ex.toString());
                 tv_tip.setVisibility(View.VISIBLE);
-                tv_tip.setText("数据载入失败,请检查网络:" + ex.toString());
+                tv_tip.setText("数据载入失败,请检查网络");
             }
 
             //主动调用取消请求的回调方法
@@ -855,7 +883,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
     }
 
     public void GetUserID(final int position) {
-        RequestParams params = new RequestParams(define.IP8012 + define.GetUserID);
+        RequestParams params = new RequestParams(define.Net2 + define.GetUserID);
         params.addQueryStringParameter("FEmpID", dataPref.getString(define.SharedEmpId, "0"));
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
@@ -906,7 +934,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
             pushJsonCondition.setFSize(String.valueOf(showWorkCardPlan.get(position).getSizeList().get(i)[0][0]));
             pushJsonConditionList.add(pushJsonCondition);
         }
-        RequestParams params = new RequestParams(define.IP8012 + define.SCWorkCard2SCProcessWorkCardBysuitID);
+        RequestParams params = new RequestParams(define.Net2 + define.SCWorkCard2SCProcessWorkCardBysuitID);
         params.addParameter("PushJsonCondition", g.toJson(pushJsonConditionList));
         params.addParameter("OrganizeID", dataPref.getString(define.SharedFOrganizeid, "1"));
         params.addParameter("BillTypeID", "3");
