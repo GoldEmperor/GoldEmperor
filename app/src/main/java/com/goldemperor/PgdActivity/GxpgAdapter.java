@@ -139,6 +139,8 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
         TextView tv_readyRecordCount;
         TextView tv_noReportednumber;
 
+        TextView tv_mustQty;
+
         String[][] nameList;
         public ScrollListenerHorizontalScrollView ScrollView;
 
@@ -157,6 +159,8 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
             //tv_havedispatchingnumber = (TextView) itemView.findViewById(R.id.tv_havedispatchingnumber);
             tv_readyRecordCount = (TextView) itemView.findViewById(R.id.tv_readyRecordCount);
             tv_noReportednumber = (TextView) itemView.findViewById(R.id.tv_noReportednumber);
+
+            tv_mustQty = (TextView) itemView.findViewById(R.id.tv_mustQty);
 
             this.nameList = nameList;
 
@@ -264,6 +268,7 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
             //else{
               //  tv_readyRecordCount.setText("0");
             //}
+            tv_mustQty.setText(String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFmustqty().intValue()));
             tv_readyRecordCount.setText(String.valueOf((int)gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getReportedqty()));
             if (getAdapterPosition() < gxpgActivity.sc_ProcessWorkCardEntryList.size()) {
 

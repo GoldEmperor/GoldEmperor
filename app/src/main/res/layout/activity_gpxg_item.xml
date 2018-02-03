@@ -67,7 +67,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="170dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:gravity="center_vertical"
@@ -75,7 +75,7 @@
 
                 <com.beardedhen.androidbootstrap.BootstrapDropDown
                     android:id="@+id/XLarge"
-                    android:layout_width="140dp"
+                    android:layout_width="130dp"
                     android:layout_height="wrap_content"
                     app:bootstrapBrand="warning"
                     app:bootstrapExpandDirection="down"
@@ -85,9 +85,18 @@
                     app:roundedCorners="true" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tv_mustQty"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="工序数量"
+                android:textSize="20dp"
+                android:layout_marginRight="20dp"/>
+
             <EditText
                 android:id="@+id/edit_dispatchingnumber"
-                android:layout_width="100dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:hint="预排数量"
                 android:textSize="20dp" />

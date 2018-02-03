@@ -114,7 +114,7 @@ public class define {
     public static final String WechatPostByFEmpID = IP328030+"api/MessagePost/WechatPostByFEmpID";
 
 
-    public static final String GetWorkCardInfo = "ErpForAndroidStockServer.asmx/GetWorkCardInfo";
+    public static final String GetWorkCardInfoNew = "ErpForAndroidStockServer.asmx/GetWorkCardInfoNew";
 
     public static final String GetProcessWorkCardInfo = "ErpForAndroidStockServer.asmx/GetProcessWorkCardInfo";
 
@@ -122,7 +122,7 @@ public class define {
 
     public static final String InsertProcessWorkCardEntry = "ErpForAndroidStockServer.asmx/InsertProcessWorkCardEntry";
 
-    //public static final String InsertProcessWorkCardEntry ="wechatMvn/android/insertProcessPlanEntry.do";
+    public static final String SetWorkCardCloseStatus ="ErpForAndroidStockServer.asmx/SetWorkCardCloseStatus";
 
     public static final String GetEmpByDeptID = "wechatMvn/mes/GetEmpByDeptID.do";
 
@@ -161,6 +161,8 @@ public class define {
 
     public static final String DeleteScProcessWorkCard = "ErpForAndroidStockServer.asmx/DeleteScProcessWorkCard";
 
+
+    public static final String DeleteProcessWorkCardEntryByFID = "ErpForAndroidStockServer.asmx/DeleteProcessWorkCardEntryByFID";
 
     public static final String SCWorkCard2SCProcessWorkCardBysuitID = "ErpForAndroidStockServer.asmx/SCWorkCard2SCProcessWorkCardBysuitID";
 

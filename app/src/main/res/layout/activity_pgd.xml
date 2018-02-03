@@ -142,6 +142,20 @@
                 fancy:fb_text="委外(未选)"
                 fancy:fb_textColor="#FFFFFF" />
 
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/btn_isClose"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:padding="10dp"
+                fancy:fb_borderColor="#FFFFFF"
+                fancy:fb_borderWidth="1dp"
+                fancy:fb_defaultColor="#FF0000"
+                fancy:fb_focusColor="#5577bd"
+                fancy:fb_radius="10dp"
+                fancy:fb_text="不显示已关闭单子(已选)"
+                fancy:fb_textColor="#FFFFFF" />
+
         </LinearLayout>
     </HorizontalScrollView>
 

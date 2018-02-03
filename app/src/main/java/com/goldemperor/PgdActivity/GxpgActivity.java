@@ -584,50 +584,6 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         Log.e("jindi", selectWorkCardPlan.getFinterid().toString());
     }
 
-    /*
-    public void getCjProcessOutputEntry() {
-        RequestParams params = new RequestParams(define.IP798881 + define.GetCjProcessOutputEntry);
-        params.setReadTimeout(60000);
-        params.addQueryStringParameter("fnewworkcardinterid", selectWorkCardPlan.getFinterid().toString());
-        Log.e("jindi", params.toString());
-        x.http().get(params, new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(final String result) {
-
-
-                for (int i = 0; i < sc_ProcessWorkCardEntryList.size(); i++) {
-                    readyRecordCount.put(sc_ProcessWorkCardEntryList.get(i).getFprocessnumber() + String.valueOf(sc_ProcessWorkCardEntryList.get(i).getFempid()), 0f);
-                }
-                if (!result.equals(null) && result.length() > 0) {
-                    OutputList = GsonFactory.jsonToArrayList(result, cj_processoutputentry.class);
-                    for (int i = 0; i < OutputList.size(); i++) {
-                        readyRecordCount.put(OutputList.get(i).getFprocessnumber() + String.valueOf(OutputList.get(i).getFempid()), OutputList.get(i).getFqty());
-                    }
-                }
-
-
-            }
-
-            //请求异常后的回调方法
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                Log.e("jindi", ex.toString());
-                for (int i = 0; i < sc_ProcessWorkCardEntryList.size(); i++) {
-                    readyRecordCount.put(sc_ProcessWorkCardEntryList.get(i).getFprocessnumber() + String.valueOf(sc_ProcessWorkCardEntryList.get(i).getFempid()), 0f);
-                }
-            }
-
-            //主动调用取消请求的回调方法
-            @Override
-            public void onCancelled(CancelledException cex) {
-            }
-
-            @Override
-            public void onFinished() {
-            }
-        });
-    }
-*/
     public void getData(int finterid,final boolean useGxpgPlanReportNumberSave) {
         tv_tip.setVisibility(View.VISIBLE);
         tv_tip.setText("数据载入中...");
@@ -787,6 +743,39 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 Log.e("jindi", ex.toString());
                 tv_tip.setVisibility(View.VISIBLE);
                 tv_tip.setText("数据载入失败2:" + ex.toString());
+            }
+
+            //主动调用取消请求的回调方法
+            @Override
+            public void onCancelled(CancelledException cex) {
+            }
+
+            @Override
+            public void onFinished() {
+            }
+        });
+    }
+
+
+    public void DeleteProcessWorkCardEntryByFID(long fid) {
+        RequestParams params = new RequestParams(define.Net2 + define.DeleteProcessWorkCardEntryByFID);
+        params.addQueryStringParameter("FID", String.valueOf(fid));
+        Log.e("jindi","DeleteProcessWorkCardEntryByFID:"+params.toString());
+        x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    result = URLDecoder.decode(result, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                Log.e("jindi",result);
+            }
+
+            //请求异常后的回调方法
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                btn_instructor.setEnabled(true);
             }
 
             //主动调用取消请求的回调方法
@@ -1649,8 +1638,12 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                                     //if(sc_ProcessWorkCardEntryList.get(adapterPosition).getHaveSave()) {
                                     //Toast.makeText(mContext,"本道工序已保存到预排,无法删除",Toast.LENGTH_LONG).show();
                                     //}else{
+                                    if(sc_ProcessWorkCardEntryList.get(adapterPosition).getFid()>0){
+                                        DeleteProcessWorkCardEntryByFID(sc_ProcessWorkCardEntryList.get(adapterPosition).getFid());
+                                    }
                                     processWorkCardPlanEntryList.remove(adapterPosition);
                                     sc_ProcessWorkCardEntryList.remove(adapterPosition);
+
                                     mMenuAdapter.notifyItemRemoved(adapterPosition);
                                     //}
                                 }

@@ -101,12 +101,14 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
 
     private FancyButton btn_noReport;
 
+    private FancyButton btn_isClose;
+
     private boolean isWeiWai = false;
+
+    private boolean isClose=true;
+
     private String StartTime;
     private String EndTime;
-
-    private int loadmoreLimit = 40;
-    private int currentPosition = 0;
 
     public ScrollListenerHorizontalScrollView ScrollView;
 
@@ -114,7 +116,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
 
     private DbManager dbManager;
 
-    private String WorkcardFinteridByFCanReportByNoStockInList = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,9 +151,8 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         headerView.setTextColor(0xff745D5C);
 //        TextHeaderView headerView = (TextHeaderView) View.inflate(this,R.layout.header_tv,null);
         refreshLayout.setHeaderView(headerView);
+        refreshLayout.setEnableLoadmore(false);
 
-        LoadingView loadingView = new LoadingView(this);
-        refreshLayout.setBottomView(loadingView);
 
         refreshLayout.setOverScrollRefreshShow(true);
         refreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
@@ -164,14 +164,14 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
 
             @Override
             public void onLoadMore(final TwinklingRefreshLayout refreshLayout) {
-                LoadMore();
+
             }
         });
         pgdWorkCardPlan = new ArrayList<WorkCardPlan>();
         showWorkCardPlan = new ArrayList<WorkCardPlan>();
 
         getFDeptmentData();
-
+        GetUserID();
 
         mMenuRecyclerView = (SwipeMenuRecyclerView) findViewById(R.id.recycler_view);
         mMenuRecyclerView.setLayoutManager(new LinearLayoutManager(this));// 布局管理器。
@@ -206,6 +206,26 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 getData(StartTime, EndTime);
             }
         });
+        btn_isClose = (FancyButton) findViewById(R.id.btn_isClose);
+        btn_isClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isClose) {
+                    isClose = false;
+                    btn_isClose.setText("不显示已关闭单子(未选)");
+                    btn_isClose.setBackgroundColor(getResources().getColor(R.color.Blue));
+                } else {
+                    isClose = true;
+                    btn_isClose.setText("不显示已关闭单子(已选)");
+                    btn_isClose.setBackgroundColor(getResources().getColor(R.color.red));
+                }
+                tv_tip.setVisibility(View.VISIBLE);
+                StartTime = Utils.getCurrentYear() + "-" + Utils.getCurrentMonth() + "-" + "01";
+                EndTime = Utils.getCurrentTime();
+                getData(StartTime, EndTime);
+            }
+        });
+
 
         btn_noReport = (FancyButton) findViewById(R.id.btn_noReport);
 
@@ -215,7 +235,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 StartTime = Utils.getCurrentYear() + "-" + Utils.getCurrentMonth() + "-" + "01";
                 EndTime = Utils.getCurrentTime();
                 tv_tip.setVisibility(View.VISIBLE);
-                defaultGetData(StartTime, EndTime);
+                getData(StartTime, EndTime);
 
             }
         });
@@ -334,7 +354,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         });
 
 
-
     }
 
     /**
@@ -361,6 +380,28 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
 
             }
 
+            // 添加左侧的，如果不添加，则左侧不会出现菜单。
+            {
+                SwipeMenuItem addItem = new SwipeMenuItem(mContext)
+                        .setBackgroundDrawable(R.drawable.selector_red)
+                        .setImage(R.mipmap.ic_action_close)
+                        .setText("关闭")
+                        .setTextColor(Color.WHITE)
+                        .setWidth(width)
+                        .setHeight(height);
+                swipeLeftMenu.addMenuItem(addItem); // 添加一个按钮到左侧菜单。
+
+                SwipeMenuItem addItem2 = new SwipeMenuItem(mContext)
+                        .setBackgroundDrawable(R.drawable.selector_purple)
+                        .setImage(R.mipmap.ic_action_add)
+                        .setText("开启")
+                        .setTextColor(Color.WHITE)
+                        .setWidth(width)
+                        .setHeight(height);
+                swipeLeftMenu.addMenuItem(addItem2); // 添加一个按钮到左侧菜单。
+
+            }
+
         }
     };
 
@@ -380,39 +421,44 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         public void onItemClick(Closeable closeable, final int adapterPosition, int menuPosition, int direction) {
 
             if (direction == SwipeMenuRecyclerView.RIGHT_DIRECTION) {
-                //Toast.makeText(mContext, "list第" + adapterPosition + "; 右侧菜单第" + menuPosition, Toast.LENGTH_SHORT).show();
+                // TODO 如果是删除：推荐调用Adapter.notifyItemRemoved(position)，不推荐Adapter.notifyDataSetChanged();
+                if (menuPosition == 0) {// 处理按钮被点击。
+
+                    final AlertDialog.Builder normalDialog =
+                            new AlertDialog.Builder(act);
+                    normalDialog.setTitle("提示");
+                    normalDialog.setMessage("你确定要删除下游工序，删除后不可恢复");
+                    normalDialog.setPositiveButton("确定",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    DeleteScProcessWorkCard(showWorkCardPlan.get(adapterPosition));
+                                }
+                            });
+                    normalDialog.setNegativeButton("取消",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                    normalDialog.show();
+
+                } else if (menuPosition == 1) {
+                }
+                closeable.smoothCloseMenu();// 关闭被点击的菜单。
             } else if (direction == SwipeMenuRecyclerView.LEFT_DIRECTION) {
-                //Toast.makeText(mContext, "list第" + adapterPosition + "; 左侧菜单第" + menuPosition, Toast.LENGTH_SHORT).show();
+
+                if (menuPosition == 0) {// 处理按钮被点击。
+                    SetWorkCardCloseStatus(showWorkCardPlan.get(adapterPosition).getOrderbill(),dataPref.getString(define.SharedUserId,""),"true");
+                } else if (menuPosition == 1) {
+                    SetWorkCardCloseStatus(showWorkCardPlan.get(adapterPosition).getOrderbill(),dataPref.getString(define.SharedUserId,""),"false");
+                }
+                closeable.smoothCloseMenu();// 关闭被点击的菜单。
             }
 
-            // TODO 如果是删除：推荐调用Adapter.notifyItemRemoved(position)，不推荐Adapter.notifyDataSetChanged();
-            if (menuPosition == 0) {// 处理按钮被点击。
 
-                final AlertDialog.Builder normalDialog =
-                        new AlertDialog.Builder(act);
-                normalDialog.setTitle("提示");
-                normalDialog.setMessage("你确定要删除下游工序，删除后不可恢复");
-                normalDialog.setPositiveButton("确定",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                DeleteScProcessWorkCard(showWorkCardPlan.get(adapterPosition));
-                            }
-                        });
-                normalDialog.setNegativeButton("取消",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-
-                normalDialog.show();
-
-            } else if (menuPosition == 1) {
-
-            }
-            closeable.smoothCloseMenu();// 关闭被点击的菜单。
         }
     };
 
@@ -451,6 +497,43 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
             public void onError(Throwable ex, boolean isOnCallback) {
                 Log.e("jindi", ex.toString());
                 Toast.makeText(mContext, "删除下游工序失败", Toast.LENGTH_LONG).show();
+            }
+
+            //主动调用取消请求的回调方法
+            @Override
+            public void onCancelled(CancelledException cex) {
+            }
+
+            @Override
+            public void onFinished() {
+            }
+        });
+
+    }
+
+    public void  SetWorkCardCloseStatus(String FNumber, String FUserID, String CloseStatus) {
+        RequestParams params = new RequestParams(define.Net2 + define.SetWorkCardCloseStatus);
+        params.addQueryStringParameter("FNumber", FNumber);
+        params.addQueryStringParameter("FUserID", FUserID);
+        params.addQueryStringParameter("CloseStatus", CloseStatus);
+        Log.e("jindi",params.toString());
+        x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    result = URLDecoder.decode(result, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                Log.e("jindi", result);
+                String msg=result.substring(result.indexOf("\"ReturnMsg\":\""),result.indexOf("\",\"ReturnType\"")).replaceFirst("\"ReturnMsg\":\"","");
+                Toast.makeText(mContext,msg,Toast.LENGTH_LONG).show();
+            }
+
+            //请求异常后的回调方法
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Log.e("jindi", ex.toString());
             }
 
             //主动调用取消请求的回调方法
@@ -537,12 +620,17 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         tv_tip.setText("数据载入中...");
         tv_showDate.setText("显示日期:" + StartTime + "到" + EndTime);
         //RequestParams params = new RequestParams(define.IP798341 + define.GetPlanbyTime);
-        RequestParams params = new RequestParams(define.Net2 + define.GetWorkCardInfo);
+        RequestParams params = new RequestParams(define.Net2 + define.GetWorkCardInfoNew);
         params.setReadTimeout(60000);
         params.setConnectTimeout(60000);
         params.addQueryStringParameter("FStartTime", StartTime);
         params.addQueryStringParameter("EndTime", EndTime);
         params.addQueryStringParameter("FDeptID", dataPref.getString(define.SharedFDeptmentid, "none"));
+        if(isClose) {
+            params.addQueryStringParameter("IsClose","true");
+        }else{
+            params.addQueryStringParameter("IsClose","false");
+        }
         Log.e("jindi", "GetPlanbyTime:" + params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
@@ -552,70 +640,70 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                //Utils.e("jindi", result);
-                result = "{\"data\":" + result.substring(result.indexOf("[{"), result.indexOf("}]")) + "}]}";
                 Utils.e("jindi", result);
 
-                //Log.e("jindi", result);
                 pgdWorkCardPlan.clear();
                 showWorkCardPlan.clear();
-                currentPosition = 0;
-                refreshLayout.setEnableLoadmore(true);
                 List<String> filter = new ArrayList<String>();
-                Gson g = new Gson();
-                PgdResult pgds = g.fromJson(result, PgdResult.class);
-                if (pgds.getData() != null) {
-                    for (int i = 0; i < pgds.getData().size(); i++) {
-                        //Log.e("jindi","deptid:"+pgds.getData().get(i).getFdeptid()+" Deptmentid:"+dataPref.getString(define.SharedFDeptmentid,"none"));
-                        if ((!filter.contains(pgds.getData().get(i).getPlanbill()) || !filter.contains(pgds.getData().get(i).getOrderbill()) && pgds.getData().get(i).getOrderbill().indexOf("J") != 0) && String.valueOf(pgds.getData().get(i).getFdeptid()).equals(dataPref.getString(define.SharedFDeptmentid, "none"))) {
-                            filter.add(pgds.getData().get(i).getPlanbill());
-                            filter.add(pgds.getData().get(i).getOrderbill());
-                            //重新遍历,设置尺码,和已入未入库数
-                            int alreadyNumberCount = 0;
-                            int noNumberCount = 0;
-                            for (int j = 0; j < pgds.getData().size(); j++) {
-                                if (pgds.getData().get(j).getPlanbill().equals(pgds.getData().get(i).getPlanbill()) && pgds.getData().get(j).getOrderbill().equals(pgds.getData().get(i).getOrderbill())) {
-                                    String[][] s = new String[1][2];
-                                    s[0][0] = pgds.getData().get(j).getFsize();
-                                    s[0][1] = String.valueOf(pgds.getData().get(j).getDispatchingnumber().intValue());
-                                    pgds.getData().get(i).addSize(s);
-                                    alreadyNumberCount += (pgds.getData().get(j).getAlreadynumber() == null ? 0 : pgds.getData().get(j).getAlreadynumber()).intValue();
+                if (result != null && result.contains("[{")) {
+                    result = "{\"data\":" + result.substring(result.indexOf("[{"), result.indexOf("}]")) + "}]}";
+                    Gson g = new Gson();
+                    PgdResult pgds = g.fromJson(result, PgdResult.class);
+                    if (pgds.getData() != null) {
+                        for (int i = 0; i < pgds.getData().size(); i++) {
+                            //Log.e("jindi","deptid:"+pgds.getData().get(i).getFdeptid()+" Deptmentid:"+dataPref.getString(define.SharedFDeptmentid,"none"));
+                            if ((!filter.contains(pgds.getData().get(i).getPlanbill()) || !filter.contains(pgds.getData().get(i).getOrderbill()) && pgds.getData().get(i).getOrderbill().indexOf("J") != 0) && String.valueOf(pgds.getData().get(i).getFdeptid()).equals(dataPref.getString(define.SharedFDeptmentid, "none"))) {
+                                filter.add(pgds.getData().get(i).getPlanbill());
+                                filter.add(pgds.getData().get(i).getOrderbill());
+                                //重新遍历,设置尺码,和已入未入库数
+                                int alreadyNumberCount = 0;
+                                int noNumberCount = 0;
+                                for (int j = 0; j < pgds.getData().size(); j++) {
+                                    if (pgds.getData().get(j).getPlanbill().equals(pgds.getData().get(i).getPlanbill()) && pgds.getData().get(j).getOrderbill().equals(pgds.getData().get(i).getOrderbill())) {
+                                        String[][] s = new String[1][2];
+                                        s[0][0] = pgds.getData().get(j).getFsize();
+                                        s[0][1] = String.valueOf(pgds.getData().get(j).getDispatchingnumber().intValue());
+                                        pgds.getData().get(i).addSize(s);
+                                        alreadyNumberCount += (pgds.getData().get(j).getAlreadynumber() == null ? 0 : pgds.getData().get(j).getAlreadynumber()).intValue();
 
-                                    noNumberCount += (pgds.getData().get(j).getNonumber() == null ? 0 : pgds.getData().get(j).getNonumber()).intValue();
-                                    try {
-                                        List<GxpgPlanStatus> gxpgPlanStatusesList = dbManager.selector(GxpgPlanStatus.class).where("planbill", " = ", pgds.getData().get(i).getPlanbill()).and("orderbill", "=", pgds.getData().get(i).getOrderbill()).findAll();
-                                        if (gxpgPlanStatusesList != null && gxpgPlanStatusesList.size() >= 1) {
-                                            pgds.getData().get(i).setPlanStatus("已排");
-                                        } else {
-                                            pgds.getData().get(i).setPlanStatus("未排");
+                                        noNumberCount += (pgds.getData().get(j).getNonumber() == null ? 0 : pgds.getData().get(j).getNonumber()).intValue();
+                                        try {
+                                            List<GxpgPlanStatus> gxpgPlanStatusesList = dbManager.selector(GxpgPlanStatus.class).where("planbill", " = ", pgds.getData().get(i).getPlanbill()).and("orderbill", "=", pgds.getData().get(i).getOrderbill()).findAll();
+                                            if (gxpgPlanStatusesList != null && gxpgPlanStatusesList.size() >= 1) {
+                                                pgds.getData().get(i).setPlanStatus("已排");
+                                            } else {
+                                                pgds.getData().get(i).setPlanStatus("未排");
+                                            }
+                                        } catch (DbException e) {
+                                            e.printStackTrace();
                                         }
-                                    } catch (DbException e) {
-                                        e.printStackTrace();
                                     }
                                 }
-                            }
-                            pgds.getData().get(i).setAlreadynumberCount(alreadyNumberCount);
-                            pgds.getData().get(i).setNonumberCount(noNumberCount);
-                            if (isWeiWai) {
-                                if (pgds.getData().get(i).getFcanreportbynostockin()) {
+                                pgds.getData().get(i).setAlreadynumberCount(alreadyNumberCount);
+                                pgds.getData().get(i).setNonumberCount(noNumberCount);
+                                if (isWeiWai) {
+                                    if (pgds.getData().get(i).getFcanreportbynostockin()) {
+                                        pgdWorkCardPlan.add(pgds.getData().get(i));
+                                    }
+                                } else {
                                     pgdWorkCardPlan.add(pgds.getData().get(i));
                                 }
-                            } else {
-                                pgdWorkCardPlan.add(pgds.getData().get(i));
+
+
                             }
-
-
                         }
-                    }
-                    if (pgdWorkCardPlan.size() == 0) {
-                        tv_tip.setText("暂无数据");
+                        if (pgdWorkCardPlan.size() == 0) {
+                            tv_tip.setText("暂无数据");
+                        } else {
+                            tv_tip.setVisibility(View.GONE);
+                        }
                     } else {
-                        tv_tip.setVisibility(View.GONE);
+                        tv_tip.setText("暂无数据");
                     }
                 } else {
                     tv_tip.setText("暂无数据");
                 }
-                LoadMore();
+                showWorkCardPlan.addAll(pgdWorkCardPlan);
                 mMenuAdapter.notifyDataSetChanged();
                 refreshLayout.finishRefreshing();
             }
@@ -639,115 +727,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         });
 
     }
-    //默认显示，不显示全部，排除已经汇报完成的单子
-    public void defaultGetData(final String StartTime, final String EndTime) {
-        tv_tip.setText("数据载入中...");
-        tv_showDate.setText("显示日期:" + StartTime + "到" + EndTime);
-        //RequestParams params = new RequestParams(define.IP798341 + define.GetPlanbyTime);
-        RequestParams params = new RequestParams(define.Net2 + define.GetWorkCardInfo);
-        params.setReadTimeout(60000);
-        params.setConnectTimeout(60000);
-        params.addQueryStringParameter("FStartTime", StartTime);
-        params.addQueryStringParameter("EndTime", EndTime);
-        params.addQueryStringParameter("FDeptID", dataPref.getString(define.SharedFDeptmentid, "none"));
-        Log.e("jindi", "GetPlanbyTime:" + params.toString());
-        x.http().get(params, new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                try {
-                    result = URLDecoder.decode(result, "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                //Utils.e("jindi", result);
-                result = "{\"data\":" + result.substring(result.indexOf("[{"), result.indexOf("}]")) + "}]}";
-                Utils.e("jindi", result);
-
-                //Log.e("jindi", result);
-                pgdWorkCardPlan.clear();
-                showWorkCardPlan.clear();
-                currentPosition = 0;
-                refreshLayout.setEnableLoadmore(true);
-                List<String> filter = new ArrayList<String>();
-                Gson g = new Gson();
-                PgdResult pgds = g.fromJson(result, PgdResult.class);
-                if (pgds.getData() != null) {
-                    for (int i = 0; i < pgds.getData().size(); i++) {
-                        //Log.e("jindi","deptid:"+pgds.getData().get(i).getFdeptid()+" Deptmentid:"+dataPref.getString(define.SharedFDeptmentid,"none"));
-                        if ((!filter.contains(pgds.getData().get(i).getPlanbill()) || !filter.contains(pgds.getData().get(i).getOrderbill()) && pgds.getData().get(i).getOrderbill().indexOf("J") != 0) && String.valueOf(pgds.getData().get(i).getFdeptid()).equals(dataPref.getString(define.SharedFDeptmentid, "none")) && (pgds.getData().get(i).getReportednotnumber().intValue() > 0 || pgds.getData().get(i).getNotreportnumber().intValue() > 0)) {
-                            filter.add(pgds.getData().get(i).getPlanbill());
-                            filter.add(pgds.getData().get(i).getOrderbill());
-                            //重新遍历,设置尺码,和已入未入库数
-                            int alreadyNumberCount = 0;
-                            int noNumberCount = 0;
-                            for (int j = 0; j < pgds.getData().size(); j++) {
-                                if (pgds.getData().get(j).getPlanbill().equals(pgds.getData().get(i).getPlanbill()) && pgds.getData().get(j).getOrderbill().equals(pgds.getData().get(i).getOrderbill())) {
-                                    String[][] s = new String[1][2];
-                                    s[0][0] = pgds.getData().get(j).getFsize();
-                                    s[0][1] = String.valueOf(pgds.getData().get(j).getDispatchingnumber().intValue());
-                                    pgds.getData().get(i).addSize(s);
-                                    alreadyNumberCount += (pgds.getData().get(j).getAlreadynumber() == null ? 0 : pgds.getData().get(j).getAlreadynumber()).intValue();
-
-                                    noNumberCount += (pgds.getData().get(j).getNonumber() == null ? 0 : pgds.getData().get(j).getNonumber()).intValue();
-                                    try {
-                                        List<GxpgPlanStatus> gxpgPlanStatusesList = dbManager.selector(GxpgPlanStatus.class).where("planbill", " = ", pgds.getData().get(i).getPlanbill()).and("orderbill", "=", pgds.getData().get(i).getOrderbill()).findAll();
-                                        if (gxpgPlanStatusesList != null && gxpgPlanStatusesList.size() >= 1) {
-                                            pgds.getData().get(i).setPlanStatus("已排");
-                                        } else {
-                                            pgds.getData().get(i).setPlanStatus("未排");
-                                        }
-                                    } catch (DbException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                            pgds.getData().get(i).setAlreadynumberCount(alreadyNumberCount);
-                            pgds.getData().get(i).setNonumberCount(noNumberCount);
-                            if (isWeiWai) {
-                                if (pgds.getData().get(i).getFcanreportbynostockin()) {
-                                    pgdWorkCardPlan.add(pgds.getData().get(i));
-                                }
-                            } else {
-                                pgdWorkCardPlan.add(pgds.getData().get(i));
-                            }
-
-
-                        }
-                    }
-                    if (pgdWorkCardPlan.size() == 0) {
-                        tv_tip.setText("暂无数据");
-                    } else {
-                        tv_tip.setVisibility(View.GONE);
-                    }
-                } else {
-                    tv_tip.setText("暂无数据");
-                }
-                LoadMore();
-                mMenuAdapter.notifyDataSetChanged();
-                refreshLayout.finishRefreshing();
-            }
-
-            //请求异常后的回调方法
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                Log.e("jindi", ex.toString());
-                tv_tip.setVisibility(View.VISIBLE);
-                tv_tip.setText("数据载入失败,请检查网络");
-            }
-
-            //主动调用取消请求的回调方法
-            @Override
-            public void onCancelled(CancelledException cex) {
-            }
-
-            @Override
-            public void onFinished() {
-            }
-        });
-
-    }
-
-
     public void getSearchData(final String searchText) {
         tv_tip.setText("数据载入中...");
         tv_showDate.setText("显示日期:" + StartTime + "到" + EndTime);
@@ -764,15 +743,13 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                //Utils.e("jindi", result);
-                result = "{\"data\":" + result.substring(result.indexOf("[{"), result.indexOf("}]")) + "}]}";
-                Utils.e("jindi", result);
 
                 pgdWorkCardPlan.clear();
                 showWorkCardPlan.clear();
-                currentPosition = 0;
-                refreshLayout.setEnableLoadmore(true);
                 List<String> filter = new ArrayList<String>();
+                if (result != null && result.contains("[{")) {
+                    result = "{\"data\":" + result.substring(result.indexOf("[{"), result.indexOf("}]")) + "}]}";
+                    Utils.e("jindi", result);
                 Gson g = new Gson();
                 PgdResult pgds = g.fromJson(result, PgdResult.class);
                 if (pgds.getData() != null) {
@@ -796,7 +773,10 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 } else {
                     tv_tip.setText("暂无数据");
                 }
-                LoadMore();
+                } else {
+                    tv_tip.setText("暂无数据");
+                }
+                showWorkCardPlan.addAll(pgdWorkCardPlan);
                 mMenuAdapter.notifyDataSetChanged();
                 refreshLayout.finishRefreshing();
             }
@@ -820,26 +800,13 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         });
 
     }
-
-    private void LoadMore() {
-        int currentPositionTemp = currentPosition;
-        for (; currentPosition < pgdWorkCardPlan.size() && currentPosition < currentPositionTemp + loadmoreLimit; currentPosition++) {
-            showWorkCardPlan.add(pgdWorkCardPlan.get(currentPosition));
-
-        }
-        if (currentPosition >= pgdWorkCardPlan.size()) {
-            refreshLayout.setEnableLoadmore(false);
-        }
-        refreshLayout.finishLoadmore();
-    }
-
     /**
      * Item点击监听。
      */
     private OnItemClickListener onItemClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(int position) {
-            GetUserID(position);
+            SCWorkCard2SCProcessWorkCard(position);
         }
     };
 
@@ -853,14 +820,14 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
     public void getFDeptmentData() {
         RequestParams params = new RequestParams(define.Net1 + define.GetEmpByDeptID);
         params.addQueryStringParameter("FDeptmentID", dataPref.getString(define.SharedFDeptmentid, ""));
-        Log.e("jindi",params.toString());
+        Log.e("jindi", params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(final String result) {
-                Log.e("jindi", "getFDeptmentData:"+result);
+                Log.e("jindi", "getFDeptmentData:" + result);
                 Gson g = new Gson();
                 nameListResult = g.fromJson(result, NameListResult.class);
-                defaultGetData(StartTime, EndTime);
+                getData(StartTime, EndTime);
             }
 
             //请求异常后的回调方法
@@ -882,7 +849,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         });
     }
 
-    public void GetUserID(final int position) {
+    public void GetUserID() {
         RequestParams params = new RequestParams(define.Net2 + define.GetUserID);
         params.addQueryStringParameter("FEmpID", dataPref.getString(define.SharedEmpId, "0"));
         x.http().get(params, new Callback.CommonCallback<String>() {
@@ -898,7 +865,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                     FUserID = FUserID.replaceAll("<FUserID>", "").replaceAll("</FUserID>", "");
                     dataEditor.putString(define.SharedUserId, FUserID);
                     dataEditor.commit();
-                    SCWorkCard2SCProcessWorkCard(position);
                 } else {
                     Toast.makeText(mContext, "没有建立UseID,请联系管理员建立UserID", Toast.LENGTH_LONG).show();
                 }
@@ -997,11 +963,9 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
             Log.e("jindi", "onActivityResult");
             pgdWorkCardPlan.clear();
             showWorkCardPlan.clear();
-            currentPosition = 0;
-            refreshLayout.setEnableLoadmore(true);
             mMenuAdapter.notifyDataSetChanged();
             tv_tip.setVisibility(View.VISIBLE);
-            defaultGetData(StartTime, EndTime);
+            getData(StartTime, EndTime);
         }
 
     }
