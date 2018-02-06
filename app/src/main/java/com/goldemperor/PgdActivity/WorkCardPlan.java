@@ -182,7 +182,7 @@ public class WorkCardPlan {
         this.fprocessingmethod = fprocessingmethod;
     }
 
-    public BigDecimal getReportednumber() {
+    public BigDecimal getFfinishqty() {
         return reportednumber;
     }
 

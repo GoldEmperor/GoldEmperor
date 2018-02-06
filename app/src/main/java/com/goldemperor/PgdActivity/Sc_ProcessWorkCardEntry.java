@@ -37,8 +37,6 @@ public class Sc_ProcessWorkCardEntry implements Cloneable {
 
     private String fmochinecode;//null
 
-    private BigDecimal fmustqty;
-
     private BigDecimal fqty;
 
     private Date fplanstartdate;
@@ -85,8 +83,6 @@ public class Sc_ProcessWorkCardEntry implements Cloneable {
 
     private String name;
 
-    public float reportNumber;
-
     public boolean haveSave;
 
     private Integer fprocessflowid;
@@ -109,6 +105,37 @@ public class Sc_ProcessWorkCardEntry implements Cloneable {
 
     private Long fid;
 
+    private float fpreschedulingqty;
+
+    private float fpartitioncoefficient;
+
+    private float fsourceqty;
+
+    private BigDecimal fmustqty;//应派工数量;
+
+    public void setFsourceqty(float fsourceqty) {
+        this.fsourceqty = fsourceqty;
+    }
+
+    public float getFsourceqty() {
+        return fsourceqty;
+    }
+
+    public void setFpartitioncoefficient(float fpartitioncoefficient) {
+        this.fpartitioncoefficient = fpartitioncoefficient;
+    }
+
+    public float getFpartitioncoefficient() {
+        return fpartitioncoefficient;
+    }
+
+    public void setFpreschedulingqty(float fpreschedulingqty) {
+        this.fpreschedulingqty = fpreschedulingqty;
+    }
+
+    public float getFpreschedulingqty() {
+        return fpreschedulingqty;
+    }
 
     public Long getFid() {
         return fid;
@@ -151,7 +178,6 @@ public class Sc_ProcessWorkCardEntry implements Cloneable {
 
 
     public Sc_ProcessWorkCardEntry(){
-        reportNumber=0f;
         isOpen=true;
     }
 
@@ -204,14 +230,6 @@ public class Sc_ProcessWorkCardEntry implements Cloneable {
         this.haveSave = haveSave;
     }
 
-
-    public float getReportNumber() {
-        return reportNumber;
-    }
-
-    public void setReportNumber(float reportNumber) {
-        this.reportNumber = reportNumber;
-    }
 
     public String getJobNumber() {
         return jobNumber;

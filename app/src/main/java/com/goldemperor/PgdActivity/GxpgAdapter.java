@@ -139,7 +139,7 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
         TextView tv_readyRecordCount;
         TextView tv_noReportednumber;
 
-        TextView tv_mustQty;
+        TextView tv_fmustqty;
 
         String[][] nameList;
         public ScrollListenerHorizontalScrollView ScrollView;
@@ -160,12 +160,11 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
             tv_readyRecordCount = (TextView) itemView.findViewById(R.id.tv_readyRecordCount);
             tv_noReportednumber = (TextView) itemView.findViewById(R.id.tv_noReportednumber);
 
-            tv_mustQty = (TextView) itemView.findViewById(R.id.tv_mustQty);
+            tv_fmustqty = (TextView) itemView.findViewById(R.id.tv_fmustqty);
 
             this.nameList = nameList;
 
             nameDropDown.setDropdownData(dropStrings);
-
 
             nameDropDown.setOnDropDownItemClickListener(new BootstrapDropDown.OnDropDownItemClickListener() {
                 @Override
@@ -268,13 +267,13 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
             //else{
               //  tv_readyRecordCount.setText("0");
             //}
-            tv_mustQty.setText(String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFmustqty().intValue()));
+            tv_fmustqty.setText(String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFmustqty().intValue()));
             tv_readyRecordCount.setText(String.valueOf((int)gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getReportedqty()));
             if (getAdapterPosition() < gxpgActivity.sc_ProcessWorkCardEntryList.size()) {
 
-                tv_noReportednumber.setText(String.valueOf((int) gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getReportNumber()));
+                tv_noReportednumber.setText(String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getFfinishqty().intValue()));
 
-                edit_dispatchingnumber.setText(String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFqty()));
+                edit_dispatchingnumber.setText(String.valueOf((int)gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFpreschedulingqty()));
 
                 edit_dispatchingnumber.addTextChangedListener(new TextWatcher() {
 
@@ -300,30 +299,35 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
 
                             if (Float.valueOf(edit_dispatchingnumber.getText().toString().trim()) != 0) {
                                 //先不管超标设置总数
-                                if (Float.valueOf(edit_dispatchingnumber.getText().toString().trim()) > p.getHavedispatchingnumber().floatValue()) {
-                                    edit_dispatchingnumber.setText(String.valueOf(p.getHavedispatchingnumber().floatValue()));
+                                if (Float.valueOf(edit_dispatchingnumber.getText().toString().trim()) > p.getFmustqty().floatValue()) {
+                                    edit_dispatchingnumber.setText(String.valueOf(p.getFmustqty().intValue()));
+                                    edit_dispatchingnumber.setSelection(edit_dispatchingnumber.getText().length());
                                 }
-                                gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFqty(new BigDecimal(edit_dispatchingnumber.getText().toString().trim()));
+
+                                gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFpreschedulingqty(Float.valueOf(edit_dispatchingnumber.getText().toString().trim()));
                                 //设置后判断总数
                                 float count = 0;
                                 for (int i = 0; i < gxpgActivity.sc_ProcessWorkCardEntryList.size(); i++) {
                                     if (gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname().equals(gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getFprocessname())) {
-                                        count += gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFqty().floatValue();
-                                        //Log.e("jindi", "qty:" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFqty().floatValue());
+
+                                        count += gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFpreschedulingqty();
+
                                     }
 
                                 }
 
                                 //超标就将数量设为0
-                                if (count > p.getHavedispatchingnumber().floatValue()) {
+                                if (count > p.getFmustqty().floatValue()) {
                                     //Log.e("jindi", "afterTextChanged:" + getAdapterPosition());
                                     edit_dispatchingnumber.setText("0");
-                                    gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFqty(new BigDecimal(0));
+                                    edit_dispatchingnumber.setSelection(edit_dispatchingnumber.getText().length());
+
+                                    gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFpreschedulingqty(0f);
                                     Toast.makeText(gxpgActivity, "无法派工,派工总数超标", Toast.LENGTH_LONG).show();
                                 }
 
 
-                                float per = gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getFqty().floatValue() / (gxpgActivity.processWorkCardPlanEntryList.get(0).getHavedispatchingnumber().floatValue());
+                                float per = gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getFpreschedulingqty() / (gxpgActivity.processWorkCardPlanEntryList.get(getAdapterPosition()).getFmustqty().floatValue());
 
                                 //Log.e("jindi","per:"+per);
 
@@ -332,13 +336,27 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                                     GxpgPlan gxpgPlan = dbManager.selector(GxpgPlan.class).where("style", " = ", selectWorkCardPlan.getPlantbody()).and("processname", "=", gxpgActivity.processWorkCardPlanEntryList.get(getAdapterPosition()).getProcessname()).and("username", "=", gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getName()).findFirst();
                                     if (gxpgPlan != null) {
                                         gxpgPlan.setPer(per);
+                                        gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFpartitioncoefficient(per);
                                         dbManager.saveOrUpdate(gxpgPlan);
+                                        Log.e("jindi","setFpartitioncoefficient:"+per);
+                                    }else{
+                                        GxpgPlan newGxpgPlan = new GxpgPlan();
+                                        newGxpgPlan.setStyle(gxpgActivity.processWorkCardPlanEntryList.get(getAdapterPosition()).getPlantbody());
+                                        newGxpgPlan.setProcessname(gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getFprocessname());
+                                        newGxpgPlan.setUsername(gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getName());
+                                        newGxpgPlan.setUsernumber(gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getJobNumber());
+                                        newGxpgPlan.setEmpid(gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getFempid());
+                                        newGxpgPlan.setPer(gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getFpreschedulingqty() / (gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getFmustqty().floatValue()));
+                                        gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFpartitioncoefficient(per);
+                                        dbManager.saveOrUpdate(newGxpgPlan);
+                                        Log.e("jindi","Fpartitioncoefficient:"+per);
                                     }
                                 } catch (DbException e) {
-                                    e.printStackTrace();
+                                    Log.e("jindi",e.toString());
+
                                 }
                             } else {
-                                gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFqty(new BigDecimal(0));
+                                gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).setFpreschedulingqty(0f);
                             }
 
                         }
@@ -350,7 +368,6 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
 
                 //数据加载有延迟需要先判断
                 if (gxpgActivity.sc_ProcessWorkCardEntryList.get(position) != null)
-
                 {
                     nameDropDown.setText(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getName());
                     edit_userNumber.setText(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getJobNumber());
@@ -375,17 +392,17 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                                         if (editText.getText().toString() != null && !editText.getText().toString().trim().isEmpty()) {
                                             inputNumber = Float.valueOf(editText.getText().toString());
                                         }
-                                        gxpgActivity.sc_ProcessWorkCardEntryList.get(position).setReportNumber(inputNumber);
+                                        gxpgActivity.sc_ProcessWorkCardEntryList.get(position).setFfinishqty(new BigDecimal(inputNumber));
                                         float count = 0;
                                         for (int i = 0; i < gxpgActivity.sc_ProcessWorkCardEntryList.size(); i++) {
                                             if (gxpgActivity.processWorkCardPlanEntryList.get(i).getProcessname().equals(gxpgActivity.processWorkCardPlanEntryList.get(position).getProcessname())) {
-                                                count += gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getReportNumber();
+                                                count += gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFfinishqty().intValue();
                                             }
                                         }
                                         if(!selectWorkCardPlan.getFcanreportbynostockin()) {
                                             if (count > gxpgActivity.norecord) {
                                                 Toast.makeText(gxpgActivity, "计工数超过汇报数", Toast.LENGTH_LONG).show();
-                                                gxpgActivity.sc_ProcessWorkCardEntryList.get(position).setReportNumber(0f);
+                                                gxpgActivity.sc_ProcessWorkCardEntryList.get(position).setFfinishqty(new BigDecimal(inputNumber));
                                             } else if (count < gxpgActivity.norecord) {
                                                 Toast.makeText(gxpgActivity, "计工数少于汇报数", Toast.LENGTH_LONG).show();
                                             }
@@ -397,7 +414,7 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                                 }).show();
                     }
                 });
-                int alreadyNoreportedNumberCount = PgdActivity.selectWorkCardPlan.getAlreadynumberCount() - p.getReportednumber().intValue();
+                int alreadyNoreportedNumberCount = PgdActivity.selectWorkCardPlan.getAlreadynumberCount() - p.getFfinishqty().intValue();
             }
             if (!gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getIsOpen()) {
                 ScrollView.setBackgroundColor(Color.parseColor("#C0C0C0"));
