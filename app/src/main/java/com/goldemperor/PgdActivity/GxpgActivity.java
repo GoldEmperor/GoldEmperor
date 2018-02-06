@@ -727,9 +727,10 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                     } catch (DbException e) {
                         e.printStackTrace();
                     }
+                    // 工序派工单直接下推成工序汇报单
                     SCProcessWorkCard2SCProcessOutPutBysuitID();
                     tv_tip.setVisibility(View.GONE);
-
+                    //工序汇报单保存校验接口
                     GetSCProcessOutPutQtyBysuitID();
                 } else {
                     tv_tip.setText("暂无数据");
@@ -1755,7 +1756,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 });
         return x.getDb(daoConfig);
     }
-
+    // 工序派工单直接下推成工序汇报单
     public void SCProcessWorkCard2SCProcessOutPutBysuitID() {
         Gson g = new Gson();
         List<PushJsonCondition> pushJsonConditionList = new ArrayList<PushJsonCondition>();
