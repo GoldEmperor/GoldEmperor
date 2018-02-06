@@ -179,7 +179,7 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
             sizeItemLinearLayout.removeAllViews();
             sizeNumItemLinearLayout.removeAllViews();
 
-            tv_reportednumber.setText(String.valueOf(o.getReportednumber().intValue()));
+            tv_reportednumber.setText(String.valueOf(o.getFfinishqty().intValue()));
 
 
             for (int i = 0; i < o.getSizeList().size(); i++) {

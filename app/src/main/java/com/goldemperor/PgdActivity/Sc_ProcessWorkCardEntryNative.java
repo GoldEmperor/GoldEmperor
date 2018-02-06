@@ -98,7 +98,35 @@ public class Sc_ProcessWorkCardEntryNative implements Cloneable {
 
     private Long fid;
 
+    private float fpreschedulingqty;
 
+    private float fpartitioncoefficient;
+
+    private float fsourceqty;
+
+    public void setFsourceqty(float fsourceqty) {
+        this.fsourceqty = fsourceqty;
+    }
+
+    public float getFsourceqty() {
+        return fsourceqty;
+    }
+
+    public void setFpartitioncoefficient(float fpartitioncoefficient) {
+        this.fpartitioncoefficient = fpartitioncoefficient;
+    }
+
+    public float getFpartitioncoefficient() {
+        return fpartitioncoefficient;
+    }
+
+    public void setFpreschedulingqty(float fpreschedulingqty) {
+        this.fpreschedulingqty = fpreschedulingqty;
+    }
+
+    public float getFpreschedulingqty() {
+        return fpreschedulingqty;
+    }
     public Long getFid() {
         return fid;
     }

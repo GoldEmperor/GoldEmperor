@@ -120,7 +120,7 @@ public class define {
 
     public static final String GetWorkCardInfoByMoNo= "ErpForAndroidStockServer.asmx/GetWorkCardInfoByMoNo";
 
-    public static final String InsertProcessWorkCardEntry = "ErpForAndroidStockServer.asmx/InsertProcessWorkCardEntry";
+    public static final String SaveProcessWorkCardEntry = "ErpForAndroidStockServer.asmx/SaveProcessWorkCardEntry";
 
     public static final String SetWorkCardCloseStatus ="ErpForAndroidStockServer.asmx/SetWorkCardCloseStatus";
 
@@ -169,6 +169,9 @@ public class define {
 
     public static final String GetUserID = "ERPForWeixinServer.ASMX/GetUserID";
 
+    public static final String RecordProductionCount = "ErpForAndroidStockServer.asmx/RecordProductionCount";
+
+    public static final String GetWorkCardQtyPassInfo = "ErpForAndroidStockServer.asmx/GetWorkCardQtyPassInfo";
 
     public static final String SCProcessWorkCardReWriteBysuitID = "ErpForAndroidStockServer.asmx/SCProcessWorkCardReWriteBysuitID";
 
@@ -182,7 +185,7 @@ public class define {
 
 
 
-    public static final String GetWorkPlanQtyBysuitID = "ErpForAndroidStockServer.asmx/GetWorkPlanQtyBysuitID";
+    public static final String GetProcessWorkCardInfoByWorkCardID= "ErpForAndroidStockServer.asmx/GetProcessWorkCardInfoByWorkCardID";
 
 
     public static final String GetSCProcessOutPutQtyBysuitID = "ErpForAndroidStockServer.asmx/GetSCProcessOutPutQtyBysuitID";

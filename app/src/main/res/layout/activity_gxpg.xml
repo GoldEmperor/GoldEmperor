@@ -136,6 +136,22 @@
                 fancy:fb_text="用料清单"
                 fancy:fb_textColor="#FFFFFF"
                 fancy:fb_textSize="20dp" />
+
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/btn_useGxpgPlan"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:padding="10dp"
+                fancy:fb_borderColor="#FFFFFF"
+                fancy:fb_borderWidth="1dp"
+                fancy:fb_defaultColor="#ccbb00"
+                fancy:fb_focusColor="#9bd823"
+                fancy:fb_radius="10dp"
+                fancy:fb_text="应用工序计划"
+                fancy:fb_textColor="#FFFFFF"
+                fancy:fb_textSize="20dp" />
+
         </LinearLayout>
     </HorizontalScrollView>
 
@@ -166,7 +182,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:text="应派工数:"
+                    android:text="剩余派工数:"
                     android:textColor="#3b5998"
                     android:textSize="20dp" />
 
@@ -272,20 +288,6 @@
                 fancy:fb_textColor="#FFFFFF"
                 fancy:fb_textSize="20dp" />
             <mehdi.sakout.fancybuttons.FancyButton
-                android:id="@+id/btn_saveOperation"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:padding="10dp"
-                fancy:fb_borderColor="#FFFFFF"
-                fancy:fb_borderWidth="1dp"
-                fancy:fb_defaultColor="#bb00cc"
-                fancy:fb_focusColor="#9bd823"
-                fancy:fb_radius="10dp"
-                fancy:fb_text="暂存"
-                fancy:fb_textColor="#FFFFFF"
-                fancy:fb_textSize="20dp" />
-            <mehdi.sakout.fancybuttons.FancyButton
                 android:id="@+id/btn_reportCheck"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
@@ -366,11 +368,14 @@
 
             <TextView
                 android:id="@+id/tv_processcode"
-                android:layout_width="150dp"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:text="工序编号"
-                android:textSize="20dp" />
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="序号"
+                android:textSize="20dp"
+
+                />
 
             <TextView
                 android:id="@+id/tv_processname"
@@ -395,20 +400,12 @@
                 android:textSize="20dp" />
 
             <TextView
-                android:id="@+id/tv_mustQty"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="工序数量"
-                android:textSize="20dp"
-                android:layout_marginRight="20dp"/>
-
-            <TextView
                 android:id="@+id/tv_dispatchingnumber"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="预排数量"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:layout_marginLeft="20dp"/>
 
             <TextView
                 android:id="@+id/tv_noReportednumber"
@@ -424,6 +421,14 @@
                 android:layout_height="wrap_content"
                 android:text="已计工数"
                 android:gravity="center"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/tv_fmustqty"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="剩余派工数"
                 android:textSize="20dp" />
         </LinearLayout>
     </com.goldemperor.Widget.ScrollListenerHorizontalScrollView>

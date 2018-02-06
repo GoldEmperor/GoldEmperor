@@ -110,9 +110,9 @@ public class ZjActivity extends AppCompatActivity {
             unqualifiedCountText.setText("不合格总数(只)");
             base=2;
         }
-        qualifiedCount.setText(String.valueOf(selectWorkCardPlan.getReportednumber().intValue()*base));
+        qualifiedCount.setText(String.valueOf(selectWorkCardPlan.getFfinishqty().intValue()*base));
         unqualifiedCount.setText(String.valueOf(unqualifiedCountint));
-        Count.setText(String.valueOf(unqualifiedCountint + selectWorkCardPlan.getReportednumber().intValue()*base));
+        Count.setText(String.valueOf(unqualifiedCountint + selectWorkCardPlan.getFfinishqty().intValue()*base));
 
         btn_unqualified.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +122,7 @@ public class ZjActivity extends AppCompatActivity {
                 } else {
                     unqualifiedCountint++;
                     unqualifiedCount.setText(String.valueOf(unqualifiedCountint));
-                    Count.setText(String.valueOf(unqualifiedCountint + selectWorkCardPlan.getReportednumber().intValue()*base));
+                    Count.setText(String.valueOf(unqualifiedCountint + selectWorkCardPlan.getFfinishqty().intValue()*base));
                     submitException();
                 }
             }

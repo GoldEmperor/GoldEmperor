@@ -96,11 +96,9 @@ public class ProcessWorkCardPlanEntry implements Cloneable{
 
     private String fsize;//尺码;
 
-    private BigDecimal havedispatchingnumber;//应派工数量;
+    private BigDecimal fmustqty;//应派工数量;
 
-    private BigDecimal dispatchingnumber;//实派工数量;
-
-    private BigDecimal reportednumber;//已汇报数量;
+    private BigDecimal ffinishqty;//计工数量;
 
     private BigDecimal undispatchingnumber;//剩余派工数量;
 
@@ -146,6 +144,44 @@ public class ProcessWorkCardPlanEntry implements Cloneable{
 
     private Long fid;
 
+    private BigDecimal fqty;
+
+    private float fpartitioncoefficient;
+
+    private float fsourceqty;
+
+    public void setFsourceqty(float fsourceqty) {
+        this.fsourceqty = fsourceqty;
+    }
+
+    public float getFsourceqty() {
+        return fsourceqty;
+    }
+
+    public void setFpartitioncoefficient(float fpartitioncoefficient) {
+        this.fpartitioncoefficient = fpartitioncoefficient;
+    }
+
+    public float getFpartitioncoefficient() {
+        return fpartitioncoefficient;
+    }
+
+    public BigDecimal getFqty() {
+        return fqty;
+    }
+
+    public void setFqty(BigDecimal fqty) {
+        this.fqty = fqty;
+    }
+    private float fpreschedulingqty;
+
+    public void setFpreschedulingqty(float fpreschedulingqty) {
+        this.fpreschedulingqty = fpreschedulingqty;
+    }
+
+    public float getFpreschedulingqty() {
+        return fpreschedulingqty;
+    }
 
     public Long getFid() {
         return fid;
@@ -590,28 +626,21 @@ public class ProcessWorkCardPlanEntry implements Cloneable{
         this.fsize = fsize == null ? null : fsize.trim();
     }
 
-    public BigDecimal getHavedispatchingnumber() {
-        return havedispatchingnumber;
+    public BigDecimal getFmustqty() {
+        return fmustqty;
     }
 
-    public void setHavedispatchingnumber(BigDecimal havedispatchingnumber) {
-        this.havedispatchingnumber = havedispatchingnumber;
+    public void setFmustqty(BigDecimal fmustqty) {
+        this.fmustqty = fmustqty;
     }
 
-    public BigDecimal getDispatchingnumber() {
-        return dispatchingnumber;
+
+    public BigDecimal getFfinishqty() {
+        return ffinishqty;
     }
 
-    public void setDispatchingnumber(BigDecimal dispatchingnumber) {
-        this.dispatchingnumber = dispatchingnumber;
-    }
-
-    public BigDecimal getReportednumber() {
-        return reportednumber;
-    }
-
-    public void setReportednumber(BigDecimal reportednumber) {
-        this.reportednumber = reportednumber;
+    public void setFfinishqty(BigDecimal ffinishqty) {
+        this.ffinishqty = ffinishqty;
     }
 
     public BigDecimal getUndispatchingnumber() {

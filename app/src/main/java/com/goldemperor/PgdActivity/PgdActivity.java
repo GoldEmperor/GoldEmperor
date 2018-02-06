@@ -107,6 +107,8 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
 
     private boolean isClose=true;
 
+    private boolean readyPush=false;
+
     private String StartTime;
     private String EndTime;
 
@@ -159,7 +161,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
             @Override
             public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
                 //获取数据
-                getData(StartTime, EndTime);
+                getFDeptmentData();
             }
 
             @Override
@@ -171,7 +173,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         showWorkCardPlan = new ArrayList<WorkCardPlan>();
 
         getFDeptmentData();
-        GetUserID();
 
         mMenuRecyclerView = (SwipeMenuRecyclerView) findViewById(R.id.recycler_view);
         mMenuRecyclerView.setLayoutManager(new LinearLayoutManager(this));// 布局管理器。
@@ -203,7 +204,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 tv_tip.setVisibility(View.VISIBLE);
                 StartTime = Utils.getCurrentYear() + "-" + Utils.getCurrentMonth() + "-" + "01";
                 EndTime = Utils.getCurrentTime();
-                getData(StartTime, EndTime);
+                getFDeptmentData();
             }
         });
         btn_isClose = (FancyButton) findViewById(R.id.btn_isClose);
@@ -220,9 +221,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                     btn_isClose.setBackgroundColor(getResources().getColor(R.color.red));
                 }
                 tv_tip.setVisibility(View.VISIBLE);
-                StartTime = Utils.getCurrentYear() + "-" + Utils.getCurrentMonth() + "-" + "01";
-                EndTime = Utils.getCurrentTime();
-                getData(StartTime, EndTime);
+                getFDeptmentData();
             }
         });
 
@@ -235,7 +234,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 StartTime = Utils.getCurrentYear() + "-" + Utils.getCurrentMonth() + "-" + "01";
                 EndTime = Utils.getCurrentTime();
                 tv_tip.setVisibility(View.VISIBLE);
-                getData(StartTime, EndTime);
+                getFDeptmentData();
 
             }
         });
@@ -247,7 +246,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 tv_tip.setVisibility(View.VISIBLE);
                 StartTime = Utils.getCurrentTime();
                 EndTime = Utils.getCurrentTime();
-                getData(StartTime, EndTime);
+                getFDeptmentData();
 
             }
         });
@@ -260,7 +259,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 tv_tip.setVisibility(View.VISIBLE);
                 StartTime = Utils.getBeginDayOfWeek().toString();
                 EndTime = Utils.getCurrentTime();
-                getData(StartTime, EndTime);
+                getFDeptmentData();
             }
         });
 
@@ -271,7 +270,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 tv_tip.setVisibility(View.VISIBLE);
                 StartTime = Utils.getCurrentYear() + "-" + Utils.getCurrentMonth() + "-" + "01";
                 EndTime = Utils.getCurrentTime();
-                getData(StartTime, EndTime);
+                getFDeptmentData();
             }
         });
 
@@ -284,7 +283,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 String year = String.valueOf(Integer.valueOf(Utils.getCurrentMonth()) - 1 <= 0 ? Integer.valueOf(Utils.getCurrentYear()) - 1 : Utils.getCurrentYear());
                 StartTime = year + "-" + month + "-" + "01";
                 EndTime = Utils.getCurrentTime();
-                getData(StartTime, EndTime);
+                getFDeptmentData();
             }
         });
 
@@ -376,7 +375,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                         .setTextColor(Color.WHITE)
                         .setWidth(width)
                         .setHeight(height);
-                swipeRightMenu.addMenuItem(addItem); // 添加一个按钮到右侧菜单。
+                //swipeRightMenu.addMenuItem(addItem); // 添加一个按钮到右侧菜单。
 
             }
 
@@ -727,6 +726,8 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         });
 
     }
+
+    //搜索指令号获取数据
     public void getSearchData(final String searchText) {
         tv_tip.setText("数据载入中...");
         tv_showDate.setText("显示日期:" + StartTime + "到" + EndTime);
@@ -801,12 +802,15 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
 
     }
     /**
-     * Item点击监听。
+     * Item点击监听，点击下推工序派工单。
      */
     private OnItemClickListener onItemClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(int position) {
-            SCWorkCard2SCProcessWorkCard(position);
+            if(!readyPush) {
+                //先获取当前帐号UserID再下推
+                GetUserID(position);
+            }
         }
     };
 
@@ -817,6 +821,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         }
     }
 
+    //获取部门员工数据
     public void getFDeptmentData() {
         RequestParams params = new RequestParams(define.Net1 + define.GetEmpByDeptID);
         params.addQueryStringParameter("FDeptmentID", dataPref.getString(define.SharedFDeptmentid, ""));
@@ -835,7 +840,8 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
             public void onError(Throwable ex, boolean isOnCallback) {
                 Log.e("jindi", ex.toString());
                 tv_tip.setVisibility(View.VISIBLE);
-                tv_tip.setText("数据载入失败,请检查网络");
+                tv_tip.setText("员工数据载入失败,请检查网络");
+                refreshLayout.finishRefreshing();
             }
 
             //主动调用取消请求的回调方法
@@ -849,7 +855,8 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         });
     }
 
-    public void GetUserID() {
+    //获取当前帐号UserID
+    public void GetUserID(final int position) {
         RequestParams params = new RequestParams(define.Net2 + define.GetUserID);
         params.addQueryStringParameter("FEmpID", dataPref.getString(define.SharedEmpId, "0"));
         x.http().get(params, new Callback.CommonCallback<String>() {
@@ -865,6 +872,9 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                     FUserID = FUserID.replaceAll("<FUserID>", "").replaceAll("</FUserID>", "");
                     dataEditor.putString(define.SharedUserId, FUserID);
                     dataEditor.commit();
+                    readyPush=true;
+                    SCWorkCard2SCProcessWorkCard(position);
+                    Toast.makeText(mContext,"正在下推中...",Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(mContext, "没有建立UseID,请联系管理员建立UserID", Toast.LENGTH_LONG).show();
                 }
@@ -935,6 +945,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                             .setText("派工单下推失败")
                             .setBackgroundColorRes(R.color.colorAlert)
                             .show();
+                    readyPush=false;
                 }
             }
 
@@ -944,6 +955,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                 Log.e("jindi", ex.toString());
                 tv_tip.setVisibility(View.VISIBLE);
                 tv_tip.setText("数据载入失败:" + ex.toString());
+                readyPush=false;
             }
 
             //主动调用取消请求的回调方法
@@ -960,6 +972,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (mMenuAdapter != null) {
+            readyPush=false;
             Log.e("jindi", "onActivityResult");
             pgdWorkCardPlan.clear();
             showWorkCardPlan.clear();
