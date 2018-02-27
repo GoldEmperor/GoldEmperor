@@ -618,7 +618,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
     public void getData(final String StartTime, final String EndTime) {
         tv_tip.setText("数据载入中...");
         tv_showDate.setText("显示日期:" + StartTime + "到" + EndTime);
-        //RequestParams params = new RequestParams(define.IP798341 + define.GetPlanbyTime);
+
         RequestParams params = new RequestParams(define.Net2 + define.GetWorkCardInfoNew);
         params.setReadTimeout(60000);
         params.setConnectTimeout(60000);

@@ -172,7 +172,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="970dp"
+                android:layout_width="1010dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:orientation="horizontal">

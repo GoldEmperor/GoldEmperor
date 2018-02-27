@@ -339,11 +339,11 @@ public class ProcessWorkCardPlanEntry implements Cloneable{
     }
 
     public String getPlanbill() {
-        return planbill;
+        return planbill.toUpperCase();
     }
 
     public void setPlanbill(String planbill) {
-        this.planbill = planbill == null ? null : planbill.trim();
+        this.planbill = planbill == null ? null : planbill.trim().toUpperCase();
     }
 
     public String getProductnumber() {

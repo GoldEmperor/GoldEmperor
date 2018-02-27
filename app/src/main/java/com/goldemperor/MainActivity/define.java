@@ -101,8 +101,6 @@ public class define {
 
     public static final String GetDepartmentTwoByFnumber="getDepartmentTwoByFnumber";
 
-    //public static final String GetCjProcessOutputEntry ="getCjProcessOutputEntry";
-
 
     public static final String SetCheckerId ="setCheckerId";
 
@@ -128,15 +126,11 @@ public class define {
 
     public static final String GetEmpByFNumber = "wechatMvn/mes/GetEmpByFNumber.do";
 
-    //public static final String InsertProcessPlanEntry = "wechatMvn/android/insertProcessPlanEntry.do";
-
-    //public static final String GetPlanbyBillNumber = "wechatMvn/android/getPlanbyBillNumber.do";
 
     public static final String GetRouteEntryBody = "wechatMvn/android/getRouteEntryBody.do";
 
     public static final String GetWorkPlanMaterial = "wechatMvn/android/getWorkPlanMaterial.do";
 
-    public static final String GetWorkCardProcessQty = "wechatMvn/android/getWorkCardProcessQty.do";
 
     public static final String GetWorkCardPlanNew = "wechatMvn/android/getWorkCardPlanNew.do";
 
@@ -173,22 +167,8 @@ public class define {
 
     public static final String GetWorkCardQtyPassInfo = "ErpForAndroidStockServer.asmx/GetWorkCardQtyPassInfo";
 
-    public static final String SCProcessWorkCardReWriteBysuitID = "ErpForAndroidStockServer.asmx/SCProcessWorkCardReWriteBysuitID";
-
-    public static final String SCProcessWorkCard2SCProcessOutPutBysuitID = "ErpForAndroidStockServer.asmx/SCProcessWorkCard2SCProcessOutPutBysuitID";
-
-
-    public static final String SCProcessOutPutSaveBysuitID = "ErpForAndroidStockServer.asmx/SCProcessOutPutSaveBysuitID";
-
-    public static final String SCProcessOutPutReWriteBysuitID = "ErpForAndroidStockServer.asmx/SCProcessOutPutReWriteBysuitID";
-
-
-
 
     public static final String GetProcessWorkCardInfoByWorkCardID= "ErpForAndroidStockServer.asmx/GetProcessWorkCardInfoByWorkCardID";
-
-
-    public static final String GetSCProcessOutPutQtyBysuitID = "ErpForAndroidStockServer.asmx/GetSCProcessOutPutQtyBysuitID";
 
 
     public static final String GetDayWorkCardPlanQtyBysuitID = "ErpForAndroidStockServer.asmx/GetDayWorkCardPlanQtyBysuitID";

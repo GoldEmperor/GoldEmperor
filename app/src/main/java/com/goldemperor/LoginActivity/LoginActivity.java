@@ -104,6 +104,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 */
+        //获得系统短信回执 此次调试可设置999999
+        VerNum = "999999";//code;
         //点击发送验证码按钮
         btn_Verification.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,7 +142,6 @@ public class LoginActivity extends AppCompatActivity {
                     params.setAsJsonContent(true);
                     params.setBodyContent(g.toJson(codeRequest));
 
-
                     x.http().post(params, new Callback.CommonCallback<String>() {
                         @Override
                         public void onSuccess(String result) {
@@ -150,14 +151,15 @@ public class LoginActivity extends AppCompatActivity {
                             String code = result.substring(result.indexOf("\"code\""), result.indexOf(",", result.indexOf("\"code\"")));
                             code = code.replaceAll("\"", "").replaceAll("code", "").replaceAll(":", "");
                             //获得系统短信回执 此次调试可设置999999
-                            VerNum = "999999";//code;
+                            VerNum = code;//code;
                             Log.e("jindi", VerNum);
                         }
 
                         //请求异常后的回调方法
                         @Override
                         public void onError(Throwable ex, boolean isOnCallback) {
-                            Toast.makeText(con, "网络异常,短信发送失败", Toast.LENGTH_LONG).show();
+                            Toast.makeText(con, "网络异常,短信发送失败，验证码为999999", Toast.LENGTH_LONG).show();
+                            Log.e("jindi",""+ex.toString());
                         }
 
                         //主动调用取消请求的回调方法

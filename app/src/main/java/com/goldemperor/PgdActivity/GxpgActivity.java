@@ -169,7 +169,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
 
     public static int mScrollX = 0;
 
-
+    String UseStyle=null;
     //已计工数
     //public static HashMap<String, Float> readyRecordCount = new HashMap<>();
     //List<cj_processoutputentry> OutputList;
@@ -540,12 +540,50 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
             }
         });
 
+        //按钮应用工序计划
         btn_useGxpgPlan = (FancyButton) findViewById(R.id.btn_useGxpgPlan);
 
         btn_useGxpgPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                useGxpgPlan();
+                ArrayList<String> bodyList=new ArrayList<String>();
+                try {
+                    List<GxpgPlan> gxpgPlanList = dbManager.findAll(GxpgPlan.class);
+                    for(int i=0;i<gxpgPlanList.size();i++){
+                        if(!bodyList.contains(gxpgPlanList.get(i).getStyle())){
+                            bodyList.add(gxpgPlanList.get(i).getStyle());
+                        }
+                    }
+                    final String[] ChoiceItems=new String[bodyList.size()];
+                    for(int i=0;i<bodyList.size();i++){
+                        ChoiceItems[i]=bodyList.get(i);
+                    }
+                    UseStyle=ChoiceItems[0];
+                    new  AlertDialog.Builder(mContext)
+                            .setTitle("请选择要使用的型体" )
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setSingleChoiceItems(ChoiceItems,  0 ,
+                                    new  DialogInterface.OnClickListener() {
+
+                                        public   void  onClick(DialogInterface dialog,  int  which) {
+                                            UseStyle=ChoiceItems[which];
+                                        }
+                                    }
+                            )
+                            .setPositiveButton("确定", new  DialogInterface.OnClickListener() {
+                                public   void  onClick(DialogInterface dialog,  int  arg1) {
+                                    dialog.dismiss();
+                                    useGxpgPlan(UseStyle);
+                                    Log.e("jindi","UseStyle:"+UseStyle);
+                                }
+                            } )
+                            .setNegativeButton("取消" ,  null )
+                            .show();
+
+                    Log.e("jindi","bodyList:"+bodyList.size());
+                } catch (DbException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -556,16 +594,6 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
             @Override
             public void onClick(View v) {
                 saveGxpgPlanReportNumber(true);
-            }
-        });
-        */
-        /*
-        btn_useGxpgPlan = (FancyButton) findViewById(R.id.btn_useGxpgPlan);
-
-        btn_useGxpgPlan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                useGxpgPlan();
             }
         });
         */
@@ -679,7 +707,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         RequestParams params = new RequestParams(define.Net2 + define.GetWorkCardQtyPassInfo);
         params.addQueryStringParameter("WorkCardID", String.valueOf(selectWorkCardPlan.getFinterid()));
 
-        //Log.e("jindi", params.toString());
+        Log.e("jindi", params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -759,7 +787,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                         tv_number.setText("派工单号:" + gxpgs.getData().get(0).getProcessbillnumber().toUpperCase());
                         tv_planbill.setText("计划跟踪号:" + selectWorkCardPlan.getPlanbill());
                         tv_style.setText("工厂型体:" + gxpgs.getData().get(0).getPlantbody().toUpperCase());
-                        top_havedispatchingnumber.setText("派工总数:" + (int) gxpgs.getData().get(0).getFsourceqty());
+                        top_havedispatchingnumber.setText("剩余派工数:" + (int) gxpgs.getData().get(0).getFsourceqty());
                         Havedispatchingnumber = (int) gxpgs.getData().get(0).getFsourceqty();
                         for (int i = 0; i < gxpgs.getData().size(); i++) {
                             processWorkCardPlanEntryList.add(gxpgs.getData().get(i));
@@ -770,7 +798,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                             List<GxpgPlanStatus> gxpgPlanStatusList = dbManager.selector(GxpgPlanStatus.class).where("planbill", " = ", selectWorkCardPlan.getPlanbill()).and("orderbill", "=", selectWorkCardPlan.getOrderbill()).findAll();
 
                             if (gxpgPlanStatusList == null || gxpgPlanStatusList.size() <= 0) {
-                                useGxpgPlan();
+                                useGxpgPlan(processWorkCardPlanEntryList.get(0).getPlantbody());
                                 Log.e("jindi", "应用计划工序");
                             } else {
                                 Log.e("jindi", "工序已提交过");
@@ -829,7 +857,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         params.setReadTimeout(60000);
         params.setConnectTimeout(60000);
         params.addQueryStringParameter("WorkCardID", String.valueOf(WorkCardID));
-        Log.e("jindi", params.toString());
+        Log.e("jindi", "GetProcessWorkCardInfoByWorkCardID:"+params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -850,7 +878,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                         tv_number.setText("派工单号:" + gxpgs.getData().get(0).getProcessbillnumber().toUpperCase());
                         tv_planbill.setText("计划跟踪号:" + selectWorkCardPlan.getPlanbill());
                         tv_style.setText("工厂型体:" + gxpgs.getData().get(0).getPlantbody().toUpperCase());
-                        top_havedispatchingnumber.setText("派工总数:" + (int) gxpgs.getData().get(0).getFsourceqty());
+                        top_havedispatchingnumber.setText("剩余派工数:" + (int) gxpgs.getData().get(0).getFsourceqty());
                         Havedispatchingnumber = (int) gxpgs.getData().get(0).getFsourceqty();
                         for (int i = 0; i < gxpgs.getData().size(); i++) {
                             processWorkCardPlanEntryList.add(gxpgs.getData().get(i));
@@ -1060,10 +1088,10 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
     }
 
     //应用存储在本地的工序计划
-    public void useGxpgPlan() {
+    public void useGxpgPlan(String style) {
         try {
             for (int i = 0; i < sc_ProcessWorkCardEntryList.size(); i++) {
-                List<GxpgPlan> gxpgPlanList = dbManager.selector(GxpgPlan.class).where("style", " = ", processWorkCardPlanEntryList.get(i).getPlantbody()).and("processname", "=", sc_ProcessWorkCardEntryList.get(i).getFprocessname()).findAll();
+                List<GxpgPlan> gxpgPlanList = dbManager.selector(GxpgPlan.class).where("style", " = ", style).and("processname", "=", sc_ProcessWorkCardEntryList.get(i).getFprocessname()).findAll();
                 if (gxpgPlanList != null) {
                     //先检查一遍此道工序是否有多道工序，如果是多道工序说明已应用过最近分配
                     int checkProcess = 0;
@@ -1076,29 +1104,20 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                         //如果一道工序多个派工,且不是第一个派工记录则添加数据
                         if (j > 0 && checkProcess <= 1) {
                             ProcessWorkCardPlanEntry processWorkCardPlanEntry = (ProcessWorkCardPlanEntry) processWorkCardPlanEntryList.get(i).clone();
-                            processWorkCardPlanEntry.setFentryid(processWorkCardPlanEntryList.get(i).getFentryid() + 1);
-                            //插入工序以后的所有entryid都要加1
-                            for (int k = i + j; k < processWorkCardPlanEntryList.size(); k++) {
-                                processWorkCardPlanEntryList.get(k).setFentryid(processWorkCardPlanEntryList.get(k).getFentryid() + 1);
-                            }
 
+                            processWorkCardPlanEntry.setFid(0L);
                             processWorkCardPlanEntryList.add(i + j, processWorkCardPlanEntry);
 
                             Sc_ProcessWorkCardEntry sc_processWorkCardEntry = (Sc_ProcessWorkCardEntry) sc_ProcessWorkCardEntryList.get(i).clone();
 
-                            sc_processWorkCardEntry.setFentryid(sc_ProcessWorkCardEntryList.get(i).getFentryid() + 1);
-                            //插入工序以后的所有entryid都要加1
-                            for (int k = i + j; k < sc_ProcessWorkCardEntryList.size(); k++) {
-                                sc_ProcessWorkCardEntryList.get(k).setFentryid(sc_ProcessWorkCardEntryList.get(k).getFentryid() + 1);
-                            }
-
+                            sc_processWorkCardEntry.setFid(0L);
                             sc_ProcessWorkCardEntryList.add(i + j, sc_processWorkCardEntry);
-
 
                         }
                         sc_ProcessWorkCardEntryList.get(i + j).setFempid(gxpgPlanList.get(j).getEmpid());
                         sc_ProcessWorkCardEntryList.get(i + j).setJobNumber(gxpgPlanList.get(j).getUsernumber());
                         sc_ProcessWorkCardEntryList.get(i + j).setName(gxpgPlanList.get(j).getUsername());
+
                         double qty = processWorkCardPlanEntryList.get(i + j).getFmustqty().floatValue() * gxpgPlanList.get(j).getPer();
                         DecimalFormat df = new DecimalFormat("#.0");
                         sc_ProcessWorkCardEntryList.get(i + j).setFpreschedulingqty(Float.valueOf(df.format(qty)));
@@ -1339,6 +1358,11 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
 
         RequestParams params = new RequestParams(define.Net2 + define.RecordProductionCount);
 
+        //重新设置entryid
+        for (int i = 0; i < sc_ProcessWorkCardEntryList.size(); i++) {
+            sc_ProcessWorkCardEntryList.get(i).setFentryid(i + 1);
+        }
+
         //设置qty计工数为finishqty界面上的操作数
         for (int i = 0; i < sc_ProcessWorkCardEntryList.size(); i++) {
             sc_ProcessWorkCardEntryList.get(i).setFqty(sc_ProcessWorkCardEntryList.get(i).getFfinishqty());
@@ -1348,11 +1372,13 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         Gson g = new Gson();
         List<Sc_ProcessWorkCardEntryNative> sc_ProcessWorkCardEntryListNative = GsonFactory.jsonToArrayList(g.toJson(sc_ProcessWorkCardEntryList), Sc_ProcessWorkCardEntryNative.class);
         Collections.reverse(sc_ProcessWorkCardEntryListNative);
-        Utils.e("jindi", g.toJson(sc_ProcessWorkCardEntryListNative));
+        Utils.e("jindi", "RecordProductionCount:"+g.toJson(sc_ProcessWorkCardEntryListNative));
 
         params.addBodyParameter("PushJsonCondition", g.toJson(sc_ProcessWorkCardEntryListNative));
         params.addBodyParameter("UserID", dataPref.getString(define.SharedUserId, "0"));
         params.addBodyParameter("suitID", define.suitID);
+        //Utils.e("jindi", params.toString());
+    /*
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -1366,7 +1392,8 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 if (result.contains("OK") || result.contains("success")) {
                     GetProcessWorkCardInfoByWorkCardID(selectWorkCardPlan.getFinterid());
                 } else {
-                    Toast.makeText(mContext, "工序汇报失败", Toast.LENGTH_LONG).show();
+                    String ReturnMsg = result.substring(result.indexOf("ReturnMsg"), result.indexOf(",")).replace("ReturnMsg\":", "").replace("\"", "");
+                    Toast.makeText(mContext, ReturnMsg, Toast.LENGTH_LONG).show();
                     btn_report.setEnabled(true);
                 }
 
@@ -1387,7 +1414,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
             public void onFinished() {
             }
         });
-
+*/
     }
 
 

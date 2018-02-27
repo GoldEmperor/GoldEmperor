@@ -90,6 +90,7 @@ public class ContentActivity extends AppCompatActivity {
     private Activity act;
     private SharedPreferences dataPref;
     private SharedPreferences.Editor dataEditor;
+    String SystemModel = SystemUtil.getSystemModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +138,7 @@ public class ContentActivity extends AppCompatActivity {
                 //Toast.makeText(mContext, "positon:" + position, Toast.LENGTH_LONG).show();
             }
         });
+
 
         chenckBtn = (FancyButton) findViewById(R.id.btn_check);
         chenckBtn.setIconResource(R.drawable.btn_material);
@@ -238,7 +240,6 @@ public class ContentActivity extends AppCompatActivity {
         btn_cxstockin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String SystemModel = SystemUtil.getSystemModel();
                 Log.e("jindi", "手机型号：" + SystemModel);
                 if (SystemModel.equals("MT65") || SystemModel.equals("NLS-MT66")) {
                     Intent i = new Intent(mContext, com.goldemperor.CxStockIn.CxStockInActivity.class);
@@ -319,7 +320,7 @@ public class ContentActivity extends AppCompatActivity {
         netStatus = (TextView) findViewById(R.id.netStatus);
         netStatus.setText("当前网络:内网");
         define.isWaiNet = false;
-        define.Net1= define.IP798341;
+        define.Net1 = define.IP798341;
         define.Net2 = define.IP798012;
 
         define.Net3 = define.IP798020;
@@ -345,7 +346,7 @@ public class ContentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 define.isWaiNet = false;
-                define.Net1= define.IP798341;
+                define.Net1 = define.IP798341;
                 define.Net2 = define.IP798012;
 
                 define.Net3 = define.IP798020;
@@ -360,8 +361,8 @@ public class ContentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 define.isWaiNet = false;
 
-                define.Net1= define.IP799999;
-                define.Net2=define.IP798056;
+                define.Net1 = define.IP799999;
+                define.Net2 = define.IP798056;
 
                 define.Net3 = define.IP798020;
                 define.Net4 = define.IP798083;
@@ -372,6 +373,11 @@ public class ContentActivity extends AppCompatActivity {
                 netStatus.setText("当前网络:测试库");
             }
         });
+
+        if (SystemModel.equals("MT65") || SystemModel.equals("NLS-MT66")) {
+            sib.setVisibility(View.GONE);
+            ceBtn.setVisibility(View.GONE);
+        }
 
         UpdataAPK();
         version = (TextView) findViewById(R.id.version);

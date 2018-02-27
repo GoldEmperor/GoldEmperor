@@ -256,8 +256,33 @@
                     fancy:fb_text="设置"
                     fancy:fb_textColor="#FFFFFF">
 
-
                 </mehdi.sakout.fancybuttons.FancyButton>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:weightSum="4">
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/btn_gylx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    fancy:fb_borderColor="#FFFFFF"
+                    fancy:fb_borderWidth="2dp"
+                    fancy:fb_defaultColor="#00ff00"
+                    fancy:fb_focusColor="#8cc9f8"
+                    fancy:fb_fontIconSize="25sp"
+                    fancy:fb_iconPosition="top"
+                    fancy:fb_radius="10dp"
+                    fancy:fb_text="工艺路线变更"
+                    fancy:fb_textColor="#FFFFFF" />
+
+
             </LinearLayout>
         </LinearLayout>
 

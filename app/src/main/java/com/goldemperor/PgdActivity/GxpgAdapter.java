@@ -121,7 +121,9 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
 
     @Override
     public void onBindViewHolder(GxpgAdapter.DefaultViewHolder holder, int position) {
-        holder.setData(ls.get(position), position);
+        if(gxpgActivity.sc_ProcessWorkCardEntryList!=null&&gxpgActivity.sc_ProcessWorkCardEntryList.size()>0) {
+            holder.setData(ls.get(position), position);
+        }
     }
 
     static class DefaultViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -241,38 +243,13 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
         }
 
         public void setData(final ProcessWorkCardPlanEntry p, final int position) {
-            /*
-            if (CheckBoxList.get(position) == 1) {
-                checkBox.setChecked(true);
-            } else {
-                checkBox.setChecked(false);
 
-            }
-
-            checkBox.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
-                @Override
-                public void onChange(boolean checked) {
-                    if (checked) {
-                        CheckBoxList.set(getAdapterPosition(), 1);
-                    } else {
-                        CheckBoxList.set(getAdapterPosition(), 0);
-                    }
-                }
-            });
-     */
-            //if (gxpgActivity.readyRecordCount!=null&&gxpgActivity.readyRecordCount.get(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFprocessnumber() + String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFempid()))!=null) {
-                //tv_readyRecordCount.setText(String.valueOf(gxpgActivity.readyRecordCount.get(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFprocessnumber() + String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFempid())).intValue()));
-                //Log.e("jindi",""+ gxpgActivity.readyRecordCount.get(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFprocessnumber() + String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFempid())));
-            //}
-            //else{
-              //  tv_readyRecordCount.setText("0");
-            //}
             tv_fmustqty.setText(String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFmustqty().intValue()));
             tv_readyRecordCount.setText(String.valueOf((int)gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getReportedqty()));
             if (getAdapterPosition() < gxpgActivity.sc_ProcessWorkCardEntryList.size()) {
 
                 tv_noReportednumber.setText(String.valueOf(gxpgActivity.sc_ProcessWorkCardEntryList.get(getAdapterPosition()).getFfinishqty().intValue()));
-
+                gxpgActivity.sc_ProcessWorkCardEntryList.get(position).setFpreschedulingqty((int)gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFpreschedulingqty());
                 edit_dispatchingnumber.setText(String.valueOf((int)gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getFpreschedulingqty()));
 
                 edit_dispatchingnumber.addTextChangedListener(new TextWatcher() {
@@ -315,7 +292,7 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                                     }
 
                                 }
-
+                                Log.e("jindi","count:"+count+" mustqty:"+p.getFmustqty());
                                 //超标就将数量设为0
                                 if (count > p.getFmustqty().floatValue()) {
                                     //Log.e("jindi", "afterTextChanged:" + getAdapterPosition());
@@ -414,7 +391,6 @@ public class GxpgAdapter extends SwipeMenuAdapter<GxpgAdapter.DefaultViewHolder>
                                 }).show();
                     }
                 });
-                int alreadyNoreportedNumberCount = PgdActivity.selectWorkCardPlan.getAlreadynumberCount() - p.getFfinishqty().intValue();
             }
             if (!gxpgActivity.sc_ProcessWorkCardEntryList.get(position).getIsOpen()) {
                 ScrollView.setBackgroundColor(Color.parseColor("#C0C0C0"));
