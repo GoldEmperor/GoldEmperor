@@ -1378,7 +1378,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         params.addBodyParameter("UserID", dataPref.getString(define.SharedUserId, "0"));
         params.addBodyParameter("suitID", define.suitID);
         //Utils.e("jindi", params.toString());
-    /*
+
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -1414,7 +1414,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
             public void onFinished() {
             }
         });
-*/
+
     }
 
 
