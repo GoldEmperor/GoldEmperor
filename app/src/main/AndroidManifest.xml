@@ -304,6 +304,13 @@
         </activity>
 
         <activity
+            android:name="com.goldemperor.GylxActivity.GylxActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="工艺路线"
+            android:screenOrientation="landscape">
+        </activity>
+
+        <activity
             android:name="com.goldemperor.CxStockIn.CxLoginActivity"
             android:configChanges="orientation"
             android:label="@string/cxstockin_form_name"

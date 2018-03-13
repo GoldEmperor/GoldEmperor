@@ -102,7 +102,6 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
         TextView tv_materialcode;
         TextView tv_materialname;
         TextView tv_unit;
-        TextView tv_batch;
         TextView tv_planstarttime;
         TextView tv_count;
 
@@ -119,6 +118,8 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
         TextView tv_reportednotInnumber;
 
         TextView tv_mapnumber;
+
+        TextView tv_gylx;
 
         public DefaultViewHolder(View itemView) {
             super(itemView);
@@ -141,13 +142,14 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
             tv_group = (TextView) itemView.findViewById(R.id.tv_group);
             tv_style = (TextView) itemView.findViewById(R.id.tv_style);
 
+            tv_gylx = (TextView) itemView.findViewById(R.id.tv_gylx);
+
             tv_alreadynumber= (TextView) itemView.findViewById(R.id.tv_alreadynumber);
             tv_nonumber= (TextView) itemView.findViewById(R.id.tv_nonumber);
 
             tv_materialcode = (TextView) itemView.findViewById(R.id.tv_materialcode);
             tv_materialname = (TextView) itemView.findViewById(R.id.tv_materialname);
             tv_unit = (TextView) itemView.findViewById(R.id.tv_unit);
-            tv_batch = (TextView) itemView.findViewById(R.id.tv_batch);
             tv_planstarttime = (TextView) itemView.findViewById(R.id.tv_planstarttime);
             tv_planendtime = (TextView) itemView.findViewById(R.id.tv_planendtime);
             tv_status= (TextView) itemView.findViewById(R.id.tv_status);
@@ -177,11 +179,10 @@ public class PgdAdapter extends SwipeMenuAdapter<PgdAdapter.DefaultViewHolder> {
             }
             tv_group.setText(o.getFgroup());
             tv_style.setText(o.getPlantbody());
-
+            tv_gylx.setText(o.getRoutebillnumber());
             tv_materialcode.setText(o.getMaterialcode());
             tv_materialname.setText(o.getMaterialname());
             tv_unit.setText(o.getUnit());
-            tv_batch.setText(o.getBatch());
 
 
             tv_alreadynumber.setText(String.valueOf(o.getAlreadynumberCount()));

@@ -122,12 +122,19 @@ public class define {
 
     public static final String SetWorkCardCloseStatus ="ErpForAndroidStockServer.asmx/SetWorkCardCloseStatus";
 
+    public static final String GetPrdRouteInfo ="ErpForMesServer.asmx/GetPrdRouteInfo";
+
+    public static final String SavePrdRouteEntry ="ErpForMesServer.asmx/SavePrdRouteEntry";
+
+    public static final String DeletePrdRouteEntryByFID ="ErpForMesServer.asmx/DeletePrdRouteEntryByFID";
+
     public static final String GetEmpByDeptID = "wechatMvn/mes/GetEmpByDeptID.do";
 
     public static final String GetEmpByFNumber = "wechatMvn/mes/GetEmpByFNumber.do";
 
 
     public static final String GetRouteEntryBody = "wechatMvn/android/getRouteEntryBody.do";
+
 
     public static final String GetWorkPlanMaterial = "wechatMvn/android/getWorkPlanMaterial.do";
 

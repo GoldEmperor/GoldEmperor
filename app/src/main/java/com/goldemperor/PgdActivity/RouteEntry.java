@@ -2,7 +2,7 @@ package com.goldemperor.PgdActivity;
 
 import java.math.BigDecimal;
 
-public class RouteEntry {
+public class RouteEntry implements Cloneable{
     private Integer fentryid;//分录ID
 
     private Integer finterid;
@@ -21,9 +21,29 @@ public class RouteEntry {
 
     private String fprocessname;//工序名称
 
-    private BigDecimal fprice;//工价
+    private float fprice;//工价
 
     private String fnote;//备注
+
+    private long fid;
+
+    private long fcoefficient;
+
+    public long getFcoefficient() {
+        return fcoefficient;
+    }
+
+    public void setFcoefficient(long fcoefficient) {
+        this.fcoefficient = fcoefficient;
+    }
+
+    public long getFid() {
+        return fid;
+    }
+
+    public void setFid(long fid) {
+        this.fid = fid;
+    }
 
     public Integer getFentryid() {
         return fentryid;
@@ -97,11 +117,11 @@ public class RouteEntry {
         this.fprocessname = fprocessname == null ? null : fprocessname.trim();
     }
 
-    public BigDecimal getFprice() {
+    public float getFprice() {
         return fprice;
     }
 
-    public void setFprice(BigDecimal fprice) {
+    public void setFprice(float fprice) {
         this.fprice = fprice;
     }
 
@@ -111,5 +131,15 @@ public class RouteEntry {
 
     public void setFnote(String fnote) {
         this.fnote = fnote == null ? null : fnote.trim();
+    }
+
+    public Object clone() {
+        RouteEntry o = null;
+        try {
+            o = (RouteEntry) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return o;
     }
 }

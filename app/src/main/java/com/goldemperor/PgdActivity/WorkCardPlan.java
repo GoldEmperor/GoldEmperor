@@ -140,7 +140,25 @@ public class WorkCardPlan {
 
     private boolean fcanreportbynostockin;
 
+    private String routebillname;
 
+    private String routebillnumber;
+
+    public String getRoutebillnumber() {
+        return routebillnumber.toUpperCase();
+    }
+
+    public void setRoutebillnumber(String routebillnumber) {
+        this.routebillnumber = routebillnumber.toUpperCase();
+    }
+
+    public String getRoutebillname() {
+        return routebillname.toUpperCase();
+    }
+
+    public void setRoutebillname(String routebillname) {
+        this.routebillname = routebillname.toUpperCase();
+    }
 
     public boolean getFcanreportbynostockin() {
         return fcanreportbynostockin;

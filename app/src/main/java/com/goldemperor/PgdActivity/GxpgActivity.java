@@ -173,7 +173,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
     //已计工数
     //public static HashMap<String, Float> readyRecordCount = new HashMap<>();
     //List<cj_processoutputentry> OutputList;
-
+    private  boolean hasCloseGx=false;//如果有关闭工序先提示保存
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -425,37 +425,38 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         btn_report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder normalDialog =
-                        new AlertDialog.Builder(act);
-                normalDialog.setTitle("提示");
-                normalDialog.setMessage("你确定要对工序计工?");
-                normalDialog.setPositiveButton("确定",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (!checkJobNumber()) {
-                                    if (norecord > 0) {
-                                        if (!checkReportNumber(false)) {
-                                            btn_report.setEnabled(false);
-                                            Toast.makeText(mContext, "工序汇报中...", Toast.LENGTH_LONG).show();
-                                            RecordProductionCount();
+                if(!hasCloseGx) {
+                    final AlertDialog.Builder normalDialog =
+                            new AlertDialog.Builder(act);
+                    normalDialog.setTitle("提示");
+                    normalDialog.setMessage("你确定要对工序计工?");
+                    normalDialog.setPositiveButton("确定",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (!checkJobNumber()) {
+                                        if (norecord > 0) {
+                                            if (!checkReportNumber(false)) {
+                                                btn_report.setEnabled(false);
+                                                Toast.makeText(mContext, "工序汇报中...", Toast.LENGTH_LONG).show();
+                                                RecordProductionCount();
+                                            }
+                                        } else {
+                                            Toast.makeText(mContext, "无法计工，未计工数为0", Toast.LENGTH_LONG).show();
                                         }
-                                    } else {
-                                        Toast.makeText(mContext, "无法计工，未计工数为0", Toast.LENGTH_LONG).show();
                                     }
                                 }
-                            }
-                        });
-                normalDialog.setNegativeButton("取消",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
+                            });
+                    normalDialog.setNegativeButton("取消",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
 
-                normalDialog.show();
-
+                    normalDialog.show();
+                }
 
             }
         });
@@ -664,10 +665,12 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
 
 
             if (!selectWorkCardPlan.getFcanreportbynostockin()) {
-                if (count > gxpgActivity.norecord && !message.contains(gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname())) {
-                    message += "【" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessnumber() + "】" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname() + ",超过汇报数:" + (gxpgActivity.norecord - count) + "\n";
-                } else if (count < gxpgActivity.norecord && !message.contains(gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname())) {
-                    message += "【" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessnumber() + "】" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname() + ",少于汇报数:" + (gxpgActivity.norecord - count) + "\n";
+                if(gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getIsOpen()) {
+                    if (count > gxpgActivity.norecord && !message.contains(gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname())) {
+                        message += "【" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessnumber() + "】" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname() + ",超过汇报数:" + (gxpgActivity.norecord - count) + "\n";
+                    } else if (count < gxpgActivity.norecord && !message.contains(gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname())) {
+                        message += "【" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessnumber() + "】" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname() + ",少于汇报数:" + (gxpgActivity.norecord - count) + "\n";
+                    }
                 }
                 /*
                 else if (count + OutputCount > Havedispatchingnumber && !message.contains(gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname())) {
@@ -675,8 +678,10 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 }
                 */
             } else {
-                if (count + OutputCount > Havedispatchingnumber && !message.contains(gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname())) {
-                    message += "【" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessnumber() + "】" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname() + ",超过总数:" + (Havedispatchingnumber - count - OutputCount) + "\n";
+                if(gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getIsOpen()) {
+                    if (count + OutputCount > Havedispatchingnumber && !message.contains(gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname())) {
+                        message += "【" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessnumber() + "】" + gxpgActivity.sc_ProcessWorkCardEntryList.get(i).getFprocessname() + ",超过总数:" + (Havedispatchingnumber - count - OutputCount) + "\n";
+                    }
                 }
             }
         }
@@ -787,6 +792,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                         tv_number.setText("派工单号:" + gxpgs.getData().get(0).getProcessbillnumber().toUpperCase());
                         tv_planbill.setText("计划跟踪号:" + selectWorkCardPlan.getPlanbill());
                         tv_style.setText("工厂型体:" + gxpgs.getData().get(0).getPlantbody().toUpperCase());
+
                         top_havedispatchingnumber.setText("剩余派工数:" + (int) gxpgs.getData().get(0).getFsourceqty());
                         Havedispatchingnumber = (int) gxpgs.getData().get(0).getFsourceqty();
                         for (int i = 0; i < gxpgs.getData().size(); i++) {
@@ -1293,6 +1299,11 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
 
         for (int i = 0; i < sc_ProcessWorkCardEntryList.size(); i++) {
             sc_ProcessWorkCardEntryList.get(i).setFentryid(i + 1);
+            //关闭程序设成0
+            if(!sc_ProcessWorkCardEntryList.get(i).getIsOpen()){
+                sc_ProcessWorkCardEntryList.get(i).setFfinishqty(new BigDecimal(0));
+                sc_ProcessWorkCardEntryList.get(i).setFqty(new BigDecimal(0));
+            }
         }
 
 
@@ -1319,6 +1330,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                     //提交成功后刷新
                     getData(sc_ProcessWorkCardEntryList.get(0).getFinterid().intValue());
                     selectWorkCardPlan.setPlanStatus("已排");
+                    hasCloseGx=false;
                 } else {
                     Alerter.create(act)
                             .setTitle("提示")
@@ -1365,12 +1377,24 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
 
         //设置qty计工数为finishqty界面上的操作数
         for (int i = 0; i < sc_ProcessWorkCardEntryList.size(); i++) {
+            //关闭程序设成0
+            if(!sc_ProcessWorkCardEntryList.get(i).getIsOpen()){
+                sc_ProcessWorkCardEntryList.get(i).setFfinishqty(new BigDecimal(0));
+            }
             sc_ProcessWorkCardEntryList.get(i).setFqty(sc_ProcessWorkCardEntryList.get(i).getFfinishqty());
             sc_ProcessWorkCardEntryList.get(i).setFmustqty(sc_ProcessWorkCardEntryList.get(i).getFfinishqty());
         }
 
         Gson g = new Gson();
-        List<Sc_ProcessWorkCardEntryNative> sc_ProcessWorkCardEntryListNative = GsonFactory.jsonToArrayList(g.toJson(sc_ProcessWorkCardEntryList), Sc_ProcessWorkCardEntryNative.class);
+
+        //过滤已关闭工序
+        List<Sc_ProcessWorkCardEntry> sc_ProcessWorkCardEntryListTemp=new ArrayList<Sc_ProcessWorkCardEntry>();
+        for(int i=0;i<sc_ProcessWorkCardEntryList.size();i++){
+            if(sc_ProcessWorkCardEntryList.get(i).getIsOpen()){
+                sc_ProcessWorkCardEntryListTemp.add(sc_ProcessWorkCardEntryList.get(i));
+            }
+        }
+        List<Sc_ProcessWorkCardEntryNative> sc_ProcessWorkCardEntryListNative = GsonFactory.jsonToArrayList(g.toJson(sc_ProcessWorkCardEntryListTemp), Sc_ProcessWorkCardEntryNative.class);
         Collections.reverse(sc_ProcessWorkCardEntryListNative);
         Utils.e("jindi", "RecordProductionCount:"+g.toJson(sc_ProcessWorkCardEntryListNative));
 
@@ -1657,6 +1681,9 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 for (int i = 0; i < sc_ProcessWorkCardEntryList.size(); i++) {
                     if (sc_ProcessWorkCardEntryList.get(i).getFprocessname().equals(sc_ProcessWorkCardEntryList.get(adapterPosition).getFprocessname())) {
                         sc_ProcessWorkCardEntryList.get(i).setIsOpen(false);
+                        sc_ProcessWorkCardEntryList.get(i).setFqty(new BigDecimal(0));
+                        sc_ProcessWorkCardEntryList.get(i).setFfinishqty(new BigDecimal(0));
+                        sc_ProcessWorkCardEntryList.get(i).setFpreschedulingqty(0f);
                         mMenuAdapter.notifyItemChanged(i);
                     }
                 }
@@ -1674,7 +1701,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 gxpgSwitch.setStyle(processWorkCardPlanEntryList.get(adapterPosition).getPlantbody());
                 gxpgSwitch.setProcessname(sc_ProcessWorkCardEntryList.get(adapterPosition).getFprocessname());
                 gxpgSwitch.setOpen(false);
-
+                hasCloseGx=true;
 
                 try {
                     dbManager.save(gxpgSwitch);

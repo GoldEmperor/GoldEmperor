@@ -177,6 +177,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_showDate"
+        android:background="#C0FF3E"
         android:scrollbars="none">
 
         <LinearLayout
@@ -195,6 +196,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
                 android:text="计划跟踪号"
+                android:textColor="#000000"
                 android:textSize="20dp" />
 
             <TextView
@@ -202,6 +204,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="工厂型体"
+                android:textColor="#000000"
                 android:textSize="20dp" />
 
             <TextView
@@ -209,6 +212,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="客人货号"
+                android:textColor="#000000"
                 android:textSize="20dp" />
 
             <TextView
@@ -216,6 +220,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="订单总量"
+                android:textColor="#000000"
                 android:textSize="20dp" />
 
             <TextView
@@ -224,6 +229,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
                 android:text="派工单号"
+                android:textColor="#000000"
                 android:textSize="20dp" />
 
 
@@ -232,13 +238,23 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="派工日期"
+                android:textColor="#000000"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/tv_gylx"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="工艺路线"
+                android:textColor="#000000"
                 android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/tv_materialcode"
-                android:layout_width="200dp"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:text="物料代码"
+                android:textColor="#000000"
                 android:textSize="20dp" />
 
             <TextView
@@ -246,6 +262,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="物料名称"
+                android:textColor="#000000"
                 android:textSize="20dp" />
 
             <TextView
@@ -253,6 +270,7 @@
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:text="单位"
+                android:textColor="#000000"
                 android:textSize="20dp" />
 
             <TextView
@@ -261,6 +279,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="尺码"
+                android:textColor="#000000"
                 android:textSize="20dp" />
 
             <TextView
@@ -268,6 +287,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="合计"
+                android:textColor="#000000"
                 android:textSize="20dp" />
 
             <TextView
@@ -275,6 +295,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="已汇报数量"
+                android:textColor="#000000"
                 android:textSize="20dp" />
 
             <TextView
@@ -282,6 +303,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="已汇报未计工数"
+                android:textColor="#000000"
                 android:textSize="20dp" />
 
             <TextView
@@ -289,6 +311,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="已汇报未入库数"
+                android:textColor="#000000"
                 android:textSize="20dp" />
 
             <TextView
@@ -296,6 +319,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="已入库数"
+                android:textColor="#000000"
                 android:textSize="20dp" />
 
             <TextView
@@ -303,6 +327,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="未入库数"
+                android:textColor="#000000"
                 android:textSize="20dp" />
 
             <TextView
@@ -310,13 +335,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="组别"
-                android:textSize="20dp" />
-
-            <TextView
-                android:id="@+id/tv_batch"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:text="批次"
+                android:textColor="#000000"
                 android:textSize="20dp" />
 
             <TextView
@@ -324,6 +343,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="计划开工日期"
+                android:textColor="#000000"
                 android:textSize="20dp" />
 
             <TextView
@@ -331,6 +351,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="计划完工日期"
+                android:textColor="#000000"
                 android:textSize="20dp" />
 
             <TextView
@@ -338,6 +359,7 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="派工单状态"
+                android:textColor="#000000"
                 android:textSize="20dp" />
 
         </LinearLayout>

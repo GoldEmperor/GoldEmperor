@@ -26,6 +26,7 @@ import com.goldemperor.Banner.ViewFindUtils;
 import com.goldemperor.CCActivity.CCListActivity;
 import com.goldemperor.CxStockIn.android.NetworkHelper;
 import com.goldemperor.GxReport.GxReport;
+import com.goldemperor.GylxActivity.GylxActivity;
 import com.goldemperor.LoginActivity.LoginActivity;
 import com.goldemperor.PgdActivity.PgdActivity;
 import com.goldemperor.Public.SystemUtil;
@@ -71,6 +72,8 @@ public class ContentActivity extends AppCompatActivity {
     private FancyButton btn_supperinstock;
 
     private FancyButton btn_cc;
+
+    private FancyButton btn_gylx;
 
     private FancyButton setBtn;
 
@@ -185,6 +188,16 @@ public class ContentActivity extends AppCompatActivity {
 
         setBtn.setIconResource(R.drawable.btn_set);
 
+        btn_gylx = (FancyButton) findViewById(R.id.btn_gylx);
+
+        btn_gylx.setIconResource(R.drawable.btn_set);
+
+        btn_gylx.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getControl("401040304");
+            }
+        });
 
         btn_cc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -445,6 +458,9 @@ public class ContentActivity extends AppCompatActivity {
                         mContext.startActivity(i);
                     } else if (controlID.equals("1050501")) {
                         Intent i = new Intent(mContext, com.goldemperor.ScReport.ScReportActivity.class);
+                        mContext.startActivity(i);
+                    }else if (controlID.equals("401040304")) {
+                        Intent i = new Intent(mContext, GylxActivity.class);
                         mContext.startActivity(i);
                     }
                 } else {
