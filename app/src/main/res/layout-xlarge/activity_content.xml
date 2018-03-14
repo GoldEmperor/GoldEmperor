@@ -235,6 +235,11 @@
                     fancy:fb_radius="10dp"
                     fancy:fb_text="工艺路线变更"
                     fancy:fb_textColor="#FFFFFF" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="10dp">
 
                 <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/btn_set"
@@ -251,7 +256,6 @@
                     fancy:fb_text="设置"
                     fancy:fb_textColor="#FFFFFF"/>
             </LinearLayout>
-
         </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
