@@ -245,6 +245,7 @@
                     android:id="@+id/btn_set"
                     android:layout_width="120dp"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginRight="10dp"
                     fancy:fb_borderColor="#FFFFFF"
                     fancy:fb_borderWidth="2dp"
