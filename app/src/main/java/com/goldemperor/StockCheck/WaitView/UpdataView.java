@@ -119,7 +119,7 @@ public class UpdataView extends TakePhotoFragment {
             public void onClick(View v) {
                 List<People> list = new ArrayList<>();
                 list.add(new People(define.TAKE_PHOTO, "拍照"));
-                //list.add(new People(define.SELECT_PHOTO, "从相册选择"));
+                list.add(new People(define.SELECT_PHOTO, "从相册选择"));
                 new SuperDialog.Builder(act)
                         //.setAlpha(0.5f)
                         //.setGravity(Gravity.CENTER)
@@ -350,7 +350,9 @@ public class UpdataView extends TakePhotoFragment {
             // 拷贝图片,最后通知图库更新
             //复制文件到huayifu目录
             final String fileName = System.currentTimeMillis() + ".jpg";
-            final File file = new File(Environment.getExternalStorageDirectory(), "/jindi/" + fileName);
+            final File file = new File(Environment.getExternalStorageDirectory(), "/pictures/" + fileName);
+            Log.e("jindi","takeSuccess:"+file.toString());
+
             act.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + file)));
             if (!file.getParentFile().exists()) {
                 file.getParentFile().mkdirs();

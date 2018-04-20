@@ -27,6 +27,14 @@ public class LogToFile {
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat(" yyyy-MM-dd HH:mm:ss", Locale.US);//日期格式;
 
+    private static SimpleDateFormat dateFormat2 = new SimpleDateFormat(" yyyy-MM-dd HH-mm-ss", Locale.US);//日期格式;
+
+    private static SimpleDateFormat dateFormaty = new SimpleDateFormat("yyyy", Locale.US);//日期格式;
+
+    private static SimpleDateFormat dateFormatm = new SimpleDateFormat("MM", Locale.US);//日期格式;
+
+    private static SimpleDateFormat dateFormatd = new SimpleDateFormat("dd", Locale.US);//日期格式;
+
     private static Date date = new Date();//因为log日志是使用日期命名的，使用静态成员变量主要是为了在整个程序运行期间只存在一个.log文件中;
 
     public static String WordCardId = "0";
@@ -37,7 +45,7 @@ public class LogToFile {
      * @param context
      */
     public static void init(Context context) {
-        logPath = getFilePath(context) + "/MESLogs";//获得文件储存路径,在后面加"/Logs"建立子文件夹
+        logPath = getFilePath(context) + "/MESLogs" + "/" + dateFormaty.format(date) + "/" + dateFormatm.format(date);//获得文件储存路径,在后面加"/Logs"建立子文件夹
     }
 
     /**
@@ -100,16 +108,17 @@ public class LogToFile {
             return;
         }
 
-        String fileName = logPath + "/" + WordCardId + ".txt";//log日志名，使用时间命名，保证不重复
+        String fileName = logPath + "/" + WordCardId + dateFormat2.format(date) + ".txt";//log日志名，使用时间命名，保证不重复
 
         //String log = dateFormat.format(date) + " " + type + " " + tag + " " + msg + "\n";//log日志内容，可以自行定制
 
-        String log = dateFormat.format(date) + " " + msg+ "\n";;//log日志内容，可以自行定制
+        String log = dateFormat.format(date) + " " + msg + "\n";
+        ;//log日志内容，可以自行定制
 
         //如果父路径不存在
         File file = new File(logPath);
-        Log.e("jindi","LogPath:"+logPath);
-        Log.e("jindi","fileName:"+fileName);
+        Log.e("jindi", "LogPath:" + logPath);
+        Log.e("jindi", "fileName:" + fileName);
         if (!file.exists()) {
             file.mkdirs();//创建父路径
         }
@@ -119,7 +128,7 @@ public class LogToFile {
         try {
 
             fos = new FileOutputStream(fileName, true);//这里的第二个参数代表追加还是覆盖，true为追加，flase为覆盖
-            bw = new BufferedWriter(new OutputStreamWriter(fos,"GBK"));
+            bw = new BufferedWriter(new OutputStreamWriter(fos,"UTF-8"));
             bw.write(log);
 
         } catch (FileNotFoundException e) {

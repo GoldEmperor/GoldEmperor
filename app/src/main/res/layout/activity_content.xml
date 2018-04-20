@@ -185,14 +185,14 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:weightSum="4">
 
                 <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/btn_process_sc"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
@@ -209,7 +209,7 @@
 
                 <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/btn_xjdcheck"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
@@ -226,7 +226,7 @@
 
                 <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/btn_cc"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
@@ -243,8 +243,9 @@
 
                 <mehdi.sakout.fancybuttons.FancyButton
                     android:id="@+id/btn_set"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
                     android:layout_weight="1"
                     fancy:fb_borderColor="#FFFFFF"
                     fancy:fb_borderWidth="2dp"

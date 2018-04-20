@@ -94,7 +94,12 @@ public class GxReportScan extends AppCompatActivity implements QRCodeView.Delega
 
     @Override
     public void onScanQRCodeSuccess(String result) {
-        Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
+        Alerter.create(mActivity)
+                .setTitle("提示")
+                .setText("扫描成功"+result)
+                .setBackgroundColorRes(R.color.colorAlert)
+                .show();
+
         vibrate();
         boolean flag = true;
         for (int i = 0; i < QRCodeList.size(); i++) {
@@ -104,10 +109,8 @@ public class GxReportScan extends AppCompatActivity implements QRCodeView.Delega
         }
         if (flag && result.length() > 10) {
 
-            String path = define.GetScProcessWorkCardInfoBysuitID;
-            if (define.isWaiNet) {
-                path = define.WaiGetScProcessWorkCardInfoBysuitID;
-            }
+            String path = define.Net2+define.GetScProcessWorkCardInfoBysuitID;
+
             RequestParams params = new RequestParams(path);
             params.setConnectTimeout(60000);
             params.setReadTimeout(60000);

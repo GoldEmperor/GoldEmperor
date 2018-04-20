@@ -43,8 +43,10 @@ public class TakePhotoHelper {
     private String fileName;
     public void init(com.jph.takephoto.app.TakePhoto takePhoto, int type, boolean rbCropYes, int etLimit, int etCropWidth, int etHeightPx) {
         fileName =System.currentTimeMillis() + ".jpg";
-        file=new File(Environment.getExternalStorageDirectory(), "/jindi/"+fileName);
-        if (!file.getParentFile().exists())file.getParentFile().mkdirs();
+        file=new File(Environment.getExternalStorageDirectory(), "/pictures/"+fileName);
+        if (!file.getParentFile().exists()){
+            file.getParentFile().mkdirs();
+        }
         Uri imageUri = Uri.fromFile(file);
 
 

@@ -4,15 +4,13 @@ import java.math.BigDecimal;
 
 public class Log_ProcessOutPutEntry {
 
-    private String outputdate;//汇报日期;
-
     private Integer fempid;//员工ID
 
     private String fprocessnumber;//工序编码
 
     private String fprocessname;//工序名称
 
-    private String femp;//员工
+    private String name;//员工
 
     private BigDecimal fqty;//汇报数量
 
@@ -24,14 +22,6 @@ public class Log_ProcessOutPutEntry {
 
     public void setIsOpen(boolean isOpen) {
         this.isOpen = isOpen;
-    }
-
-    public String getOutputdate() {
-        return outputdate;
-    }
-
-    public void setOutputdate(String outputdate) {
-        this.outputdate = outputdate;
     }
 
     public Integer getFempid() {
@@ -59,12 +49,12 @@ public class Log_ProcessOutPutEntry {
         this.fprocessname = fprocessname == null ? null : fprocessname.trim();
     }
 
-    public String getFemp() {
-        return femp;
+    public String getName() {
+        return name;
     }
 
-    public void setFemp(String femp) {
-        this.femp = femp == null ? null : femp.trim();
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
 

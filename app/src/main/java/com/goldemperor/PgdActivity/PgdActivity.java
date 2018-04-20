@@ -375,7 +375,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                         .setTextColor(Color.WHITE)
                         .setWidth(width)
                         .setHeight(height);
-                //swipeRightMenu.addMenuItem(addItem); // 添加一个按钮到右侧菜单。
+                swipeRightMenu.addMenuItem(addItem); // 添加一个按钮到右侧菜单。
 
             }
 
@@ -465,6 +465,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
     public void DeleteScProcessWorkCard(final WorkCardPlan wp) {
         RequestParams params = new RequestParams(define.Net2 + define.DeleteScProcessWorkCard);
         params.addQueryStringParameter("FWorkCardID", String.valueOf(wp.getFinterid()));
+        Log.e("jindi",params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -486,7 +487,8 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
                     }
 
                 } else {
-                    Toast.makeText(mContext, "删除下游工序失败，下游的工序派工单已有对应的工序汇报单", Toast.LENGTH_LONG).show();
+                    String ReturnMsg = result.substring(result.indexOf("ReturnMsg"), result.indexOf(",")).replace("ReturnMsg\":", "").replace("\"", "");
+                    Toast.makeText(mContext, ReturnMsg, Toast.LENGTH_LONG).show();
                 }
 
             }

@@ -145,15 +145,11 @@ public class define {
 
     public static final String UpdateXML = "AndroidUpdate/GoldEmperor/update.xml";
 
-    public static final String GetScProcessWorkCardInfoBysuitID= IP798012+"ErpForAndroidStockServer.asmx/GetScProcessWorkCardInfoBysuitID";
-
-    public static final String WaiGetScProcessWorkCardInfoBysuitID = IP1718012+"ErpForAndroidStockServer.asmx/GetScProcessWorkCardInfoBysuitID";
+    public static final String GetScProcessWorkCardInfoBysuitID= "ErpForAndroidStockServer.asmx/GetScProcessWorkCardInfoBysuitID";
 
 
 
-    public static final String SubmitProcessBarCode2CollectBill = IP798012+"ErpForAndroidStockServer.asmx/SubmitProcessBarCode2CollectBill";
-
-    public static final String WaiSubmitProcessBarCode2CollectBill = IP1718012+"ErpForAndroidStockServer.asmx/SubmitProcessBarCode2CollectBill";
+    public static final String SubmitProcessBarCode2CollectBill ="ErpForAndroidStockServer.asmx/SubmitProcessBarCode2CollectBill";
 
 
 

@@ -1,5 +1,6 @@
 package com.goldemperor.MainActivity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -331,13 +332,13 @@ public class ContentActivity extends AppCompatActivity {
             }
         });
         netStatus = (TextView) findViewById(R.id.netStatus);
-        netStatus.setText("当前网络:内网");
-        define.isWaiNet = false;
-        define.Net1 = define.IP798341;
-        define.Net2 = define.IP798012;
+        netStatus.setText("当前网络:外网");
+        define.isWaiNet = true;
+        define.Net1 = define.IP1718341;
+        define.Net2 = define.IP1718012;
 
-        define.Net3 = define.IP798020;
-        define.Net4 = define.IP798083;
+        define.Net3 = define.IP1718020;
+        define.Net4 = define.IP1718083;
 
         waiBtn = (Button) findViewById(R.id.btn_wai);
         waiBtn.setOnClickListener(new View.OnClickListener() {
@@ -396,20 +397,22 @@ public class ContentActivity extends AppCompatActivity {
         version = (TextView) findViewById(R.id.version);
         version.setText("当前版本:" + VersionService.getVersionName(act.getBaseContext()));
 
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 201);
 
         if (Environment.getExternalStorageState()
                 .equals(android.os.Environment.MEDIA_MOUNTED)) {
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
                 //申请WRITE_EXTERNAL_STORAGE权限
-                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        201);
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 201);
             }
+
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         switch (requestCode) {
             case 201:
                 if (grantResults.length > 0) {
@@ -459,7 +462,7 @@ public class ContentActivity extends AppCompatActivity {
                     } else if (controlID.equals("1050501")) {
                         Intent i = new Intent(mContext, com.goldemperor.ScReport.ScReportActivity.class);
                         mContext.startActivity(i);
-                    }else if (controlID.equals("401040304")) {
+                    } else if (controlID.equals("401040304")) {
                         Intent i = new Intent(mContext, GylxActivity.class);
                         mContext.startActivity(i);
                     }

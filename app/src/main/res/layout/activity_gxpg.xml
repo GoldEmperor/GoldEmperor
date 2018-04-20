@@ -260,7 +260,22 @@
                 fancy:fb_textSize="20dp" />
 
             <mehdi.sakout.fancybuttons.FancyButton
-                android:id="@+id/btn_dispatchingnumberPublish"
+                android:id="@+id/btn_verify"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:padding="10dp"
+                fancy:fb_borderColor="#FFFFFF"
+                fancy:fb_borderWidth="1dp"
+                fancy:fb_defaultColor="#00feaa"
+                fancy:fb_focusColor="#8cc9f8"
+                fancy:fb_radius="10dp"
+                fancy:fb_text="工序核对"
+                fancy:fb_textColor="#FFFFFF"
+                fancy:fb_textSize="20dp" />
+
+            <mehdi.sakout.fancybuttons.FancyButton
+                android:id="@+id/btn_save"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -270,7 +285,7 @@
                 fancy:fb_defaultColor="#00acfe"
                 fancy:fb_focusColor="#8cc9f8"
                 fancy:fb_radius="10dp"
-                fancy:fb_text="预排发布"
+                fancy:fb_text="暂存"
                 fancy:fb_textColor="#FFFFFF"
                 fancy:fb_textSize="20dp" />
 
@@ -370,7 +385,7 @@
 
             <TextView
                 android:id="@+id/tv_processcode"
-                android:layout_width="80dp"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -391,7 +406,7 @@
 
             <TextView
                 android:id="@+id/tv_userNumber"
-                android:layout_width="150dp"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:text="工号"
                 android:textColor="#000000"

@@ -217,10 +217,8 @@ public class GxReport extends AppCompatActivity implements EasyPermissions.Permi
         }
         Gson g = new Gson();
         String sjlJson = g.toJson(sjl);
-        String path = define.SubmitProcessBarCode2CollectBill;
-        if (define.isWaiNet) {
-            path = define.WaiSubmitProcessBarCode2CollectBill;
-        }
+        String path =define.Net2+ define.SubmitProcessBarCode2CollectBill;
+
         RequestParams params = new RequestParams(path);
         params.setConnectTimeout(60000);
         params.setReadTimeout(60000);
