@@ -536,7 +536,7 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
     public void getData(final String StartTime, final String EndTime) {
         tv_tip.setText("数据载入中...");
         tv_showDate.setText("显示日期:" + StartTime + "到" + EndTime);
-        RequestParams params = new RequestParams(define.Net1 + define.GetWorkCardInfoNew);
+        RequestParams params = new RequestParams(define.Net2 + define.GetWorkCardInfoNew);
         params.setReadTimeout(60000);
         params.setConnectTimeout(60000);
         params.addQueryStringParameter("FStartTime", StartTime);
@@ -546,59 +546,68 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         Log.e("jindi", params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
-            public void onSuccess(final String result) {
-                Log.e("jindi", result);
+            public void onSuccess(String result) {
+                try {
+                    result = URLDecoder.decode(result, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                Utils.e("jindi", result);
+
                 pgdWorkCardPlan.clear();
                 showWorkCardPlan.clear();
-                currentPosition = 0;
-                refreshLayout.setEnableLoadmore(true);
                 List<String> filter = new ArrayList<String>();
-                Gson g = new Gson();
-                PgdResult pgds = g.fromJson(result, PgdResult.class);
-                if (pgds.getData() != null) {
-                    for (int i = 0; i < pgds.getData().size(); i++) {
-                        //Log.e("jindi","deptid:"+pgds.getData().get(i).getFdeptid()+" Deptmentid:"+dataPref.getString(define.SharedFDeptmentid,"none"));
-                        if ((!filter.contains(pgds.getData().get(i).getPlanbill()) || !filter.contains(pgds.getData().get(i).getOrderbill()) && pgds.getData().get(i).getOrderbill().indexOf("J") != 0) && String.valueOf(pgds.getData().get(i).getFdeptid()).equals(FDeptID)) {
-                            filter.add(pgds.getData().get(i).getPlanbill());
-                            filter.add(pgds.getData().get(i).getOrderbill());
-                            //重新遍历,设置尺码,和已入未入库数
-                            int alreadyNumberCount = 0;
-                            int noNumberCount = 0;
-                            for (int j = 0; j < pgds.getData().size(); j++) {
-                                if (pgds.getData().get(j).getPlanbill().equals(pgds.getData().get(i).getPlanbill()) && pgds.getData().get(j).getOrderbill().equals(pgds.getData().get(i).getOrderbill())) {
+                if (result != null && result.contains("[{")) {
+                    result = "{\"data\":" + result.substring(result.indexOf("[{"), result.indexOf("}]")) + "}]}";
+                    Gson g = new Gson();
+                    PgdResult pgds = g.fromJson(result, PgdResult.class);
+                    if (pgds.getData() != null) {
+                        for (int i = 0; i < pgds.getData().size(); i++) {
+                            //Log.e("jindi","deptid:"+pgds.getData().get(i).getFdeptid()+" Deptmentid:"+dataPref.getString(define.SharedFDeptmentid,"none"));
+                            if ((!filter.contains(pgds.getData().get(i).getPlanbill()) || !filter.contains(pgds.getData().get(i).getOrderbill()) && pgds.getData().get(i).getOrderbill().indexOf("J") != 0) && String.valueOf(pgds.getData().get(i).getFdeptid()).equals(dataPref.getString(define.SharedFDeptmentid, "none"))) {
+                                filter.add(pgds.getData().get(i).getPlanbill());
+                                filter.add(pgds.getData().get(i).getOrderbill());
+                                //重新遍历,设置尺码,和已入未入库数
+                                int alreadyNumberCount = 0;
+                                int noNumberCount = 0;
+                                for (int j = 0; j < pgds.getData().size(); j++) {
+                                    if (pgds.getData().get(j).getPlanbill().equals(pgds.getData().get(i).getPlanbill()) && pgds.getData().get(j).getOrderbill().equals(pgds.getData().get(i).getOrderbill())) {
+                                        String[][] s = new String[1][2];
+                                        s[0][0] = pgds.getData().get(j).getFsize();
+                                        s[0][1] = String.valueOf(pgds.getData().get(j).getDispatchingnumber().intValue());
+                                        pgds.getData().get(i).addSize(s);
+                                        alreadyNumberCount += (pgds.getData().get(j).getAlreadynumber() == null ? 0 : pgds.getData().get(j).getAlreadynumber()).intValue();
 
-
-                                    String[][] s = new String[1][2];
-                                    s[0][0] = pgds.getData().get(j).getFsize();
-                                    s[0][1] = String.valueOf(pgds.getData().get(j).getDispatchingnumber().intValue());
-                                    pgds.getData().get(i).addSize(s);
-                                    alreadyNumberCount += (pgds.getData().get(j).getAlreadynumber() == null ? 0 : pgds.getData().get(j).getAlreadynumber()).intValue();
-
-                                    noNumberCount += (pgds.getData().get(j).getNonumber() == null ? 0 : pgds.getData().get(j).getNonumber()).intValue();
-                                    try {
-                                        List<GxpgPlanStatus> gxpgPlanStatusesList = dbManager.selector(GxpgPlanStatus.class).where("planbill", " = ", pgds.getData().get(i).getPlanbill()).and("orderbill", "=", pgds.getData().get(i).getOrderbill()).findAll();
-                                        if (gxpgPlanStatusesList != null && gxpgPlanStatusesList.size() >= 1) {
-                                            pgds.getData().get(i).setPlanStatus("已排");
-                                        } else {
-                                            pgds.getData().get(i).setPlanStatus("未排");
+                                        noNumberCount += (pgds.getData().get(j).getNonumber() == null ? 0 : pgds.getData().get(j).getNonumber()).intValue();
+                                        try {
+                                            List<GxpgPlanStatus> gxpgPlanStatusesList = dbManager.selector(GxpgPlanStatus.class).where("planbill", " = ", pgds.getData().get(i).getPlanbill()).and("orderbill", "=", pgds.getData().get(i).getOrderbill()).findAll();
+                                            if (gxpgPlanStatusesList != null && gxpgPlanStatusesList.size() >= 1) {
+                                                pgds.getData().get(i).setPlanStatus("已排");
+                                            } else {
+                                                pgds.getData().get(i).setPlanStatus("未排");
+                                            }
+                                        } catch (DbException e) {
+                                            e.printStackTrace();
                                         }
-                                    } catch (DbException e) {
-                                        e.printStackTrace();
                                     }
                                 }
+                                pgds.getData().get(i).setAlreadynumberCount(alreadyNumberCount);
+                                pgds.getData().get(i).setNonumberCount(noNumberCount);
+                                pgdWorkCardPlan.add(pgds.getData().get(i));
                             }
-                            pgds.getData().get(i).setAlreadynumberCount(alreadyNumberCount);
-                            pgds.getData().get(i).setNonumberCount(noNumberCount);
-                            pgdWorkCardPlan.add(pgds.getData().get(i));
-
                         }
+                        if (pgdWorkCardPlan.size() == 0) {
+                            tv_tip.setText("暂无数据1");
+                        } else {
+                            tv_tip.setVisibility(View.GONE);
+                        }
+                    } else {
+                        tv_tip.setText("暂无数据2");
                     }
-
-                    tv_tip.setVisibility(View.GONE);
                 } else {
-                    tv_tip.setText("暂无数据");
+                    tv_tip.setText("暂无数据3");
                 }
-                LoadMore();
+                showWorkCardPlan.addAll(pgdWorkCardPlan);
                 mMenuAdapter.notifyDataSetChanged();
                 refreshLayout.finishRefreshing();
             }
@@ -621,91 +630,6 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
             }
         });
 
-    }
-
-
-    public void getData(final String finters) {
-        RequestParams params = new RequestParams(define.Net1 + define.GetWorkCardPlanNew);
-        params.setReadTimeout(60000);
-        params.addQueryStringParameter("paramString", finters);
-        Log.e("jindi", params.toString());
-        x.http().get(params, new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(final String result) {
-
-                Log.e("jindi", result);
-                pgdWorkCardPlan.clear();
-                showWorkCardPlan.clear();
-                currentPosition = 0;
-                refreshLayout.setEnableLoadmore(true);
-                List<String> filter = new ArrayList<String>();
-                Gson g = new Gson();
-                PgdResult pgds = g.fromJson(result, PgdResult.class);
-                if (pgds.getData() != null) {
-                    for (int i = 0; i < pgds.getData().size(); i++) {
-                        //Log.e("jindi","deptid:"+pgds.getData().get(i).getFdeptid()+" Deptmentid:"+dataPref.getString(define.SharedFDeptmentid,"none"));
-                        if ((!filter.contains(pgds.getData().get(i).getPlanbill()) || !filter.contains(pgds.getData().get(i).getOrderbill()) && pgds.getData().get(i).getOrderbill().indexOf("J") != 0) && String.valueOf(pgds.getData().get(i).getFdeptid()).equals(FDeptID)) {
-                            filter.add(pgds.getData().get(i).getPlanbill());
-                            filter.add(pgds.getData().get(i).getOrderbill());
-                            //重新遍历,设置尺码,和已入未入库数
-                            int alreadyNumberCount = 0;
-                            int noNumberCount = 0;
-                            for (int j = 0; j < pgds.getData().size(); j++) {
-                                if (pgds.getData().get(j).getPlanbill().equals(pgds.getData().get(i).getPlanbill()) && pgds.getData().get(j).getOrderbill().equals(pgds.getData().get(i).getOrderbill())) {
-
-
-                                    String[][] s = new String[1][2];
-                                    s[0][0] = pgds.getData().get(j).getFsize();
-                                    s[0][1] = String.valueOf(pgds.getData().get(j).getDispatchingnumber().intValue());
-                                    pgds.getData().get(i).addSize(s);
-                                    alreadyNumberCount += (pgds.getData().get(j).getAlreadynumber() == null ? 0 : pgds.getData().get(j).getAlreadynumber()).intValue();
-
-                                    noNumberCount += (pgds.getData().get(j).getNonumber() == null ? 0 : pgds.getData().get(j).getNonumber()).intValue();
-                                    try {
-                                        List<GxpgPlanStatus> gxpgPlanStatusesList = dbManager.selector(GxpgPlanStatus.class).where("planbill", " = ", pgds.getData().get(i).getPlanbill()).and("orderbill", "=", pgds.getData().get(i).getOrderbill()).findAll();
-                                        if (gxpgPlanStatusesList != null && gxpgPlanStatusesList.size() >= 1) {
-                                            pgds.getData().get(i).setPlanStatus("已排");
-                                        } else {
-                                            pgds.getData().get(i).setPlanStatus("未排");
-                                        }
-                                    } catch (DbException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                            pgds.getData().get(i).setAlreadynumberCount(alreadyNumberCount);
-                            pgds.getData().get(i).setNonumberCount(noNumberCount);
-                            pgdWorkCardPlan.add(pgds.getData().get(i));
-
-                        }
-                    }
-
-                    tv_tip.setVisibility(View.GONE);
-                } else {
-                    tv_tip.setText("暂无数据");
-                }
-                LoadMore();
-                mMenuAdapter.notifyDataSetChanged();
-                refreshLayout.finishRefreshing();
-            }
-
-            //请求异常后的回调方法
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                Log.e("jindi", ex.toString());
-                tv_tip.setVisibility(View.VISIBLE);
-                tv_tip.setText("数据载入失败,请检查网络:" + ex.toString());
-            }
-
-            //主动调用取消请求的回调方法
-            @Override
-            public void onCancelled(CancelledException cex) {
-            }
-
-            @Override
-            public void onFinished() {
-            }
-        });
     }
 
     public void getSearchData(final String searchText) {
@@ -718,36 +642,46 @@ public class PgdActivity extends AppCompatActivity implements ScrollListenerHori
         //Log.e("jindi",params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
-            public void onSuccess(final String result) {
+            public void onSuccess(String result) {
+                try {
+                    result = URLDecoder.decode(result, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+
                 pgdWorkCardPlan.clear();
                 showWorkCardPlan.clear();
-                currentPosition = 0;
-                refreshLayout.setEnableLoadmore(true);
                 List<String> filter = new ArrayList<String>();
-                Gson g = new Gson();
-                PgdResult pgds = g.fromJson(result, PgdResult.class);
-                if (pgds.getData() != null) {
-                    for (int i = 0; i < pgds.getData().size(); i++) {
-                        if (!filter.contains(pgds.getData().get(i).getPlanbill()) || !filter.contains(pgds.getData().get(i).getOrderbill()) && pgds.getData().get(i).getOrderbill().indexOf("J") != 0 && String.valueOf(pgds.getData().get(i).getFdeptid()).equals(FDeptID)) {
-                            filter.add(pgds.getData().get(i).getPlanbill());
-                            filter.add(pgds.getData().get(i).getOrderbill());
-                            //重新遍历,设置尺码
-                            for (int j = 0; j < pgds.getData().size(); j++) {
-                                if (pgds.getData().get(j).getPlanbill().equals(pgds.getData().get(i).getPlanbill()) && pgds.getData().get(j).getOrderbill().equals(pgds.getData().get(i).getOrderbill())) {
-                                    String[][] s = new String[1][2];
-                                    s[0][0] = pgds.getData().get(j).getFsize();
-                                    s[0][1] = String.valueOf(pgds.getData().get(j).getDispatchingnumber().intValue());
-                                    pgds.getData().get(i).addSize(s);
+                if (result != null && result.contains("[{")) {
+                    result = "{\"data\":" + result.substring(result.indexOf("[{"), result.indexOf("}]")) + "}]}";
+                    Utils.e("jindi", result);
+                    Gson g = new Gson();
+                    PgdResult pgds = g.fromJson(result, PgdResult.class);
+                    if (pgds.getData() != null) {
+                        for (int i = 0; i < pgds.getData().size(); i++) {
+                            if (!filter.contains(pgds.getData().get(i).getPlanbill()) || !filter.contains(pgds.getData().get(i).getOrderbill()) && pgds.getData().get(i).getOrderbill().indexOf("J") != 0 && String.valueOf(pgds.getData().get(i).getFdeptid()).equals(dataPref.getString(define.SharedFDeptmentid, "none"))) {
+                                filter.add(pgds.getData().get(i).getPlanbill());
+                                filter.add(pgds.getData().get(i).getOrderbill());
+                                //重新遍历,设置尺码
+                                for (int j = 0; j < pgds.getData().size(); j++) {
+                                    if (pgds.getData().get(j).getPlanbill().equals(pgds.getData().get(i).getPlanbill()) && pgds.getData().get(j).getOrderbill().equals(pgds.getData().get(i).getOrderbill())) {
+                                        String[][] s = new String[1][2];
+                                        s[0][0] = pgds.getData().get(j).getFsize();
+                                        s[0][1] = String.valueOf(pgds.getData().get(j).getDispatchingnumber().intValue());
+                                        pgds.getData().get(i).addSize(s);
+                                    }
                                 }
+                                pgdWorkCardPlan.add(pgds.getData().get(i));
                             }
-                            pgdWorkCardPlan.add(pgds.getData().get(i));
                         }
+                        tv_tip.setVisibility(View.GONE);
+                    } else {
+                        tv_tip.setText("暂无数据");
                     }
-                    tv_tip.setVisibility(View.GONE);
                 } else {
                     tv_tip.setText("暂无数据");
                 }
-                LoadMore();
+                showWorkCardPlan.addAll(pgdWorkCardPlan);
                 mMenuAdapter.notifyDataSetChanged();
                 refreshLayout.finishRefreshing();
             }
