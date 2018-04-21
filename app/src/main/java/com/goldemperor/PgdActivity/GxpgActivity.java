@@ -580,37 +580,40 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 ArrayList<String> bodyList = new ArrayList<String>();
                 try {
                     List<GxpgPlan> gxpgPlanList = dbManager.findAll(GxpgPlan.class);
-                    for (int i = 0; i < gxpgPlanList.size(); i++) {
-                        if (!bodyList.contains(gxpgPlanList.get(i).getStyle())) {
-                            bodyList.add(gxpgPlanList.get(i).getStyle());
+                    if(gxpgPlanList!=null) {
+                        for (int i = 0; i < gxpgPlanList.size(); i++) {
+                            if (!bodyList.contains(gxpgPlanList.get(i).getStyle())) {
+                                bodyList.add(gxpgPlanList.get(i).getStyle());
+                            }
                         }
-                    }
-                    final String[] ChoiceItems = new String[bodyList.size()];
-                    for (int i = 0; i < bodyList.size(); i++) {
-                        ChoiceItems[i] = bodyList.get(i);
-                    }
-                    UseStyle = ChoiceItems[0];
-                    new AlertDialog.Builder(mContext)
-                            .setTitle("请选择要使用的型体")
-                            .setIcon(android.R.drawable.ic_dialog_info)
-                            .setSingleChoiceItems(ChoiceItems, 0,
-                                    new DialogInterface.OnClickListener() {
+                        final String[] ChoiceItems = new String[bodyList.size()];
+                        for (int i = 0; i < bodyList.size(); i++) {
+                            ChoiceItems[i] = bodyList.get(i);
+                        }
+                        UseStyle = ChoiceItems[0];
+                        new AlertDialog.Builder(mContext)
+                                .setTitle("请选择要使用的型体")
+                                .setIcon(android.R.drawable.ic_dialog_info)
+                                .setSingleChoiceItems(ChoiceItems, 0,
+                                        new DialogInterface.OnClickListener() {
 
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            UseStyle = ChoiceItems[which];
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                UseStyle = ChoiceItems[which];
+                                            }
                                         }
+                                )
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int arg1) {
+                                        dialog.dismiss();
+                                        useGxpgPlan(UseStyle);
+                                        Log.e("jindi", "UseStyle:" + UseStyle);
                                     }
-                            )
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int arg1) {
-                                    dialog.dismiss();
-                                    useGxpgPlan(UseStyle);
-                                    Log.e("jindi", "UseStyle:" + UseStyle);
-                                }
-                            })
-                            .setNegativeButton("取消", null)
-                            .show();
-
+                                })
+                                .setNegativeButton("取消", null)
+                                .show();
+                    }else{
+                        Toast.makeText(mContext,"尚未记录工序计划",Toast.LENGTH_LONG).show();
+                    }
                     Log.e("jindi", "bodyList:" + bodyList.size());
                 } catch (DbException e) {
                     e.printStackTrace();
