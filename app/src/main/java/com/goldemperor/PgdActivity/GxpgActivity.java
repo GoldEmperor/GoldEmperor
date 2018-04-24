@@ -1366,7 +1366,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
     //下载工艺说明书具体操作
     private void download(String downloadUrl, final String downloadFileName) {
         try {
-            //下载链接要编码成中文字符
+            //下载链接要编码成URL字符
             downloadUrl=Utils.cnToEncode(downloadUrl);
             Log.e("jindi",downloadUrl);
             URL url = new URL(downloadUrl);
