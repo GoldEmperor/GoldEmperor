@@ -63,6 +63,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
@@ -183,6 +184,8 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
 
     List<RouteEntry> RouteResultList;
 
+    String RouteFile;
+    String RouteFullName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -1201,10 +1204,19 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
     }
 
     public void GetInstructor() {
+        /*
         RequestParams params = new RequestParams(define.Net1 + define.GetRouteEntryPic);
+
         params.addQueryStringParameter("FInterID", String.valueOf(selectWorkCardPlan.getFroutingid()));
         params.addQueryStringParameter("FPlanBill", String.valueOf(selectWorkCardPlan.getPlanbill()));
-        //Log.e("jindi", params.toString());
+        */
+
+        RequestParams params = new RequestParams(define.Net2 + define.GetManufactureInstructions);
+
+        params.addQueryStringParameter("FUserID", dataPref.getString(define.SharedUserId, define.NONE));
+        params.addQueryStringParameter("FRouteID", String.valueOf(selectWorkCardPlan.getFroutingid()));
+
+        Log.e("jindi", params.toString());
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -1213,18 +1225,46 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                Gson g = new Gson();
-                GYLXResult af = g.fromJson(result, GYLXResult.class);
-                try {
-                    if (af.getData().get(0).getFfullname() != null) {
-                        String url = af.getData().get(0).getFfullname();
-                        String downloadFileName = url.substring(url.lastIndexOf("/") + 1, url.length());
-                        Log.e("jindi", downloadFileName);
-                        downloadInstructor(define.Net4 + URLEncoder.encode(url, "UTF-8"), downloadFileName);
+                result=result.replaceAll("\\\\","");
+                Log.e("jindi",result);
+
+                if (result.contains("error")) {
+                    String ReturnMsg = result.substring(result.indexOf("ReturnMsg"), result.indexOf(",")).replace("ReturnMsg\":", "").replace("\"", "");
+                    Toast.makeText(mContext, ReturnMsg, Toast.LENGTH_LONG).show();
+                } else {
+                    String ReturnMsg ="{\"data\":"+ result.substring(result.indexOf("[{"), result.indexOf("}]"))+"}]}";
+                    Log.e("jindi",ReturnMsg);
+                    Gson g = new Gson();
+                    final T_Prd_Route_Result route = g.fromJson(ReturnMsg, T_Prd_Route_Result.class);
+                    Log.e("jindi",route.getData().size()+"");
+                    final String[] ChoiceItems = new String[route.getData().size()];
+                    for (int i = 0; i < route.getData().size(); i++) {
+                        ChoiceItems[i] = route.getData().get(i).getFTypeName()+" "+route.getData().get(i).getFFileName();
                     }
-                } catch (Exception e) {
-                    Log.e("jindi", e.toString());
+                    RouteFile = route.getData().get(0).getFFileName();
+                    RouteFullName=route.getData().get(0).getFFullName();
+                    new AlertDialog.Builder(mContext)
+                            .setTitle("请选择工艺说明书")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setSingleChoiceItems(ChoiceItems, 0,
+                                    new DialogInterface.OnClickListener() {
+
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            RouteFile=route.getData().get(which).getFFileName();
+                                            RouteFullName=route.getData().get(which).getFFullName();
+                                        }
+                                    }
+                            )
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int arg1) {
+                                    dialog.dismiss();
+                                    downloadInstructor(RouteFullName,RouteFile);
+                                }
+                            })
+                            .setNegativeButton("取消", null)
+                            .show();
                 }
+
             }
 
             //请求异常后的回调方法
@@ -1326,11 +1366,15 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
     //下载工艺说明书具体操作
     private void download(String downloadUrl, final String downloadFileName) {
         try {
+            //下载链接要编码成中文字符
+            downloadUrl=Utils.cnToEncode(downloadUrl);
+            Log.e("jindi",downloadUrl);
             URL url = new URL(downloadUrl);
             //打开连接
-            URLConnection conn = url.openConnection();
+            URLConnection conn =  url.openConnection();
             //打开输入流
             InputStream is = conn.getInputStream();
+            Log.e("jindi","打开输入流");
             //获得长度
             int contentLength = conn.getContentLength();
             Log.e("jindi", "contentLength = " + contentLength);

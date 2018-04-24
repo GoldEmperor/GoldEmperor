@@ -128,6 +128,8 @@ public class define {
 
     public static final String DeletePrdRouteEntryByFID ="ErpForMesServer.asmx/DeletePrdRouteEntryByFID";
 
+    public static final String GetManufactureInstructions ="ErpForMesServer.asmx/GetManufactureInstructions";
+
     public static final String GetEmpByDeptID = "wechatMvn/mes/GetEmpByDeptID.do";
 
     public static final String GetEmpByFNumber = "wechatMvn/mes/GetEmpByFNumber.do";
@@ -138,8 +140,6 @@ public class define {
 
     public static final String GetWorkPlanMaterial = "wechatMvn/android/getWorkPlanMaterial.do";
 
-
-    public static final String GetWorkCardPlanNew = "wechatMvn/android/getWorkCardPlanNew.do";
 
     public static final String GetRouteEntryPic = "wechatMvn/android/getRouteEntryPic.do";
 

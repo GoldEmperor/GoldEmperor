@@ -17,10 +17,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
@@ -389,6 +391,42 @@ public final class Utils {
     public static boolean isNumeric(String str) {
         String reg = "([1-9]\\d*\\.?\\d*)|(0\\.\\d*[1-9])";
         return str.matches(reg);
+    }
+
+    static public String cnToEncode(String s ){
+        char[] ch = s.toCharArray();
+        String result = "";
+        for(int i=0;i<ch.length;i++){
+            char temp = ch[i];
+            if(isChinese(temp)){
+                try {
+                    String encode = URLEncoder.encode(String.valueOf(temp), "utf-8");
+                    result = result + encode;
+                } catch (UnsupportedEncodingException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }else{
+                result = result+temp;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 判断字符是否为汉字
+     * @param c
+     * @return
+     */
+    private static boolean isChinese(char c) {
+        Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);
+        if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
+                || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_B
+                || ub == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION || ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS
+                || ub == Character.UnicodeBlock.GENERAL_PUNCTUATION) {
+            return true;
+        }
+        return false;
     }
 }
 
