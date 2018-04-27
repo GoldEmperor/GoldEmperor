@@ -81,6 +81,8 @@ public class ContentActivity extends AppCompatActivity {
 
     private FancyButton btn_xjdcheck;
 
+    private FancyButton btn_gxjhpg;
+
     private Button waiBtn;
 
     private Button neiBtn;
@@ -181,6 +183,9 @@ public class ContentActivity extends AppCompatActivity {
 
         btn_xjdcheck = (FancyButton) findViewById(R.id.btn_xjdcheck);
         btn_xjdcheck.setIconResource(R.drawable.btn_set);
+
+        btn_gxjhpg = (FancyButton) findViewById(R.id.btn_gxjhpg);
+        btn_gxjhpg.setIconResource(R.drawable.btn_set);
 
         btn_cc = (FancyButton) findViewById(R.id.btn_cc);
         btn_cc.setIconResource(R.drawable.btn_set);
@@ -324,6 +329,20 @@ public class ContentActivity extends AppCompatActivity {
                 if (!dataPref.getString(define.SharedPassword, define.NONE).equals(define.NONE)) {
                     Intent i = new Intent(mContext, com.goldemperor.XJChenk.XJListActivity.class);
                     mContext.startActivity(i);
+                } else {
+                    Intent i = new Intent(mContext, LoginActivity.class);
+                    mContext.startActivity(i);
+                }
+
+            }
+        });
+
+        btn_gxjhpg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!dataPref.getString(define.SharedPassword, define.NONE).equals(define.NONE)) {
+                    //Intent i = new Intent(mContext, com.goldemperor.XJChenk.XJListActivity.class);
+                    //mContext.startActivity(i);
                 } else {
                     Intent i = new Intent(mContext, LoginActivity.class);
                     mContext.startActivity(i);

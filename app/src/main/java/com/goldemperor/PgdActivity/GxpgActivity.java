@@ -2064,6 +2064,7 @@ public class GxpgActivity extends AppCompatActivity implements ScrollListenerHor
         //SimpleDateFormat dff = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //dff.setTimeZone(TimeZone.getTimeZone("GMT+08"));
         //String dd = dff.format(new Date());
+
         try {
             wechatPostByFEmpIDData.setRemark("计划开工时间:" + Utils.dateConvert(selectWorkCardPlan.getPlanstarttime()));
         } catch (ParseException e) {
