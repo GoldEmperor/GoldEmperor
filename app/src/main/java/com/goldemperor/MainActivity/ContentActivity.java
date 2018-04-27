@@ -30,6 +30,7 @@ import com.goldemperor.GxReport.GxReport;
 import com.goldemperor.GylxActivity.GylxActivity;
 import com.goldemperor.LoginActivity.LoginActivity;
 import com.goldemperor.PgdActivity.PgdActivity;
+import com.goldemperor.ProcessSend.ProcessSendActvity;
 import com.goldemperor.Public.SystemUtil;
 import com.goldemperor.SetActivity.SetActivity;
 import com.goldemperor.R;
@@ -80,6 +81,8 @@ public class ContentActivity extends AppCompatActivity {
 
 
     private FancyButton btn_xjdcheck;
+
+    private FancyButton btn_process_send;
 
     private Button waiBtn;
 
@@ -192,6 +195,21 @@ public class ContentActivity extends AppCompatActivity {
         btn_gylx = (FancyButton) findViewById(R.id.btn_gylx);
 
         btn_gylx.setIconResource(R.drawable.btn_set);
+        btn_process_send = (FancyButton) findViewById(R.id.btn_process_send);
+
+        btn_process_send.setIconResource(R.drawable.btn_process);
+        btn_process_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dataPref.getString(define.SharedPassword, define.NONE).equals(define.NONE)) {
+                    Intent i = new Intent(mContext, LoginActivity.class);
+                    mContext.startActivity(i);
+                } else {
+                    Intent i = new Intent(mContext, ProcessSendActvity.class);
+                    mContext.startActivity(i);
+                }
+            }
+        });
 
         btn_gylx.setOnClickListener(new View.OnClickListener() {
             @Override
