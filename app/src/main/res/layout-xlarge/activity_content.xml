@@ -268,11 +268,27 @@
                     fancy:fb_textColor="#FFFFFF" />
 
                 <mehdi.sakout.fancybuttons.FancyButton
-                    android:id="@+id/btn_set"
+                    android:id="@+id/btn_process_send"
                     android:layout_width="120dp"
                     android:layout_height="match_parent"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
+                    fancy:fb_borderColor="#FFFFFF"
+                    fancy:fb_borderWidth="2dp"
+                    fancy:fb_defaultColor="#3b414f"
+                    fancy:fb_focusColor="#8cc9f8"
+                    fancy:fb_fontIconSize="25sp"
+                    fancy:fb_iconPosition="top"
+                    fancy:fb_radius="10dp"
+                    fancy:fb_text="工序派工单"
+                    fancy:fb_textColor="#FFFFFF" />
+
+                <mehdi.sakout.fancybuttons.FancyButton
+                    android:id="@+id/btn_set"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+
+                    android:layout_marginRight="10dp"
                     fancy:fb_borderColor="#FFFFFF"
                     fancy:fb_borderWidth="2dp"
                     fancy:fb_defaultColor="#ff8800"
@@ -282,6 +298,7 @@
                     fancy:fb_radius="10dp"
                     fancy:fb_text="设置"
                     fancy:fb_textColor="#FFFFFF"/>
+
             </LinearLayout>
         </LinearLayout>
         <RelativeLayout
